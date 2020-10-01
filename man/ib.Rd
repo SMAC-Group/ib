@@ -2,20 +2,19 @@
 % Please edit documentation in R/ib.R
 \name{ib}
 \alias{ib}
-\title{Bias  correction via the iterative bootstrap algorithm}
+\title{Bias correction via iterative bootstrap}
 \usage{
-ib(
-  object,
-  ibcontrol = ib_control(),
-  method = "IB",
-  theta_start = NULL,
-  simcontrol = sim_control(),
-  ...
-)
+ib(object, thetastart = NULL, control = list(...), ...)
+}
+\arguments{
+\item{object}{an object representing a fitted model.}
+
+\item{...}{additional optional arguments.}
+}
+\value{
+The \code{object} with bias corrected estimators.
 }
 \description{
-Bias  correction via the iterative bootstrap algorithm
-}
-\author{
-Samuel Orso
+Correct the bias of a fitted model object with the iterative
+bootstrap procedure.
 }

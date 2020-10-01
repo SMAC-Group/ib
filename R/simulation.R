@@ -6,20 +6,39 @@ censoring <- function(y,right=NULL,left=NULL){
   y
 }
 
-#' @title Control for simulation
-#' @export
-sim_control <- function(cens=FALSE,right=NULL,left=NULL,seed=123L,H=1L){
-  if(!is.logical(cens)) stop("cens must a boolean")
-  list(cens=cens,right=right,left=left,seed=seed,H=H)
-}
-
 #' @title Simulation
-simulation <- function(object, control=sim_control(), ...){
+simulation <- function(object, control=list(...), ...){
   UseMethod("simulation",object)
 }
 
-simulation.default <- function(object, control=sim_control(), ...){
+#' @importFrom stats simulate
+simulation.default <- function(object, control=list(...), ...){
+  control <- do.call("ibControl",control)
   sim <- simulate(object,nsim=control$H,seed=control$seed,...)
   if(control$cens) sim <- censoring(sim,control$right,control$left)
   data.matrix(sim)
 }
+
+# adapted from stats::simulate.lm
+simulation.lm <- function(object, control=list(...), std=NULL, ...){
+  control <- do.call("ibControl",control)
+  if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+    runif(1)
+  if (is.null(control$seed))
+    RNGstate <- get(".Random.seed", envir = .GlobalEnv)
+  else {
+    R.seed <- get(".Random.seed", envir = .GlobalEnv)
+    set.seed(control$seed)
+    RNGstate <- structure(control$seed, kind = as.list(RNGkind()))
+    on.exit(assign(".Random.seed", R.seed, envir = .GlobalEnv))
+  }
+  ftd <- fitted(object)
+  n <- length(ftd)
+  ntot <- n * control$H
+  if(is.null(std)) std <- sigma(object)
+  sim <- matrix(ftd + rnorm(ntot,sd=std), ncol=control$H)
+  if(control$cens) sim <- censoring(sim,control$right,control$left)
+  sim
+}
+
+simulation.glm <- simulation.default

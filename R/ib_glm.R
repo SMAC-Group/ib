@@ -1,24 +1,14 @@
-#' @title Bias correction via iterative bootstrap
-#' @description Correct the bias of a fitted model object with the iterative
-#' bootstrap procedure.
-#' @param object an object representing a fitted model.
-#' @param ... additional optional arguments.
-#' @return The \code{object} with bias corrected estimators.
 #' @export
-ib <- function(object, thetastart=NULL, control=list(...), ...){
-  UseMethod("ib",object)
-}
-
-#' @export
-ib.default <- function(object, thetastart=NULL, control=list(...), ...){
+ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
   # initial estimator:
   pi0 <- coef(object)
+
   if(!is.null(thetastart)){
     if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
       t0 <- thetastart
     } else {
-        stop("`thetastart` must be a numeric vector of the same length as parameter of interest.")
-      }
+      stop("`thetastart` must be a numeric vector of the same length as parameter of interest.")
+    }
   } else {
     t0 <- pi0
   }
@@ -38,11 +28,13 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
   # create an environment for iterative bootstrap
   env_ib <- new.env(hash=F)
   assign("x",unname(model.matrix(object))[,-1],env_ib)
-  cl <- call(as.character(getCall(object)[[1]]),quote(y~x))
+  cl <- getCall(object)
+  cl[[2]] <- quote(y~x)
   tmp_object <- object
 
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol & k < control$maxit){
+
     # update initial estimator
     tmp_object$coefficients <- t0
     sim <- simulation(tmp_object,control)
@@ -54,7 +46,8 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
     pi_star <- rowMeans(tmp_pi)
 
     # update value
-    t1 <- t0 + pi0 - pi_star
+    delta <- pi0 - pi_star
+    t1 <- t0 + delta
 
     # update increment
     k <- k + 1L
@@ -74,17 +67,7 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
     t0 <- t1
   }
 
-  tmp_object$fitted.values <- predict.lm(tmp_object)
-  tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
+  tmp_object$fitted.values <- predict.glm(tmp_object)
   tmp_object$call <- object$call
   tmp_object
-}
-
-#' @title Auxiliary for controlling IB
-#' @export
-ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
-                      cens=FALSE,right=NULL,left=NULL,seed=123L,H=1L){
-  if(!is.logical(cens)) stop("cens must a boolean")
-  list(tol=tol,maxit=maxit,verbose=verbose,
-       cens=cens,right=right,left=left,seed=seed,H=H)
 }

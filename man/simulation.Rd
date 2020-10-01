@@ -4,7 +4,7 @@
 \alias{simulation}
 \title{Simulation}
 \usage{
-simulation(object, control = sim_control(), ...)
+simulation(object, control = list(...), ...)
 }
 \description{
 Simulation
