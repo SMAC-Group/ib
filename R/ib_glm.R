@@ -1,3 +1,4 @@
+#' @importFrom stats glm predict.glm model.matrix
 #' @export
 ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
   # initial estimator:
@@ -7,7 +8,8 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
     if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
       t0 <- thetastart
     } else {
-      stop("`thetastart` must be a numeric vector of the same length as parameter of interest.")
+      stop("`thetastart` must be a numeric vector of the same length as
+           parameter of interest.", call.=FALSE)
     }
   } else {
     t0 <- pi0
@@ -39,7 +41,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
     tmp_object$coefficients <- t0
     sim <- simulation(tmp_object,control)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
-    for(h in seq_len(ncol(sim))){
+    for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
       tmp_pi[,h] <- coef(eval(cl,env_ib))
     }
@@ -67,7 +69,17 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
     t0 <- t1
   }
 
-  tmp_object$fitted.values <- predict.glm(tmp_object)
+  # update glm object
+  eta <- predict.glm(tmp_object)
+  mu <- object$family$linkinv(eta)
+  dev <- sum(object$family$dev.resids(object$y,mu,object$weights))
+
+  tmp_object$linear.predictors <- eta
+  tmp_object$fitted.values <- mu
+  tmp_object$residuals <- (object$y - mu)/object$family$mu.eta(eta)
   tmp_object$call <- object$call
+  tmp_object$deviance <- dev
+  tmp_object$aic <- object$family$aic(object$y, length(object$weights)-sum(object$weights == 0),
+                                      mu, object$weights, dev) + 2 * object$rank
   tmp_object
 }

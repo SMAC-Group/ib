@@ -17,7 +17,8 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
     if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
       t0 <- thetastart
     } else {
-        stop("`thetastart` must be a numeric vector of the same length as parameter of interest.")
+        stop("`thetastart` must be a numeric vector of the same length as
+             parameter of interest.", call.=FALSE)
       }
   } else {
     t0 <- pi0
@@ -47,7 +48,7 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
     tmp_object$coefficients <- t0
     sim <- simulation(tmp_object,control)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
-    for(h in seq_len(ncol(sim))){
+    for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
       tmp_pi[,h] <- coef(eval(cl,env_ib))
     }
