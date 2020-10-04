@@ -1,6 +1,9 @@
 #' @importFrom stats glm predict.glm model.matrix
 #' @export
 ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
+  # supports only glm.fit currently
+  if(object$method != "glm.fit") stop("only implemented for `glm.fit`", call.=FALSE)
+
   # initial estimator:
   pi0 <- coef(object)
 
