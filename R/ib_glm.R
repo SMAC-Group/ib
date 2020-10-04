@@ -72,14 +72,14 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), ...){
   # update glm object
   eta <- predict.glm(tmp_object)
   mu <- object$family$linkinv(eta)
-  dev <- sum(object$family$dev.resids(object$y,mu,object$weights))
+  dev <- sum(object$family$dev.resids(object$y,mu,object$prior.weights))
 
   tmp_object$linear.predictors <- eta
   tmp_object$fitted.values <- mu
   tmp_object$residuals <- (object$y - mu)/object$family$mu.eta(eta)
   tmp_object$call <- object$call
   tmp_object$deviance <- dev
-  tmp_object$aic <- object$family$aic(object$y, length(object$weights)-sum(object$weights == 0),
-                                      mu, object$weights, dev) + 2 * object$rank
+  tmp_object$aic <- object$family$aic(object$y, length(object$prior.weights)-sum(object$prior.weights == 0),
+                                      mu, object$prior.weights, dev) + 2 * object$rank
   tmp_object
 }
