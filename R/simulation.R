@@ -74,6 +74,6 @@ simulate_gamma <- function (object, nsim, shape){
   if (any(wts != 1))
     message("using weights as shape parameters")
   ftd <- fitted(object)
-  shape <- shape * wts
-  rgamma(nsim * length(ftd), shape = shape, rate = shape/ftd)
+  shp <- shape * wts
+  rgamma(nsim * length(ftd), shape = shp, rate = shp/ftd)
 }

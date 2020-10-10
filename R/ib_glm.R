@@ -1,16 +1,23 @@
 #' @importFrom stats glm predict.glm model.matrix
 #' @export
-ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, ...){
+ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, overdispersion=FALSE, ...){
   # supports only glm.fit currently
   if(object$method != "glm.fit") stop("only implemented for `glm.fit`", call.=FALSE)
 
   # shape for gamma regression
-  if(!is.null(shape) && object$family$family != "Gamma") stop("`shape` is for gamma regression", call.=FALSE)
+  if(shape && !grepl("Gamma",object$family$family)) stop("`shape` is for gamma regression", call.=FALSE)
+
+  # overdispersion for negative binomial regression
+  if(overdispersion && !grepl("Negative Binomial",object$family$family)) stop("`overdispersion` is for negative binomial regression", call.=FALSE)
+
+  extra <- FALSE
+  if(any(shape,overdispersion)) extra <- TRUE
 
   # initial estimator:
   pi0 <- coef(object)
 
   if(shape) pi0 <- c(pi0, MASS::gamma.shape(object)$alpha)
+  if(overdispersion) pi0 <- c(pi0, object$theta)
 
   if(!is.null(thetastart)){
     if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
@@ -27,7 +34,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, ...)
 
   # test diff between thetas
   p <- p0 <- length(t0)
-  if(shape) p0 <- p - 1L
+  if(extra) p0 <- p - 1L
   test_theta <- control$tol + 1
 
   # test at iteration k-1
@@ -51,19 +58,21 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, ...)
     # update initial estimator
     tmp_object$coefficients <- t0[1:p0]
     if(shape) shp <- t0[p]
-    sim <- simulation(tmp_object,control,shp)
+    if(overdispersion) tmp_object$theta <- t0[p]
+    sim <- simulation(tmp_object,control,shape=shp)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
       fit_tmp <- eval(cl,env_ib)
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(shape) tmp_pi[p,h] <- MASS::gamma.shape(fit_tmp)$alpha
+      if(overdispersion) tmp_pi[p,h] <- fit_tmp$theta
     }
     pi_star <- rowMeans(tmp_pi)
 
     # update value
     delta <- pi0 - pi_star
-    if(shape) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
+    if(extra) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
     t1 <- t0 + delta
 
     # update increment
