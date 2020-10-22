@@ -1,4 +1,5 @@
 #' @importFrom stats glm predict.glm model.matrix
+#' @importFrom MASS gamma.shape
 #' @export
 ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, overdispersion=FALSE, ...){
   # supports only glm.fit currently
@@ -53,7 +54,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
   if(!shape) shp <- NULL
 
   # Iterative bootstrap algorithm:
-  while(test_theta > control$tol & k < control$maxit){
+  while(test_theta > control$tol && k < control$maxit){
 
     # update initial estimator
     tmp_object$coefficients <- t0[1:p0]
@@ -68,7 +69,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
       if(shape) tmp_pi[p,h] <- MASS::gamma.shape(fit_tmp)$alpha
       if(overdispersion) tmp_pi[p,h] <- fit_tmp$theta
     }
-    pi_star <- rowMeans(tmp_pi)
+    pi_star <- control$func(tmp_pi)
 
     # update value
     delta <- pi0 - pi_star
@@ -106,4 +107,42 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
   tmp_object$aic <- object$family$aic(object$y, length(object$prior.weights)-sum(object$prior.weights == 0),
                                       mu, object$prior.weights, dev) + 2 * object$rank
   tmp_object
+}
+
+# adapted from stats::simulate.lm
+simulation.glm <- function(object, control=list(...), shape=NULL, ...){
+  fam <- object$family$family
+  if (is.null(object$family$simulate)) stop(gettextf("family '%s' not implemented",fam), domain = NA)
+
+  control <- do.call("ibControl",control)
+  if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+    runif(1)
+  if (is.null(control$seed))
+    RNGstate <- get(".Random.seed", envir = .GlobalEnv)
+  else {
+    R.seed <- get(".Random.seed", envir = .GlobalEnv)
+    set.seed(control$seed)
+    RNGstate <- structure(control$seed, kind = as.list(RNGkind()))
+    on.exit(assign(".Random.seed", R.seed, envir = .GlobalEnv))
+  }
+  sim <- switch(fam,
+                Gamma = {
+                  if(is.null(shape)){
+                    matrix(object$family$simulate(object,control$H), ncol=control$H)
+                  } else {
+                    matrix(simulate_gamma(object,control$H,shape), ncol=control$H)}},
+                matrix(object$family$simulate(object,control$H), ncol=control$H)
+  )
+  if(control$cens) sim <- censoring(sim,control$right,control$left)
+  sim
+}
+
+# adapted from stats::family::Gamma::simulate
+simulate_gamma <- function (object, nsim, shape){
+  wts <- object$prior.weights
+  if (any(wts != 1))
+    message("using weights as shape parameters")
+  ftd <- fitted(object)
+  shp <- shape * wts
+  rgamma(nsim * length(ftd), shape = shp, rate = shp/ftd)
 }

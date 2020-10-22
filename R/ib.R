@@ -43,7 +43,7 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
   tmp_object <- object
 
   # Iterative bootstrap algorithm:
-  while(test_theta > control$tol & k < control$maxit){
+  while(test_theta > control$tol && k < control$maxit){
     # update initial estimator
     tmp_object$coefficients <- t0
     sim <- simulation(tmp_object,control)
@@ -52,7 +52,7 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
       assign("y",sim[,h],env_ib)
       tmp_pi[,h] <- coef(eval(cl,env_ib))
     }
-    pi_star <- rowMeans(tmp_pi)
+    pi_star <- control$func(tmp_pi)
 
     # update value
     t1 <- t0 + pi0 - pi_star
@@ -78,14 +78,18 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
   tmp_object$fitted.values <- predict.lm(tmp_object)
   tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
   tmp_object$call <- object$call
+  class(tmp_object) <- c("ib",class(object))
   tmp_object
 }
 
 #' @title Auxiliary for controlling IB
 #' @export
 ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
-                      cens=FALSE,right=NULL,left=NULL,seed=123L,H=1L){
-  if(!is.logical(cens)) stop("cens must a boolean")
+                      cens=FALSE,right=NULL,left=NULL,seed=123L,H=1L,
+                      func=function(x)rowMeans(x,na.rm=T)){
+  if(!is.logical(cens)) stop("cens must be a boolean")
+  if(!is.function(func)) stop("func must be a function")
   list(tol=tol,maxit=maxit,verbose=verbose,
-       cens=cens,right=right,left=left,seed=seed,H=H)
+       cens=cens,right=right,left=left,seed=seed,
+       H=H,func=func)
 }

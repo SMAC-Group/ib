@@ -1,4 +1,4 @@
-#' @importFrom stats lm
+#' @importFrom stats lm predict.lm model.matrix
 #' @export
 ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
   # initial estimator:
@@ -39,7 +39,7 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
   if(!var) std <- NULL
 
   # Iterative bootstrap algorithm:
-  while(test_theta > control$tol & k < control$maxit){
+  while(test_theta > control$tol && k < control$maxit){
 
     # update initial estimator
     tmp_object$coefficients <- t0[1:p0]
@@ -52,7 +52,7 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(var) tmp_pi[p,h] <- sigma(fit_tmp)
     }
-    pi_star <- rowMeans(tmp_pi)
+    pi_star <- control$func(tmp_pi)
 
     # update value
     delta <- pi0 - pi_star
@@ -81,4 +81,26 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
   tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
   tmp_object$call <- object$call
   tmp_object
+}
+
+# adapted from stats::simulate.lm
+simulation.lm <- function(object, control=list(...), std=NULL, ...){
+  control <- do.call("ibControl",control)
+  if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+    runif(1)
+  if (is.null(control$seed))
+    RNGstate <- get(".Random.seed", envir = .GlobalEnv)
+  else {
+    R.seed <- get(".Random.seed", envir = .GlobalEnv)
+    set.seed(control$seed)
+    RNGstate <- structure(control$seed, kind = as.list(RNGkind()))
+    on.exit(assign(".Random.seed", R.seed, envir = .GlobalEnv))
+  }
+  ftd <- fitted(object)
+  n <- length(ftd)
+  ntot <- n * control$H
+  if(is.null(std)) std <- sigma(object)
+  sim <- matrix(ftd + rnorm(ntot,sd=std), ncol=control$H)
+  if(control$cens) sim <- censoring(sim,control$right,control$left)
+  sim
 }

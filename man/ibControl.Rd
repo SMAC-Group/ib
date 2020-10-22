@@ -12,7 +12,8 @@ ibControl(
   right = NULL,
   left = NULL,
   seed = 123L,
-  H = 1L
+  H = 1L,
+  func = function(x) rowMeans(x, na.rm = T)
 )
 }
 \description{
