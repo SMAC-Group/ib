@@ -17,18 +17,21 @@
 #' studied by \insertCite{guerrier2019;textual}{ib} and
 #' \insertCite{guerrier2020;textual}{ib}. The \emph{k}th iteration of this
 #' algorithm is
-#' \deqn{\theta^{k} = \theta^{k-1} + \pi -
-#' \frac{1}{H}\sum_{h=1}^H\pi_h(\theta^{k-1})}
+#' \deqn{\hat{\theta}^{k} = \hat{\theta}^{k-1} + \hat{\pi} -
+#' \frac{1}{H}\sum_{h=1}^H\hat{\pi}_h(\hat{\theta}^{k-1})}{%
+#' \theta^(k)=\theta^(k-1) + \pi - \sum \pi_h(\theta^(k-1)) / H
+#' }
+#' for \eqn{k=1,2,\ldots} and where the sum is over \eqn{h=1,\ldots,H}.
 #' The estimate \eqn{\pi} is provided by the \code{object}.
 #' The value \eqn{\pi_h(\theta)} is a parametric bootstrap
-#' estimate where the bootstrap sample is generated from \eqn{theta}
+#' estimate where the bootstrap sample is generated from \eqn{\theta}
 #' and a fixed \code{seed} (see \code{\link{ibControl}}).
-#' The greater the parameter value \eqn{H} the better bias correction
+#' The greater the parameter value \eqn{H} generally the better bias correction
 #' but the more computation it requires (see \code{\link{ibControl}}).
-#' If \code{thetastart=NULL}, \eqn{\theta^0=\pi}. The number of
-#' iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
+#' If \code{thetastart=NULL}, the initial value of the procedure is \eqn{\theta^(0)=\pi}.
+#' The number of iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
 #'
-#' By default, the method correct \code{coefficients} only. For
+#' By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
 #' extra parameters, it depends on the model. Currently, \code{ib}
 #' supports the following \code{object}:
 #' \describe{
@@ -52,7 +55,12 @@
 #'    \item{\code{\link[lme4]{lmer}}}{
 #'        by default, only the fixed effects are corrected. With \code{Sigma=TRUE},
 #'        all the random effects (variances and correlations) and the variance
-#'        of the residuals are also corrected.
+#'        of the residuals are also corrected. Note that using the \code{ib} is
+#'        certainly not useful with the argument \code{REML=TRUE} in
+#'        \code{\link[lme4]{lmer}} as the bias of variance components is
+#'        already addressed, unless one considers different
+#'        data generating mechanism such as censoring, missing values
+#'        and outliers (see \code{\link{ibControl}}).
 #'    }
 #' }
 #' @references

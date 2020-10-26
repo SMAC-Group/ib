@@ -37,7 +37,8 @@ summary(fit_ib2)
 require(MASS)
 quine.nb1 <- glm.nb(Days ~ Sex/(Age + Eth*Lrn), data = quine)
 fit_ib <- ib(quine.nb1,control=list(H=1e3,verbose=T))
-fit_ib <- ib(quine.nb1,control=list(H=1e3,verbose=T),overdispersion = T)
+fit_ib <- ib(quine.nb1,control=list(H=1e2,verbose=T),overdispersion = T)
+summary(fit_ib)
 
 # lmer
 require(lme4)
