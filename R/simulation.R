@@ -8,7 +8,6 @@ censoring <- function(y,right=NULL,left=NULL){
 
 # TODO: add missing, contamination
 
-#' @title Simulation
 simulation <- function(object, control=list(...), ...){
   UseMethod("simulation",object)
 }

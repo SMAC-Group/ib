@@ -1,6 +1,4 @@
-#' @importFrom lme4 getME
-#' @importFrom lme4 mkVarCorr
-#' @importFrom lme4 lmer
+#' @importFrom lme4 getME mkVarCorr lmer
 #' @export
 ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, ...){
   # for lme4::lmer:
@@ -124,14 +122,15 @@ mkParam <- function(params, nbeta, ntheta){
        sigma = if(ntheta>0) params[length(params)])
 }
 
-# adapted from lme4:::setParam
+# inspired from lme4:::setParam
+#' @importFrom methods slot<-
 setParam <- function(object, params) {
-  if (!is.null(params$beta)) {
+  if(!is.null(params$beta)) {
+    slot(object, "beta") <- params$beta
     object@pp$setBeta0(params$beta)
-    object@beta <- params$beta
   }
-  if (!is.null(params$theta)) {
-    object@theta <- params$theta
+  if(!is.null(params$theta)) {
+    slot(object, "theta") <- params$theta
     object@pp$setTheta(params$theta)
   }
   if (!is.null(params$sigma)) {
@@ -190,7 +189,7 @@ Est_to_Param <- function(est, Sigma, nbeta, nvar, ncor, nc) {
   if(ncor>0) cors <- est[seq(nbeta+nvar+1,nbeta+nvar+ncor)]
   sc <- est[length(est)]
 
-  # adapted from lme4::mkVarCorr
+  # inspired from lme4::mkVarCorr
   ncseq <- seq_along(nc)
   vhl <- split(vars, rep.int(ncseq, nc))
   if(ncor>0) chl <- split(cors, rep.int(ncseq, (nc * (nc - 1))/2))

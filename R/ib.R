@@ -1,14 +1,69 @@
-#' @title Bias correction via iterative bootstrap
-#' @description Correct the bias of a fitted model object with the iterative
-#' bootstrap procedure.
-#' @param object an object representing a fitted model.
-#' @param ... additional optional arguments.
-#' @return The \code{object} with bias corrected estimators.
+#' @title
+#' Bias correction via iterative bootstrap
+#' @description
+#' \code{ib} is used to correct the bias of a fitted model \code{object}
+#' with the iterative bootstrap procedure.
+#' @param object an \code{object} representing a fitted model (see 'Details').
+#' @param thetastart an optional starting value for the iterative procedure.
+#' If \code{NULL} (default), the procedure starts at the estimates in \code{object}.
+#' @param control a list of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param ... additional optional arguments (see 'Details').
+#' @return
+#' A fitted model \code{object} where estimates are bias corrected.
+#' @details
+#' The iterative bootstrap procedure is described in
+#' \insertCite{kuk1995;textual}{ib} and further
+#' studied by \insertCite{guerrier2019;textual}{ib} and
+#' \insertCite{guerrier2020;textual}{ib}. The \emph{k}th iteration of this
+#' algorithm is
+#' \deqn{\theta^{k} = \theta^{k-1} + \pi -
+#' \frac{1}{H}\sum_{h=1}^H\pi_h(\theta^{k-1})}
+#' The estimate \eqn{\pi} is provided by the \code{object}.
+#' The value \eqn{\pi_h(\theta)} is a parametric bootstrap
+#' estimate where the bootstrap sample is generated from \eqn{theta}
+#' and a fixed \code{seed} (see \code{\link{ibControl}}).
+#' The greater the parameter value \eqn{H} the better bias correction
+#' but the more computation it requires (see \code{\link{ibControl}}).
+#' If \code{thetastart=NULL}, \eqn{\theta^0=\pi}. The number of
+#' iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
+#'
+#' By default, the method correct \code{coefficients} only. For
+#' extra parameters, it depends on the model. Currently, \code{ib}
+#' supports the following \code{object}:
+#' \describe{
+#'    \item{\code{\link[stats]{glm}}}{
+#'        with \code{shape=TRUE}, the shape parameter for the \code{\link[stats]{Gamma}}
+#'        family is also corrected. Note that the \code{\link[stats]{quasi}} families
+#'        are not supported for the moment as they have no simulation method
+#'        (see \code{\link[stats]{simulate}}).
+#'    }
+#'    \item{\code{\link[MASS]{glm.nb}}}{
+#'        with \code{overdispersion=TRUE}, the overdispersion parameter of the
+#'        negative binomial regression is also corrected.
+#'    }
+#'    \item{\code{\link[stats]{lm}}}{
+#'        with \code{vars=TRUE}, the variance of the residuals is
+#'        also corrected. Note that using the \code{ib} is not useful as coefficients
+#'        are already unbiased, unless one considers different
+#'        data generating mechanism such as censoring, missing values
+#'        and outliers (see \code{\link{ibControl}}).
+#'    }
+#'    \item{\code{\link[lme4]{lmer}}}{
+#'        by default, only the fixed effects are corrected. With \code{Sigma=TRUE},
+#'        all the random effects (variances and correlations) and the variance
+#'        of the residuals are also corrected.
+#'    }
+#' }
+#' @references
+#' \insertAllCited{}
+#' @importFrom Rdpack reprompt
 #' @export
 ib <- function(object, thetastart=NULL, control=list(...), ...){
   UseMethod("ib",object)
 }
 
+#' @importFrom stats coef model.matrix getCall predict model.frame
 #' @export
 ib.default <- function(object, thetastart=NULL, control=list(...), ...){
   # initial estimator:
@@ -75,7 +130,7 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
     t0 <- t1
   }
 
-  tmp_object$fitted.values <- predict.lm(tmp_object)
+  tmp_object$fitted.values <- predict(tmp_object)
   tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
   tmp_object$call <- object$call
   class(tmp_object) <- c("ib",class(object))
@@ -83,12 +138,37 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
 }
 
 #' @title Auxiliary for controlling IB
+#' @description
+#' Auxiliary function for \code{\link{ib}} bias correction.
+#' @param tol positive convergence tolerance \eqn{\epsilon}.
+#' The \code{\link{ib}} procedure converges when
+#' \eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
+#' where \eqn{p} is the dimension of \eqn{\theta}.
+#' @param maxit integer representing the maximal number of iterations.
+#' @param verbose logical indicating whether output is printed in the console
+#' at each iteration.
+#' @param seed integer to set the seed (see \code{\link[base]{Random}}).
+#' @param H integer representing the number of bootstrap estimates (see \code{\link{ib}}).
+#' @param cens logical whether the simulated responses are censored.
+#' @param right double for right-censoring (only used if \code{cens=TRUE}).
+#' @param left double for left-censoring (only used if \code{cens=TRUE}).
+#' @param func function to reduce the \code{H} bootstrap estimates (rowwise).
+#' By default, the average is computed. The user can supply a function.
+#' One could imagine using other function such as the median or a trimmed mean.
+#' @return a list with components named as the arguments.
+#' @seealso \code{\link{ib}}, the iterative procedure for bias correction.
 #' @export
 ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
-                      cens=FALSE,right=NULL,left=NULL,seed=123L,H=1L,
+                      seed=123L,H=1L,
+                      cens=FALSE,right=NULL,left=NULL,
                       func=function(x)rowMeans(x,na.rm=T)){
-  if(!is.logical(cens)) stop("cens must be a boolean")
-  if(!is.function(func)) stop("func must be a function")
+  if(!is.numeric(tol)) stop("`tol` must be numeric")
+  if(!is.numeric(maxit)) stop("`maxit` must be numeric")
+  if(!is.logical(verbose)) stop("`verbose` must be a boolean")
+  if(!is.numeric(seed)) stop("`seed` must be numeric")
+  if(!is.numeric(H)) stop("`H` must be numeric")
+  if(!is.logical(cens)) stop("`cens` must be a boolean")
+  if(!is.function(func)) stop("`func` must be a function")
   list(tol=tol,maxit=maxit,verbose=verbose,
        cens=cens,right=right,left=left,seed=seed,
        H=H,func=func)

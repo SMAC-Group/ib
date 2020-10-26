@@ -109,22 +109,16 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
   tmp_object
 }
 
-# adapted from stats::simulate.lm
+# inspired from stats::simulate.lm
 simulation.glm <- function(object, control=list(...), shape=NULL, ...){
-  fam <- object$family$family
-  if (is.null(object$family$simulate)) stop(gettextf("family '%s' not implemented",fam), domain = NA)
-
   control <- do.call("ibControl",control)
-  if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
-    runif(1)
-  if (is.null(control$seed))
-    RNGstate <- get(".Random.seed", envir = .GlobalEnv)
-  else {
-    R.seed <- get(".Random.seed", envir = .GlobalEnv)
-    set.seed(control$seed)
-    RNGstate <- structure(control$seed, kind = as.list(RNGkind()))
-    on.exit(assign(".Random.seed", R.seed, envir = .GlobalEnv))
-  }
+
+  fam <- object$family$family
+  if(is.null(object$family$simulate)) stop(paste0("simulation not implemented for family ",fam), call.=FALSE)
+
+  set.seed(control$seed)
+  if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
+
   sim <- switch(fam,
                 Gamma = {
                   if(is.null(shape)){
@@ -137,12 +131,12 @@ simulation.glm <- function(object, control=list(...), shape=NULL, ...){
   sim
 }
 
-# adapted from stats::family::Gamma::simulate
+# inspired from stats::family::Gamma::simulate
+#' @importFrom stats rgamma
 simulate_gamma <- function (object, nsim, shape){
-  wts <- object$prior.weights
-  if (any(wts != 1))
-    message("using weights as shape parameters")
+  wp <- object$prior.weights
   ftd <- fitted(object)
-  shp <- shape * wts
+  shp <- shape * wp
   rgamma(nsim * length(ftd), shape = shp, rate = shp/ftd)
 }
+

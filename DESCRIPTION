@@ -1,12 +1,30 @@
 Package: ib
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Bias correction via iterative bootstrap
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: An implementation of the iterative bootstrap procedure of 
+    Kuk (1995) to correct the estimation bias of a fitted model object. This
+    procedure has better bias correction properties than the 
+    bootstrap bias correction technique.
+Authors@R: c(
+    person("Samuel", "Orso", email="Samuel.Orso@unige.ch", role=c("aut","cre","cph")),
+    person("Stéphane", "Guerrier", role=c("aut","cph")),
+    person("Yuming", "Zhang", role="aut"),
+    person("Mucyo", "Karemera", role="aut"),
+    person("Elise", "Lozeron", role="aut")
+    )
+Maintainer: Samuel Orso <Samuel.Orso@unige.ch>
+Depends: R (>= 4.0.0)
+Imports:
+  lme4,
+  MASS,
+  methods,
+  Rdpack (>= 0.7)
+Suggests:
+  knitr,
+  rmarkdown
+License: GPL (>=2) 
 Encoding: UTF-8
 LazyData: true
+RdMacros: Rdpack
 RoxygenNote: 7.1.1

@@ -8,14 +8,45 @@ ibControl(
   tol = 1e-05,
   maxit = 25,
   verbose = FALSE,
+  seed = 123L,
+  H = 1L,
   cens = FALSE,
   right = NULL,
   left = NULL,
-  seed = 123L,
-  H = 1L,
   func = function(x) rowMeans(x, na.rm = T)
 )
 }
+\arguments{
+\item{tol}{positive convergence tolerance \eqn{\epsilon}.
+The \code{\link{ib}} procedure converges when
+\eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
+where \eqn{p} is the dimension of \eqn{\theta}.}
+
+\item{maxit}{integer representing the maximal number of iterations.}
+
+\item{verbose}{logical indicating whether output is printed in the console
+at each iteration.}
+
+\item{seed}{integer to set the seed (see \code{\link[base]{Random}}).}
+
+\item{H}{integer representing the number of bootstrap estimates (see \code{\link{ib}}).}
+
+\item{cens}{logical whether the simulated responses are censored.}
+
+\item{right}{double for right-censoring (only used if \code{cens=TRUE}).}
+
+\item{left}{double for left-censoring (only used if \code{cens=TRUE}).}
+
+\item{func}{function to reduce the \code{H} bootstrap estimates (rowwise).
+By default, the average is computed. The user can supply a function.
+One could imagine using other function such as the median or a trimmed mean.}
+}
+\value{
+a list with components named as the arguments.
+}
 \description{
-Auxiliary for controlling IB
+Auxiliary function for \code{\link{ib}} bias correction.
+}
+\seealso{
+\code{\link{ib}}, the iterative procedure for bias correction.
 }

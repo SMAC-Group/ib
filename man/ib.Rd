@@ -7,14 +7,68 @@
 ib(object, thetastart = NULL, control = list(...), ...)
 }
 \arguments{
-\item{object}{an object representing a fitted model.}
+\item{object}{an \code{object} representing a fitted model (see 'Details').}
 
-\item{...}{additional optional arguments.}
+\item{thetastart}{an optional starting value for the iterative procedure.
+If \code{NULL} (default), the procedure starts at the estimates in \code{object}.}
+
+\item{control}{a list of parameters for controlling the iterative procedure
+(see \code{\link{ibControl}}).}
+
+\item{...}{additional optional arguments (see 'Details').}
 }
 \value{
-The \code{object} with bias corrected estimators.
+A fitted model \code{object} where estimates are bias corrected.
 }
 \description{
-Correct the bias of a fitted model object with the iterative
-bootstrap procedure.
+\code{ib} is used to correct the bias of a fitted model \code{object}
+with the iterative bootstrap procedure.
+}
+\details{
+The iterative bootstrap procedure is described in
+\insertCite{kuk1995;textual}{ib} and further
+studied by \insertCite{guerrier2019;textual}{ib} and
+\insertCite{guerrier2020;textual}{ib}. The \emph{k}th iteration of this
+algorithm is
+\deqn{\theta^{k} = \theta^{k-1} + \pi -
+\frac{1}{H}\sum_{h=1}^H\pi_h(\theta^{k-1})}
+The estimate \eqn{\pi} is provided by the \code{object}.
+The value \eqn{\pi_h(\theta)} is a parametric bootstrap
+estimate where the bootstrap sample is generated from \eqn{theta}
+and a fixed \code{seed} (see \code{\link{ibControl}}).
+The greater the parameter value \eqn{H} the better bias correction
+but the more computation it requires (see \code{\link{ibControl}}).
+If \code{thetastart=NULL}, \eqn{\theta^0=\pi}. The number of
+iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
+
+By default, the method correct \code{coefficients} only. For
+extra parameters, it depends on the model. Currently, \code{ib}
+supports the following \code{object}:
+\describe{
+   \item{\code{\link[stats]{glm}}}{
+       with \code{shape=TRUE}, the shape parameter for the \code{\link[stats]{Gamma}}
+       family is also corrected. Note that the \code{\link[stats]{quasi}} families
+       are not supported for the moment as they have no simulation method
+       (see \code{\link[stats]{simulate}}).
+   }
+   \item{\code{\link[MASS]{glm.nb}}}{
+       with \code{overdispersion=TRUE}, the overdispersion parameter of the
+       negative binomial regression is also corrected.
+   }
+   \item{\code{\link[stats]{lm}}}{
+       with \code{vars=TRUE}, the variance of the residuals is
+       also corrected. Note that using the \code{ib} is not useful as coefficients
+       are already unbiased, unless one considers different
+       data generating mechanism such as censoring, missing values
+       and outliers (see \code{\link{ibControl}}).
+   }
+   \item{\code{\link[lme4]{lmer}}}{
+       by default, only the fixed effects are corrected. With \code{Sigma=TRUE},
+       all the random effects (variances and correlations) and the variance
+       of the residuals are also corrected.
+   }
+}
+}
+\references{
+\insertAllCited{}
 }
