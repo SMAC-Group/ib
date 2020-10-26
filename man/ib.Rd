@@ -46,8 +46,8 @@ extra parameters, it depends on the model. Currently, \code{ib}
 supports the following \code{object}:
 \describe{
    \item{\code{\link[stats]{glm}}}{
-       with \code{shape=TRUE}, the shape parameter for the \code{\link[stats]{Gamma}}
-       family is also corrected. Note that the \code{\link[stats]{quasi}} families
+       with \code{shape=TRUE}, the shape parameter for the \code{\link[stats:family]{Gamma}}
+       family is also corrected. Note that the \code{\link[stats:family]{quasi}} families
        are not supported for the moment as they have no simulation method
        (see \code{\link[stats]{simulate}}).
    }
