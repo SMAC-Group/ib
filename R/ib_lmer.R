@@ -237,7 +237,7 @@ updateLmer <- function(object, Sigma){
   }
 
   # weighted residuals
-  wtres <- sqrt(weights(object, method = "prior")) * (getME(fit_ib4,"y") - getME(fit_ib4,"mu"))
+  wtres <- sqrt(weights(object, method = "prior")) * (getME(object,"y") - getME(object,"mu"))
   object@devcomp[["cmp"]]["wrss"] <- sum(wtres^2)
   object@devcomp[["cmp"]]["pwrss"] <- object@devcomp[["cmp"]]["wrss"] + object@devcomp[["cmp"]]["ussq"]
   object@devcomp[["cmp"]]["dev"] <- getME(object,"devfun")(getME(object,"theta"))
