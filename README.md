@@ -1,6 +1,6 @@
 
 [![Travis-CI Build
-Status](https://travis-ci.com/SMAC-Group/ib.svg?token=s88CFk8Z8GpXU4ekbW38&branch=master)](https://travis-ci.com/github/SMAC-Group/ib)
+Status](https://travis-ci.com/SMAC-Group/ib.svg?branch=master)](https://travis-ci.com/github/SMAC-Group/ib)
 [![Last-changedate](https://img.shields.io/badge/last%20change-2020--11--05-green.svg)](https://github.com/SMAC-Group/ib)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 

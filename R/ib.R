@@ -10,7 +10,7 @@
 #' (see \code{\link{ibControl}}).
 #' @param ... additional optional arguments (see 'Details').
 #' @return
-#' A fitted model \code{object} where estimates are bias corrected.
+#' A fitted model \code{object} where estimates are bias corrected with the \code{ib}.
 #' @details
 #' The iterative bootstrap procedure is described in
 #' \insertCite{kuk1995;textual}{ib} and further

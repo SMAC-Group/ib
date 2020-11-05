@@ -1,3 +1,4 @@
+#' @rdname ib
 #' @importFrom lme4 getME mkVarCorr lmer
 #' @export
 ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, ...){

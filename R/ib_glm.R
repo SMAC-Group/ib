@@ -1,3 +1,4 @@
+#' @rdname ib
 #' @importFrom stats glm predict.glm model.matrix
 #' @importFrom MASS gamma.shape
 #' @export

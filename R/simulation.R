@@ -1,13 +1,3 @@
-censoring <- function(y,right=NULL,left=NULL){
-  if(all(!is.null(right),!is.null(left),right<left))
-    stop("right-censoring must be greater than left-censoring!")
-  if(!is.null(right)) y[y>right] <- right
-  if(!is.null(left)) y[y<left] <- left
-  y
-}
-
-# TODO: add missing, contamination
-
 simulation <- function(object, control=list(...), ...){
   UseMethod("simulation",object)
 }
@@ -19,3 +9,13 @@ simulation.default <- function(object, control=list(...), ...){
   if(control$cens) sim <- censoring(sim,control$right,control$left)
   data.matrix(sim)
 }
+
+censoring <- function(y,right=NULL,left=NULL){
+  if(all(!is.null(right),!is.null(left),right<left))
+    stop("right-censoring must be greater than left-censoring!")
+  if(!is.null(right)) y[y>right] <- right
+  if(!is.null(left)) y[y<left] <- left
+  y
+}
+
+# TODO: add missing, contamination data generating mechanism

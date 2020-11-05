@@ -31,3 +31,4 @@ RdMacros: Rdpack
 RoxygenNote: 7.1.1
 URL: https://github.com/SMAC-Group/ib/
 BugReports: https://github.com/SMAC-Group/ib/issues/
+VignetteBuilder: knitr

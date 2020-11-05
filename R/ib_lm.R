@@ -1,3 +1,4 @@
+#' @rdname ib
 #' @importFrom stats lm predict.lm model.matrix
 #' @export
 ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
