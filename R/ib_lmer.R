@@ -1,4 +1,6 @@
 #' @rdname ib
+#' @param Sigma if \code{TRUE}, all the random effects (variances and correlations) and the variance
+#'  of the residuals in \link[lme4]{lmer} are also corrected
 #' @importFrom lme4 getME mkVarCorr lmer
 #' @export
 ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, ...){

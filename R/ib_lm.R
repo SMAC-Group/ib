@@ -1,4 +1,6 @@
 #' @rdname ib
+#' @param var if \code{TRUE}, the variance of the residuals in \link[stats]{lm} is
+#'        also corrected
 #' @importFrom stats lm predict.lm model.matrix
 #' @export
 ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){

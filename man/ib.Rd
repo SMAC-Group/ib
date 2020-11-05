@@ -32,6 +32,18 @@ If \code{NULL} (default), the procedure starts at the estimates in \code{object}
 (see \code{\link{ibControl}}).}
 
 \item{...}{additional optional arguments (see 'Details').}
+
+\item{shape}{if \code{TRUE}, the shape parameter for the \code{\link[stats:family]{Gamma}}
+family is also corrected}
+
+\item{overdispersion}{if \code{TRUE}, the overdispersion parameter of the
+negative binomial regression in \code{\link[MASS]{glm.nb}} is also corrected}
+
+\item{var}{if \code{TRUE}, the variance of the residuals in \link[stats]{lm} is
+also corrected}
+
+\item{Sigma}{if \code{TRUE}, all the random effects (variances and correlations) and the variance
+of the residuals in \link[lme4]{lmer} are also corrected}
 }
 \value{
 A fitted model \code{object} where estimates are bias corrected with the \code{ib}.

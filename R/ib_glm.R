@@ -1,4 +1,8 @@
 #' @rdname ib
+#' @param shape if \code{TRUE}, the shape parameter for the \code{\link[stats:family]{Gamma}}
+#'        family is also corrected
+#' @param overdispersion if \code{TRUE}, the overdispersion parameter of the
+#'        negative binomial regression in \code{\link[MASS]{glm.nb}} is also corrected
 #' @importFrom stats glm predict.glm model.matrix
 #' @importFrom MASS gamma.shape
 #' @export
