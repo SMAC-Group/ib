@@ -47,25 +47,25 @@ The number of iterations are controlled by \code{maxit} parameter of \code{\link
 By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
 extra parameters, it depends on the model. Currently, \code{ib}
 supports the following \code{object}:
-\describe{
-   \item{\code{\link[stats]{glm}}}{
+\tabular{ll}{
+   \code{\link[stats]{glm}}\tab
        with \code{shape=TRUE}, the shape parameter for the \code{\link[stats:family]{Gamma}}
        family is also corrected. Note that the \code{\link[stats:family]{quasi}} families
        are not supported for the moment as they have no simulation method
        (see \code{\link[stats]{simulate}}).
-   }
-   \item{\code{\link[MASS]{glm.nb}}}{
+   \cr
+   \code{\link[MASS]{glm.nb}}\tab
        with \code{overdispersion=TRUE}, the overdispersion parameter of the
        negative binomial regression is also corrected.
-   }
-   \item{\code{\link[stats]{lm}}}{
+   \cr
+   \code{\link[stats]{lm}}\tab
        with \code{vars=TRUE}, the variance of the residuals is
        also corrected. Note that using the \code{ib} is not useful as coefficients
        are already unbiased, unless one considers different
        data generating mechanism such as censoring, missing values
        and outliers (see \code{\link{ibControl}}).
-   }
-   \item{\code{\link[lme4]{lmer}}}{
+   \cr
+   \code{\link[lme4]{lmer}}\tab
        by default, only the fixed effects are corrected. With \code{Sigma=TRUE},
        all the random effects (variances and correlations) and the variance
        of the residuals are also corrected. Note that using the \code{ib} is
@@ -74,7 +74,7 @@ supports the following \code{object}:
        already addressed, unless one considers different
        data generating mechanism such as censoring, missing values
        and outliers (see \code{\link{ibControl}}).
-   }
+   \cr
 }
 }
 \references{

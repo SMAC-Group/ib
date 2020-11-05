@@ -61,7 +61,12 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   cl <- getCall(object)
   cl$data <- quote(data)
   cl$formula[[2]] <- quote(y)
-  tmp_object <- object
+
+  # FIXME: We need a deep copy (see ?lme4::modular and ? methods::ReferenceClasses):
+  # With the following line, we keep modifying the original object
+  # tmp_object <- object
+  # temporary solution by new evaluation:
+  tmp_object <- eval(cl,env_ib)
 
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
@@ -73,6 +78,8 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       env_ib$data$y <- sim[,h]
+      # FIXME: deal with warnings from checkConv,
+      # see https://stats.stackexchange.com/questions/110004/how-scared-should-we-be-about-convergence-warnings-in-lme4
       tmp <- getParam(eval(cl,env_ib),Sigma)
       tmp_pi[,h] <- Param_to_Est(tmp,Sigma,cnms,nc,nms)
     }
@@ -103,8 +110,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   }
 
   # update lmerMod object
-  # TODO: update AIC, BIC, logLik, deviance, residuals
-  tmp_object
+  updateLmer(tmp_object, Sigma)
 }
 
 getParam <- function(object, Sigma=FALSE){
@@ -133,8 +139,8 @@ setParam <- function(object, params) {
     slot(object, "theta") <- params$theta
     object@pp$setTheta(params$theta)
   }
-  if (!is.null(params$sigma)) {
-    snm <- if (object@devcomp$dims[["REML"]])
+  if(!is.null(params$sigma)) {
+    snm <- if(object@devcomp$dims[["REML"]])
       "sigmaREML"
     else "sigmaML"
     object@devcomp[["cmp"]][snm] <- params$sigma
@@ -206,6 +212,39 @@ Est_to_Param <- function(est, Sigma, nbeta, nvar, ncor, nc) {
        sigma = sc)
 }
 
-# Useful resource for `lme4`
-# https://stats.stackexchange.com/a/155500
-# https://arxiv.org/pdf/1406.5823.pdf
+# update the lmerMod object once estimates are bias corrected
+# currently update values in object@devcomp$cmp
+# (these values are then used in lme4:::devCrit to compute
+#  AIC, BIC, logLik, ...)
+#' @importFrom stats weights
+updateLmer <- function(object, Sigma){
+  # we follow explanations found in https://arxiv.org/pdf/1406.5823.pdf
+  # see also package `lme4pureR`
+
+  if(Sigma){
+    # u <- getME(object,"u") # same as input object
+    L <- getME(object,"L")
+    RX <- getME(object,"RX")
+
+    ldRX2 <- 0.2e1 * determinant(RX, logarithm = TRUE)$modulus
+    attributes(ldRX2) <- NULL
+    ldL2 <- 0.2e1 * determinant(L, logarithm = TRUE)$modulus
+    attributes(ldL2) <- NULL
+    if(object@devcomp$dims[["REML"]]) ldL2 <- ldL2 + 0.2e1 * ldRX2
+    object@devcomp[["cmp"]]["ldL2"] <- ldL2
+    object@devcomp[["cmp"]]["ldRX2"] <- ldRX2
+    # object@devcomp[["cmp"]]["ussq"] <- sum(u^2)
+  }
+
+  # weighted residuals
+  wtres <- sqrt(weights(object, method = "prior")) * (getME(fit_ib4,"y") - getME(fit_ib4,"mu"))
+  object@devcomp[["cmp"]]["wrss"] <- sum(wtres^2)
+  object@devcomp[["cmp"]]["pwrss"] <- object@devcomp[["cmp"]]["wrss"] + object@devcomp[["cmp"]]["ussq"]
+  object@devcomp[["cmp"]]["dev"] <- getME(object,"devfun")(getME(object,"theta"))
+
+  object
+}
+
+# Useful resources for `lme4`:
+# * https://arxiv.org/pdf/1406.5823.pdf
+# * https://stats.stackexchange.com/a/155500

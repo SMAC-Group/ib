@@ -1,6 +1,6 @@
 Package: ib
 Type: Package
-Title: Bias correction via iterative bootstrap
+Title: Bias Correction via Iterative Bootstrap
 Version: 0.1.0
 Description: An implementation of the iterative bootstrap procedure of 
     Kuk (1995) to correct the estimation bias of a fitted model object. This
@@ -8,7 +8,7 @@ Description: An implementation of the iterative bootstrap procedure of
     bootstrap bias correction technique.
 Authors@R: c(
     person("Samuel", "Orso", email="Samuel.Orso@unige.ch", role=c("aut","cre","cph")),
-    person("Stéphane", "Guerrier", role=c("aut","cph")),
+    person("Stéphane", "Guerrier", role="aut"),
     person("Yuming", "Zhang", role="aut"),
     person("Mucyo", "Karemera", role="aut"),
     person("Elise", "Lozeron", role="aut")
@@ -19,11 +19,12 @@ Imports:
   lme4,
   MASS,
   methods,
-  Rdpack (>= 0.7)
+  Rdpack (>= 0.7),
+  stats
 Suggests:
   knitr,
   rmarkdown
-License: GPL (>=2) 
+License: GPL (>= 2) 
 Encoding: UTF-8
 LazyData: true
 RdMacros: Rdpack
