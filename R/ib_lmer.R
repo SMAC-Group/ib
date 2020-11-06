@@ -1,6 +1,8 @@
 #' @rdname ib
 #' @param Sigma if \code{TRUE}, all the random effects (variances and correlations) and the variance
-#'  of the residuals in \link[lme4]{lmer} are also corrected
+#'  of the residuals in \code{\link[lme4]{lmer}} are also corrected
+#' @example /inst/examples/eg_lmer.R
+#' @seealso \code{\link[lme4]{lmer}}
 #' @importFrom lme4 getME mkVarCorr lmer
 #' @export
 ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, ...){
@@ -220,6 +222,7 @@ Est_to_Param <- function(est, Sigma, nbeta, nvar, ncor, nc) {
 # (these values are then used in lme4:::devCrit to compute
 #  AIC, BIC, logLik, ...)
 #' @importFrom stats weights
+#' @importFrom Matrix determinant
 updateLmer <- function(object, Sigma){
   # we follow explanations found in https://arxiv.org/pdf/1406.5823.pdf
   # see also package `lme4pureR`

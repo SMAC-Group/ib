@@ -13,6 +13,11 @@ ibControl(
   cens = FALSE,
   right = NULL,
   left = NULL,
+  mis = FALSE,
+  prop = NULL,
+  out = FALSE,
+  eps = NULL,
+  G = NULL,
   func = function(x) rowMeans(x, na.rm = T)
 )
 }
@@ -22,22 +27,38 @@ The \code{\link{ib}} procedure converges when
 \eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
 where \eqn{p} is the dimension of \eqn{\theta}.}
 
-\item{maxit}{integer representing the maximal number of iterations.}
+\item{maxit}{\code{integer} representing the maximal number of iterations.}
 
-\item{verbose}{logical indicating whether output is printed in the console
+\item{verbose}{if \code{TRUE}, it prints some output in the console
 at each iteration.}
 
-\item{seed}{integer to set the seed (see \code{\link[base]{Random}}).}
+\item{seed}{\code{integer} to set the seed (see \code{\link[base]{Random}}).}
 
-\item{H}{integer representing the number of bootstrap estimates (see \code{\link{ib}}).}
+\item{H}{\code{integer} representing the number of bootstrap estimates
+(see \code{\link{ib}}).}
 
-\item{cens}{logical whether the simulated responses are censored.}
+\item{cens}{if \code{TRUE} the simulated responses are censored according to
+\code{left} and \code{right} values.}
 
-\item{right}{double for right-censoring (only used if \code{cens=TRUE}).}
+\item{right}{\code{double} for right-censoring (only used if \code{cens=TRUE}).}
 
-\item{left}{double for left-censoring (only used if \code{cens=TRUE}).}
+\item{left}{\code{double} for left-censoring (only used if \code{cens=TRUE}).}
 
-\item{func}{function to reduce the \code{H} bootstrap estimates (rowwise).
+\item{mis}{if \code{TRUE} the simulated responses have missing data at random.}
+
+\item{prop}{\code{double} between 0 and 1 representing the proportion of
+missing data (only used if \code{mis=TRUE}).}
+
+\item{out}{if \code{TRUE} the simulated responses are also generated with an
+contamination mechanism}
+
+\item{eps}{\code{double} between 0 and 1 representing the proportion of
+outliers in the data (only used if \code{out=TRUE}).}
+
+\item{G}{a \code{function} to generate outliers. It takes only
+a sample size as argument.}
+
+\item{func}{a \code{function} to reduce the \code{H} bootstrap estimates (rowwise).
 By default, the average is computed. The user can supply a function.
 One could imagine using other function such as the median or a trimmed mean.}
 }

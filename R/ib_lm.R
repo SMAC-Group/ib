@@ -1,6 +1,8 @@
 #' @rdname ib
-#' @param var if \code{TRUE}, the variance of the residuals in \link[stats]{lm} is
+#' @param var if \code{TRUE}, the variance of the residuals in \code{\link[stats]{lm}} is
 #'        also corrected
+#' @example /inst/examples/eg_lm.R
+#' @seealso \code{\link[stats]{lm}}
 #' @importFrom stats lm predict.lm model.matrix
 #' @export
 ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
@@ -100,5 +102,7 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
   if(is.null(std)) std <- sigma(object)
   sim <- matrix(ftd + rnorm(ntot,sd=std), ncol=control$H)
   if(control$cens) sim <- censoring(sim,control$right,control$left)
+  if(control$mis) sim <- missing_at_random(sim, control$prop)
+  if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
 }

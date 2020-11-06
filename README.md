@@ -1,7 +1,7 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.com/SMAC-Group/ib.svg?branch=master)](https://travis-ci.com/github/SMAC-Group/ib)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2020--11--05-green.svg)](https://github.com/SMAC-Group/ib)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2020--11--06-green.svg)](https://github.com/SMAC-Group/ib)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 # Bias correction via the iterative bootstrap
@@ -13,17 +13,50 @@ studied by [Guerrier et al
 (2019)](https://doi.org/10.1080/01621459.2017.1380031) and [Guerrier et
 al (2020)](https://arxiv.org/pdf/2002.08757.pdf).
 
-It is conceived as a wrapper: an `object` that needs a bias correction
-is supplied to the `ib()` function. For example:
+In order to install the package
+
+``` r
+## if not installed
+## install.packages("remotes")
+remotes::install_github("SMAC-Group/ib")
+```
+
+The `ib` package is conceived as a wrapper: an `object` that needs a
+bias correction is supplied to the `ib()` function. For example, for a
+negative binomial regression:
 
 ``` r
 library(ib)
+library(MASS)
+fit_nb <- glm.nb(Days ~ Sex/(Age + Eth*Lrn), data = quine)
+fit_ib1 <- ib(fit_nb)
+summary(fit_ib1)
 
-fit_lm <- fit(mtcars$mpg ~ mtcars$hp)
-ib(fit_lm)   
+## correct for overdispersion with H=100
+fit_ib2 <- ib(fit_nb, control=list(H=100), overdispersion = TRUE)
+summary(fit_ib2)
 ```
 
-Currently we support only `object` which possess respond to `getCall()`,
-`model.matrix()` and `simulate()`. For example we support `lm()`,
-`glm()` (with the exception of the `quasi-` families), `MASS::glm.nb()`.
-More to come.
+By default, we support `object` which has a model call
+(`getCall(object)`), a design matrix (`model.matrix(object)`) and a
+`simulate()` method (see `help(simulate)`).
+
+We provide more parameters for which to correct the bias for `lm`,
+`glm`, `glm.nb` and `lmer` classes, as shown in the example above with
+the overdispersion parameter of the negative binomial regression.
+
+On top of `simulate`, we also consider cases where the response variable
+is generated using censoring, missing at random and outliers mechanisms.
+For example
+
+``` r
+## suppose values above 30 are censored
+quine2 <- transform(quine, Days=pmin(Days,30))
+fit_nb <- glm.nb(Days ~ Sex/(Age + Eth*Lrn), data = quine2)
+fit_ib1 <- ib(fit_nb, control = list(cens=TRUE, right=30))
+summary(fit_ib1)
+
+## correct for overdispersion with H=100
+fit_ib2 <- ib(fit_nb, control=list(H=100, cens=TRUE, right=30), overdispersion = TRUE)
+summary(fit_ib2)
+```

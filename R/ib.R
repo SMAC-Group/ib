@@ -6,7 +6,7 @@
 #' @param object an \code{object} representing a fitted model (see 'Details').
 #' @param thetastart an optional starting value for the iterative procedure.
 #' If \code{NULL} (default), the procedure starts at the estimates in \code{object}.
-#' @param control a list of parameters for controlling the iterative procedure
+#' @param control a \code{list} of parameters for controlling the iterative procedure
 #' (see \code{\link{ibControl}}).
 #' @param ... additional optional arguments (see 'Details').
 #' @return
@@ -152,15 +152,26 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
 #' The \code{\link{ib}} procedure converges when
 #' \eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
 #' where \eqn{p} is the dimension of \eqn{\theta}.
-#' @param maxit integer representing the maximal number of iterations.
-#' @param verbose logical indicating whether output is printed in the console
+#' @param maxit \code{integer} representing the maximal number of iterations.
+#' @param verbose if \code{TRUE}, it prints some output in the console
 #' at each iteration.
-#' @param seed integer to set the seed (see \code{\link[base]{Random}}).
-#' @param H integer representing the number of bootstrap estimates (see \code{\link{ib}}).
-#' @param cens logical whether the simulated responses are censored.
-#' @param right double for right-censoring (only used if \code{cens=TRUE}).
-#' @param left double for left-censoring (only used if \code{cens=TRUE}).
-#' @param func function to reduce the \code{H} bootstrap estimates (rowwise).
+#' @param seed \code{integer} to set the seed (see \code{\link[base]{Random}}).
+#' @param H \code{integer} representing the number of bootstrap estimates
+#' (see \code{\link{ib}}).
+#' @param cens if \code{TRUE} the simulated responses are censored according to
+#' \code{left} and \code{right} values.
+#' @param right \code{double} for right-censoring (only used if \code{cens=TRUE}).
+#' @param left \code{double} for left-censoring (only used if \code{cens=TRUE}).
+#' @param mis if \code{TRUE} the simulated responses have missing data at random.
+#' @param prop \code{double} between 0 and 1 representing the proportion of
+#' missing data (only used if \code{mis=TRUE}).
+#' @param out if \code{TRUE} the simulated responses are also generated with an
+#' contamination mechanism
+#' @param eps \code{double} between 0 and 1 representing the proportion of
+#' outliers in the data (only used if \code{out=TRUE}).
+#' @param G a \code{function} to generate outliers. It takes only
+#' a sample size as argument.
+#' @param func a \code{function} to reduce the \code{H} bootstrap estimates (rowwise).
 #' By default, the average is computed. The user can supply a function.
 #' One could imagine using other function such as the median or a trimmed mean.
 #' @return a list with components named as the arguments.
@@ -169,6 +180,8 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
 ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
                       seed=123L,H=1L,
                       cens=FALSE,right=NULL,left=NULL,
+                      mis=FALSE,prop=NULL,
+                      out=FALSE,eps=NULL,G=NULL,
                       func=function(x)rowMeans(x,na.rm=T)){
   if(!is.numeric(tol)) stop("`tol` must be numeric")
   if(!is.numeric(maxit)) stop("`maxit` must be numeric")
@@ -176,8 +189,10 @@ ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
   if(!is.numeric(seed)) stop("`seed` must be numeric")
   if(!is.numeric(H)) stop("`H` must be numeric")
   if(!is.logical(cens)) stop("`cens` must be a boolean")
+  if(!is.logical(mis)) stop("`mis` must be a boolean")
+  if(!is.logical(out)) stop("`out` must be a boolean")
   if(!is.function(func)) stop("`func` must be a function")
   list(tol=tol,maxit=maxit,verbose=verbose,
        cens=cens,right=right,left=left,seed=seed,
-       H=H,func=func)
+       H=H,func=func,mis=mis,prop=prop,out=out,eps=eps,G=G)
 }

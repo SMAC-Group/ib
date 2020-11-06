@@ -3,6 +3,8 @@
 #'        family is also corrected
 #' @param overdispersion if \code{TRUE}, the overdispersion parameter of the
 #'        negative binomial regression in \code{\link[MASS]{glm.nb}} is also corrected
+#' @seealso \code{\link[stats]{glm}}, \code{\link[MASS]{glm.nb}}
+#' @example /inst/examples/eg_glm.R
 #' @importFrom stats glm predict.glm model.matrix
 #' @importFrom MASS gamma.shape
 #' @export
@@ -133,10 +135,13 @@ simulation.glm <- function(object, control=list(...), shape=NULL, ...){
                 matrix(object$family$simulate(object,control$H), ncol=control$H)
   )
   if(control$cens) sim <- censoring(sim,control$right,control$left)
+  if(control$mis) sim <- missing_at_random(sim, control$prop)
+  if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
 }
 
 # inspired from stats::family::Gamma::simulate
+# which does not support "shape" as an argument
 #' @importFrom stats rgamma
 simulate_gamma <- function (object, nsim, shape){
   wp <- object$prior.weights
