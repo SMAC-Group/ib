@@ -37,8 +37,9 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
 
   # create an environment for iterative bootstrap
   env_ib <- new.env(hash=F)
-  assign("x",unname(model.matrix(object))[,-1],env_ib)
-  cl <- call("lm",quote(y~x))
+  assign("x",unname(model.matrix(object)),env_ib)
+  cl <- call("lm",quote(y~0+x))
+  cl$data <- NULL
   tmp_object <- object
 
   if(!var) std <- NULL

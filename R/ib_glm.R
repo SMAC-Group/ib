@@ -53,9 +53,10 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
 
   # create an environment for iterative bootstrap
   env_ib <- new.env(hash=F)
-  assign("x",unname(model.matrix(object))[,-1],env_ib)
+  assign("x",unname(model.matrix(object)),env_ib)
   cl <- getCall(object)
-  cl[[2]] <- quote(y~x)
+  cl$formula <- quote(y~0+x)
+  cl$data <- NULL
   tmp_object <- object
 
   if(!shape) shp <- NULL
