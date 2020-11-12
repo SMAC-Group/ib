@@ -3,12 +3,14 @@
 #'        family is also corrected
 #' @param overdispersion if \code{TRUE}, the overdispersion parameter of the
 #'        negative binomial regression in \code{\link[MASS]{glm.nb}} is also corrected
+#' @param var if \code{TRUE}, the variance of the residuals in \code{\link[stats]{lm}} is
+#'        also corrected
 #' @seealso \code{\link[stats]{glm}}, \code{\link[MASS]{glm.nb}}
 #' @example /inst/examples/eg_glm.R
 #' @importFrom stats glm predict.glm model.matrix
 #' @importFrom MASS gamma.shape
 #' @export
-ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, overdispersion=FALSE, ...){
+ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, overdispersion=FALSE, var=FALSE, ...){
   # supports only glm.fit currently
   if(object$method != "glm.fit") stop("only implemented for `glm.fit`", call.=FALSE)
 
@@ -60,6 +62,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
   tmp_object <- object
 
   if(!shape) shp <- NULL
+  if(!var) std <- NULL
 
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
@@ -68,7 +71,8 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
     tmp_object$coefficients <- t0[1:p0]
     if(shape) shp <- t0[p]
     if(overdispersion) tmp_object$theta <- t0[p]
-    sim <- simulation(tmp_object,control,shape=shp)
+    if(var) std <- t0[p]
+    sim <- simulation(tmp_object,control,shape=shp,std=std)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
@@ -76,6 +80,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(shape) tmp_pi[p,h] <- MASS::gamma.shape(fit_tmp)$alpha
       if(overdispersion) tmp_pi[p,h] <- fit_tmp$theta
+      if(var) tmp_pi[p,h] <- sigma(fit_tmp)
     }
     pi_star <- control$func(tmp_pi)
 
@@ -118,14 +123,16 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
 }
 
 # inspired from stats::simulate.lm
-simulation.glm <- function(object, control=list(...), shape=NULL, ...){
+simulation.glm <- function(object, control=list(...), shape=NULL, std=NULL, ...){
   control <- do.call("ibControl",control)
 
   fam <- object$family$family
-  if(is.null(object$family$simulate)) stop(paste0("simulation not implemented for family ",fam), call.=FALSE)
+  if(fam!="gaussian" && is.null(object$family$simulate)) stop(paste0("simulation not implemented for family ",fam), call.=FALSE)
 
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
+
+  if(is.null(std)) std <- sigma(object)
 
   sim <- switch(fam,
                 Gamma = {
@@ -133,6 +140,7 @@ simulation.glm <- function(object, control=list(...), shape=NULL, ...){
                     matrix(object$family$simulate(object,control$H), ncol=control$H)
                   } else {
                     matrix(simulate_gamma(object,control$H,shape), ncol=control$H)}},
+                gaussian = {matrix(fitted(object) + rnorm(length(object$y) * control$H,sd=std), ncol=control$H)},
                 matrix(object$family$simulate(object,control$H), ncol=control$H)
   )
   if(control$cens) sim <- censoring(sim,control$right,control$left)

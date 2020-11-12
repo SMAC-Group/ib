@@ -74,6 +74,9 @@ ib <- function(object, thetastart=NULL, control=list(...), ...){
 #' @importFrom stats coef model.matrix getCall predict model.frame
 #' @export
 ib.default <- function(object, thetastart=NULL, control=list(...), ...){
+  # check control
+  control <- do.call("ibControl",control)
+
   # initial estimator:
   pi0 <- coef(object)
   if(!is.null(thetastart)){
@@ -86,8 +89,6 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
   } else {
     t0 <- pi0
   }
-
-  control <- do.call("ibControl",control)
 
   # test diff between thetas
   p <- length(t0)

@@ -15,6 +15,7 @@ ib(object, thetastart = NULL, control = list(...), ...)
   control = list(...),
   shape = FALSE,
   overdispersion = FALSE,
+  var = FALSE,
   ...
 )
 
