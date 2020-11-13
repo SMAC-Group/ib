@@ -71,7 +71,7 @@ ib <- function(object, thetastart=NULL, control=list(...), ...){
   UseMethod("ib",object)
 }
 
-#' @importFrom stats coef model.matrix getCall predict model.frame
+#' @importFrom stats coef model.matrix getCall predict model.frame is.empty.model model.offset
 #' @export
 ib.default <- function(object, thetastart=NULL, control=list(...), ...){
   # check control
@@ -102,10 +102,20 @@ ib.default <- function(object, thetastart=NULL, control=list(...), ...){
 
   # create an environment for iterative bootstrap
   env_ib <- new.env(hash=F)
-  assign("x",unname(model.matrix(object)),env_ib)
+
+  # prepare data and formula for fit
+  mf <- model.frame(object)
+  x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
+  assign("x",x,env_ib)
+  o <- as.vector(model.offset(mf))
+  if(!is.null(o)) assign("o",o,env_ib)
   cl <- getCall(object)
   cl$formula <- quote(y~0+x)
   cl$data <- NULL
+  # add an offset
+  if(!is.null(o)) cl$offset <- quote(o)
+
+  # copy the object
   tmp_object <- object
 
   # Iterative bootstrap algorithm:

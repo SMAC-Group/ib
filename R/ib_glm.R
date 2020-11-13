@@ -7,7 +7,7 @@
 #'        also corrected
 #' @seealso \code{\link[stats]{glm}}, \code{\link[MASS]{glm.nb}}
 #' @example /inst/examples/eg_glm.R
-#' @importFrom stats glm predict.glm model.matrix
+#' @importFrom stats glm predict.glm model.matrix model.frame model.offset is.empty.model
 #' @importFrom MASS gamma.shape
 #' @export
 ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, overdispersion=FALSE, var=FALSE, ...){
@@ -20,14 +20,18 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
   # overdispersion for negative binomial regression
   if(overdispersion && !grepl("Negative Binomial",object$family$family)) stop("`overdispersion` is for negative binomial regression", call.=FALSE)
 
+  # var for gaussian regression
+  if(var && !grepl("gaussian",object$family$family)) stop("`var` is for gaussian regression", call.=FALSE)
+
   extra <- FALSE
-  if(any(shape,overdispersion)) extra <- TRUE
+  if(any(shape,overdispersion,var)) extra <- TRUE
 
   # initial estimator:
   pi0 <- coef(object)
 
   if(shape) pi0 <- c(pi0, MASS::gamma.shape(object)$alpha)
   if(overdispersion) pi0 <- c(pi0, object$theta)
+  if(var) pi0 <- c(pi0, sigma(object))
 
   if(!is.null(thetastart)){
     if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
@@ -55,10 +59,20 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), shape=FALSE, over
 
   # create an environment for iterative bootstrap
   env_ib <- new.env(hash=F)
-  assign("x",unname(model.matrix(object)),env_ib)
+
+  # prepare data and formula for fit
+  mf <- model.frame(object)
+  x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
+  assign("x",x,env_ib)
+  o <- as.vector(model.offset(mf))
+  if(!is.null(o)) assign("o",o,env_ib)
   cl <- getCall(object)
   cl$formula <- quote(y~0+x)
   cl$data <- NULL
+  # add an offset
+  if(!is.null(o)) cl$offset <- quote(o)
+
+  # copy the object
   tmp_object <- object
 
   if(!shape) shp <- NULL

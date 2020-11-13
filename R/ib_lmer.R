@@ -59,6 +59,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   k <- 0L
 
   # create an environment for iterative bootstrap
+  # FIXME: deal with offset argument
   env_ib <- new.env(hash=F)
   mf <- model.frame(object)
   names(mf)[1] <- "y"
@@ -66,6 +67,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   cl <- getCall(object)
   cl$data <- quote(data)
   cl$formula[[2]] <- quote(y)
+
 
   # FIXME: We need a deep copy (see ?lme4::modular and ? methods::ReferenceClasses):
   # With the following line, we keep modifying the original object

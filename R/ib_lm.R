@@ -37,9 +37,20 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
 
   # create an environment for iterative bootstrap
   env_ib <- new.env(hash=F)
-  assign("x",unname(model.matrix(object)),env_ib)
-  cl <- call("lm",quote(y~0+x))
+
+  # prepare data and formula for fit
+  mf <- model.frame(object)
+  x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
+  assign("x",x,env_ib)
+  o <- as.vector(model.offset(mf))
+  if(!is.null(o)) assign("o",o,env_ib)
+  cl <- getCall(object)
+  cl$formula <- quote(y~0+x)
   cl$data <- NULL
+  # add an offset
+  if(!is.null(o)) cl$offset <- quote(o)
+
+  # copy the object
   tmp_object <- object
 
   if(!var) std <- NULL
