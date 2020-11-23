@@ -21,7 +21,7 @@ fit_ib <- ib(fit_gamma)
 summary(fit_ib)
 ## correct for shape parameter and show iterations
 \dontrun{
-fit_ib <- ib(fit_gamma, control=list(verbose=TRUE), shape = TRUE)
+fit_ib <- ib(fit_gamma, control=list(verbose=TRUE), extra_param = TRUE)
 summary(fit_ib)
 }
 
@@ -32,6 +32,6 @@ fit_ib <- ib(fit_nb)
 summary(fit_ib)
 ## correct for overdispersion with H=100
 \dontrun{
-fit_ib <- ib(fit_nb, control=list(H=100), overdispersion = TRUE)
+fit_ib <- ib(fit_nb, control=list(H=100), extra_param = TRUE)
 summary(fit_ib)
 }

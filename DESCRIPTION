@@ -21,7 +21,8 @@ Imports:
   Matrix,
   methods,
   Rdpack (>= 0.7),
-  stats
+  stats,
+  VGAM
 Suggests:
   knitr,
   rmarkdown

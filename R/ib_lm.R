@@ -1,15 +1,23 @@
+# These functions are
+# Copyright (C) 2020 S. Orso, University of Geneva
+# All rights reserved.
+
 #' @rdname ib
-#' @param var if \code{TRUE}, the variance of the residuals in \code{\link[stats]{lm}} is
-#'        also corrected
+#' @details
+#' For \link[stats]{lm}, if \code{extra_param=TRUE}: the variance of the residuals is
+#' also corrected. Note that using the \code{ib} is not useful as coefficients
+#' are already unbiased, unless one considers different
+#' data generating mechanism such as censoring, missing values
+#' and outliers (see \code{\link{ibControl}}).
 #' @example /inst/examples/eg_lm.R
 #' @seealso \code{\link[stats]{lm}}
 #' @importFrom stats lm predict.lm model.matrix
 #' @export
-ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
+ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # initial estimator:
   pi0 <- coef(object)
 
-  if(var) pi0 <- c(pi0, sigma(object))
+  if(extra_param) pi0 <- c(pi0, sigma(object))
 
   if(!is.null(thetastart)){
     if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
@@ -26,7 +34,7 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
 
   # test diff between thetas
   p <- p0 <- length(t0)
-  if(var) p0 <- p - 1L
+  if(extra_param) p0 <- p - 1L
   test_theta <- control$tol + 1
 
   # test at iteration k-1
@@ -53,27 +61,27 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), var = FALSE, ...){
   # copy the object
   tmp_object <- object
 
-  if(!var) std <- NULL
+  if(!extra_param) std <- NULL
 
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
 
     # update initial estimator
     tmp_object$coefficients <- t0[1:p0]
-    if(var) std <- t0[p]
+    if(extra_param) std <- t0[p]
     sim <- simulation(tmp_object,control,std)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
       fit_tmp <- eval(cl,env_ib)
       tmp_pi[1:p0,h] <- coef(fit_tmp)
-      if(var) tmp_pi[p,h] <- sigma(fit_tmp)
+      if(extra_param) tmp_pi[p,h] <- sigma(fit_tmp)
     }
     pi_star <- control$func(tmp_pi)
 
     # update value
     delta <- pi0 - pi_star
-    if(var) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
+    if(extra_param) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
     t1 <- t0 + delta
 
     # update increment

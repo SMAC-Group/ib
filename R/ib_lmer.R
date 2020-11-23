@@ -1,16 +1,29 @@
+# These functions are
+# Copyright (C) 2020 S. Orso, University of Geneva
+# All rights reserved.
+
 #' @rdname ib
-#' @param Sigma if \code{TRUE}, all the random effects (variances and correlations) and the variance
-#'  of the residuals in \code{\link[lme4]{lmer}} are also corrected
+#' @details
+#' For \code{\link[lme4]{lmer}}, by default, only the fixed effects are corrected.
+#' If \code{extra_param=TRUE}: all the random effects
+#' (variances and correlations) and the variance
+#' of the residuals are also corrected.
+#' Note that using the \code{ib} is
+#' certainly not useful with the argument \code{REML=TRUE} in
+#' \code{\link[lme4]{lmer}} as the bias of variance components is
+#' already addressed, unless one considers different
+#' data generating mechanism such as censoring, missing values
+#' and outliers (see \code{\link{ibControl}}).
 #' @example /inst/examples/eg_lmer.R
 #' @seealso \code{\link[lme4]{lmer}}
 #' @importFrom lme4 getME mkVarCorr lmer
 #' @export
-ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, ...){
+ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # for lme4::lmer:
   # parameters are beta (coefficients),
   # theta (lower tri of Cholesky),
   # and sigma (check ?getME for more informations)
-  par_tmp <- getParam(object,Sigma)
+  par_tmp <- getParam(object,extra_param)
   nbeta <- length(par_tmp$beta)
   ntheta <- length(par_tmp$theta)
 
@@ -22,7 +35,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   nms <- names(fl)[attr(fl, "assign")]
 
   # initial estimator:
-  init_est <- Param_to_Est(par_tmp,Sigma,cnms,nc,nms,all=TRUE)
+  init_est <- Param_to_Est(par_tmp,extra_param,cnms,nc,nms,all=TRUE)
   pi0 <- init_est$est
   nvar <- init_est$nvar # number of variance components
   ncor <- init_est$ncor # number of correlation components
@@ -33,7 +46,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   if(ncor>0) id_cor <- seq(nbeta+nvar+1,nbeta+nvar+ncor)
 
 
-  if(Sigma && p != nbeta + nvar + ncor + 1)
+  if(extra_param && p != nbeta + nvar + ncor + 1)
     stop("sigma is assumed to be a scalar")
 
   if(!is.null(thetastart)){
@@ -59,7 +72,6 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   k <- 0L
 
   # create an environment for iterative bootstrap
-  # FIXME: deal with offset argument
   env_ib <- new.env(hash=F)
   mf <- model.frame(object)
   names(mf)[1] <- "y"
@@ -67,7 +79,8 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   cl <- getCall(object)
   cl$data <- quote(data)
   cl$formula[[2]] <- quote(y)
-
+  # FIXME: add support for weights, subset, na.action, start, offset,
+  #        contrasts
 
   # FIXME: We need a deep copy (see ?lme4::modular and ? methods::ReferenceClasses):
   # With the following line, we keep modifying the original object
@@ -79,7 +92,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   while(test_theta > control$tol && k < control$maxit){
 
     # update initial estimator
-    if(k>0) par_tmp <- Est_to_Param(t0,Sigma,nbeta,nvar,ncor,nc)
+    if(k>0) par_tmp <- Est_to_Param(t0,extra_param,nbeta,nvar,ncor,nc)
     tmp_object <- setParam(tmp_object,par_tmp)
     sim <- simulation(tmp_object,control)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
@@ -87,14 +100,14 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
       env_ib$data$y <- sim[,h]
       # FIXME: deal with warnings from checkConv,
       # see https://stats.stackexchange.com/questions/110004/how-scared-should-we-be-about-convergence-warnings-in-lme4
-      tmp <- getParam(eval(cl,env_ib),Sigma)
-      tmp_pi[,h] <- Param_to_Est(tmp,Sigma,cnms,nc,nms)
+      tmp <- getParam(eval(cl,env_ib),extra_param)
+      tmp_pi[,h] <- Param_to_Est(tmp,extra_param,cnms,nc,nms)
     }
     pi_star <- control$func(tmp_pi)
 
     # update value
     delta <- pi0 - pi_star
-    if(Sigma) delta[id_var] <- exp(log(pi0[id_var])-log(pi_star[id_var]))
+    if(extra_param) delta[id_var] <- exp(log(pi0[id_var])-log(pi_star[id_var]))
     t1 <- t0 + delta
     if(ncor>0) t1[id_cor] <- tanh(atanh(t0[id_cor]) + atanh(pi0[id_cor] - atanh(pi_star[id_cor])))
 
@@ -117,7 +130,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), Sigma=FALSE, 
   }
 
   # update lmerMod object
-  updateLmer(tmp_object, Sigma)
+  updateLmer(tmp_object, extra_param)
 }
 
 getParam <- function(object, Sigma=FALSE){

@@ -1,3 +1,7 @@
+# These functions are
+# Copyright (C) 2020 S. Orso, University of Geneva
+# All rights reserved.
+
 #' @title
 #' Bias correction via iterative bootstrap
 #' @description
@@ -8,6 +12,8 @@
 #' If \code{NULL} (default), the procedure starts at the estimates in \code{object}.
 #' @param control a \code{list} of parameters for controlling the iterative procedure
 #' (see \code{\link{ibControl}}).
+#' @param extra_param if \code{TRUE}, the bias of estimation of extra parameters
+#' is performed (see 'Details').
 #' @param ... additional optional arguments (see 'Details').
 #' @return
 #' A fitted model \code{object} where estimates are bias corrected with the \code{ib}.
@@ -32,48 +38,19 @@
 #' The number of iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
 #'
 #' By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
-#' extra parameters, it depends on the model. Currently, \code{ib}
-#' supports the following \code{object}:
-#' \tabular{ll}{
-#'    \code{\link[stats]{glm}}\tab
-#'        with \code{shape=TRUE}, the shape parameter for the \code{\link[stats:family]{Gamma}}
-#'        family is also corrected. Note that the \code{\link[stats:family]{quasi}} families
-#'        are not supported for the moment as they have no simulation method
-#'        (see \code{\link[stats]{simulate}}).
-#'    \cr
-#'    \code{\link[MASS]{glm.nb}}\tab
-#'        with \code{overdispersion=TRUE}, the overdispersion parameter of the
-#'        negative binomial regression is also corrected.
-#'    \cr
-#'    \code{\link[stats]{lm}}\tab
-#'        with \code{vars=TRUE}, the variance of the residuals is
-#'        also corrected. Note that using the \code{ib} is not useful as coefficients
-#'        are already unbiased, unless one considers different
-#'        data generating mechanism such as censoring, missing values
-#'        and outliers (see \code{\link{ibControl}}).
-#'    \cr
-#'    \code{\link[lme4]{lmer}}\tab
-#'        by default, only the fixed effects are corrected. With \code{Sigma=TRUE},
-#'        all the random effects (variances and correlations) and the variance
-#'        of the residuals are also corrected. Note that using the \code{ib} is
-#'        certainly not useful with the argument \code{REML=TRUE} in
-#'        \code{\link[lme4]{lmer}} as the bias of variance components is
-#'        already addressed, unless one considers different
-#'        data generating mechanism such as censoring, missing values
-#'        and outliers (see \code{\link{ibControl}}).
-#'    \cr
-#' }
+#' extra parameters, it depends on the model.
 #' @references
 #' \insertAllCited{}
 #' @importFrom Rdpack reprompt
+#' @author Samuel Orso
 #' @export
-ib <- function(object, thetastart=NULL, control=list(...), ...){
+ib <- function(object, thetastart = NULL, control=list(...), extra_param = FALSE, ...){
   UseMethod("ib",object)
 }
 
 #' @importFrom stats coef model.matrix getCall predict model.frame is.empty.model model.offset
 #' @export
-ib.default <- function(object, thetastart=NULL, control=list(...), ...){
+ib.default <- function(object, thetastart = NULL, control=list(...), extra_param = FALSE, ...){
   # check control
   control <- do.call("ibControl",control)
 

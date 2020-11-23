@@ -1,7 +1,7 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.com/SMAC-Group/ib.svg?branch=master)](https://travis-ci.com/github/SMAC-Group/ib)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2020--11--06-green.svg)](https://github.com/SMAC-Group/ib)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2020--11--23-green.svg)](https://github.com/SMAC-Group/ib)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 # Bias correction via the iterative bootstrap
@@ -33,7 +33,7 @@ fit_ib1 <- ib(fit_nb)
 summary(fit_ib1)
 
 ## correct for overdispersion with H=100
-fit_ib2 <- ib(fit_nb, control=list(H=100), overdispersion = TRUE)
+fit_ib2 <- ib(fit_nb, control=list(H=100), extra_param = TRUE)
 summary(fit_ib2)
 ```
 
@@ -42,8 +42,9 @@ By default, we support `object` which has a model call
 `simulate()` method (see `help(simulate)`).
 
 We provide more parameters for which to correct the bias for `lm`,
-`glm`, `glm.nb` and `lmer` classes, as shown in the example above with
-the overdispersion parameter of the negative binomial regression.
+`glm`, `glm.nb`, `lmer` and `vglm` classes, as shown in the example
+above with the overdispersion parameter of the negative binomial
+regression.
 
 On top of `simulate`, we also consider cases where the response variable
 is generated using censoring, missing at random and outliers mechanisms.
@@ -57,6 +58,6 @@ fit_ib1 <- ib(fit_nb, control = list(cens=TRUE, right=30))
 summary(fit_ib1)
 
 ## correct for overdispersion with H=100
-fit_ib2 <- ib(fit_nb, control=list(H=100, cens=TRUE, right=30), overdispersion = TRUE)
+fit_ib2 <- ib(fit_nb, control=list(H=100, cens=TRUE, right=30), extra_param = TRUE)
 summary(fit_ib2)
 ```
