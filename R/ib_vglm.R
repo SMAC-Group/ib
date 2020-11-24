@@ -14,7 +14,7 @@
 #' (by \href{https://en.wikipedia.org/wiki/Jensen's_inequality}{Jensen's inequality}),
 #' so we may use this feature in a future version of the package.
 #' Note that we currently only support distributions
-#' with a \code{\link[VGAM]{simslot}} (see \code{\link[VGAM]{simulate.vlm}}).
+#' with a \code{simslot} (see \code{\link[VGAM]{simulate.vlm}}).
 #' @seealso \code{\link[VGAM]{vglm}}
 #' @importFrom VGAM vglm Coef model.framevlm has.intercept vchol vforsub vbacksub
 #' @importFrom methods slot `slot<-` .hasSlot

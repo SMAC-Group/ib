@@ -96,9 +96,9 @@ for instance, may already be captured by the default \code{coefficients}.
 However, correcting the bias of a \code{coefficients} does not imply
 that the bias of the parameter of the distribution is corrected
 (by \href{https://en.wikipedia.org/wiki/Jensen's_inequality}{Jensen's inequality}),
-so we may modify this in a future version of the package.
+so we may use this feature in a future version of the package.
 Note that we currently only support distributions
-with a \code{\link[VGAM]{simslot}} (see \code{\link[VGAM]{simulate.vlm}}).
+with a \code{simslot} (see \code{\link[VGAM]{simulate.vlm}}).
 }
 \examples{
 ## poisson regression
