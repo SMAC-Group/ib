@@ -145,4 +145,3 @@ simulation.vglm <- function(object, control=list(...), extra_param = NULL, ...){
   sim
 }
 
-get_initi
