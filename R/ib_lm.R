@@ -90,7 +90,7 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
     k <- k + 1L
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1)))/p
+    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
 
     # Stop if no more progress
     if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
@@ -107,6 +107,13 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   tmp_object$fitted.values <- predict.lm(tmp_object)
   tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
   tmp_object$call <- object$call
+
+  # additional metadata
+  class(tmp_object) <- c("ib", class(object))
+  ib_warn <- NULL
+  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
   tmp_object
 }
 
@@ -128,3 +135,4 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
   if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
 }
+

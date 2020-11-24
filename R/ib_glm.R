@@ -118,7 +118,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     k <- k + 1L
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1)))/p
+    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
 
     # Stop if no more progress
     if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
@@ -144,6 +144,13 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   tmp_object$deviance <- dev
   tmp_object$aic <- object$family$aic(object$y, length(object$prior.weights)-sum(object$prior.weights == 0),
                                       mu, object$prior.weights, dev) + 2 * object$rank
+
+  # additional metadata
+  class(tmp_object) <- c("ib", class(object))
+  ib_warn <- NULL
+  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
   tmp_object
 }
 

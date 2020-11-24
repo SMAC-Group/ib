@@ -114,7 +114,7 @@ ib.default <- function(object, thetastart = NULL, control=list(...), extra_param
     k <- k + 1L
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1)))/p
+    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
 
     # Stop if no more progress
     if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
