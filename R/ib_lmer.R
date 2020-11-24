@@ -19,10 +19,13 @@
 #' @importFrom lme4 getME mkVarCorr lmer
 #' @export
 ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
+  # controls
+  control <- do.call("ibControl",control)
+
   # for lme4::lmer:
   # parameters are beta (coefficients),
   # theta (lower tri of Cholesky),
-  # and sigma (check ?getME for more informations)
+  # and sigma (check ?lme4::getME for more informations)
   par_tmp <- getParam(object,extra_param)
   nbeta <- length(par_tmp$beta)
   ntheta <- length(par_tmp$theta)
@@ -60,7 +63,6 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param =
     t0 <- pi0
   }
 
-  control <- do.call("ibControl",control)
 
   # test diff between thetas
   test_theta <- control$tol + 1
@@ -149,7 +151,7 @@ mkParam <- function(params, nbeta, ntheta){
 }
 
 # inspired from lme4:::setParam
-#' @importFrom methods slot<-
+#' @importFrom methods `slot<-`
 setParam <- function(object, params) {
   if(!is.null(params$beta)) {
     slot(object, "beta") <- params$beta

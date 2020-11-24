@@ -14,6 +14,9 @@
 #' @importFrom stats lm predict.lm model.matrix
 #' @export
 ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
+  # controls
+  control <- do.call("ibControl",control)
+
   # initial estimator:
   pi0 <- coef(object)
 
@@ -30,7 +33,6 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
     t0 <- pi0
   }
 
-  control <- do.call("ibControl",control)
 
   # test diff between thetas
   p <- p0 <- length(t0)

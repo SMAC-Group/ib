@@ -3,11 +3,26 @@
 # All rights reserved.
 
 #' @rdname ib
+#' @details
+#' For \link[VGAM]{vglm}, \code{extra_param} is currently not used.
+#' Indeed, the philosophy of a vector generalized linear model is to
+#' potentially model all parameters of a distribution with a linear predictor.
+#' Hence, what would be considered as an extra parameter in \code{\link[stats]{glm}}
+#' for instance, may already be captured by the default \code{coefficients}.
+#' However, correcting the bias of a \code{coefficients} does not imply
+#' that the bias of the parameter of the distribution is corrected
+#' (by \href{https://en.wikipedia.org/wiki/Jensen's_inequality}{Jensen's inequality}),
+#' so we may use this feature in a future version of the package.
+#' Note that we currently only support distributions
+#' with a \code{\link[VGAM]{simslot}} (see \code{\link[VGAM]{simulate.vlm}}).
 #' @seealso \code{\link[VGAM]{vglm}}
 #' @importFrom VGAM vglm Coef model.framevlm has.intercept vchol vforsub vbacksub
 #' @importFrom methods slot `slot<-` .hasSlot
 #' @export
 ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE,...){
+  # controls
+  control <- do.call("ibControl",control)
+
   # initial estimator:
   pi0 <- Coef(object)
 
@@ -21,8 +36,6 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   } else {
     t0 <- pi0
   }
-
-  control <- do.call("ibControl",control)
 
   # test diff between thetas
   p <- p0 <- length(t0)
@@ -144,4 +157,3 @@ simulation.vglm <- function(object, control=list(...), extra_param = NULL, ...){
   if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
 }
-

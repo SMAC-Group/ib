@@ -49,8 +49,8 @@ at each iteration.}
 \item{prop}{\code{double} between 0 and 1 representing the proportion of
 missing data (only used if \code{mis=TRUE}).}
 
-\item{out}{if \code{TRUE} the simulated responses are also generated with an
-contamination mechanism}
+\item{out}{if \code{TRUE} the simulated responses are also generated with a
+contamination mechanism.}
 
 \item{eps}{\code{double} between 0 and 1 representing the proportion of
 outliers in the data (only used if \code{out=TRUE}).}
