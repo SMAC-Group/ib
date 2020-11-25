@@ -63,7 +63,6 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   }
   o <- as.vector(model.offset(mf))
   if(!is.null(o)) assign("o",o,env_ib)
-  cl <- getCall(object)
   cl$data <- NULL
   # add an offset
   if(!is.null(o)) cl$offset <- quote(o)
