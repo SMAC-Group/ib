@@ -69,13 +69,20 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   env_ib <- new.env(hash=F)
 
   # prepare data and formula for fit
+  cl <- getCall(object)
+  intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
   mf <- model.frame(object)
-  x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
-  assign("x",x,env_ib)
+  if(!intercept_only){
+    x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
+    # remove intercept from design
+    x <- x[,!grepl("Intercept",colnames(x))]
+    assign("x",x,env_ib)
+    cl$formula <- quote(y~x)
+  } else{
+    cl$formula <- quote(y~1)
+  }
   o <- as.vector(model.offset(mf))
   if(!is.null(o)) assign("o",o,env_ib)
-  cl <- getCall(object)
-  cl$formula <- quote(y~0+x)
   cl$data <- NULL
   # add an offset
   if(!is.null(o)) cl$offset <- quote(o)
