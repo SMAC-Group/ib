@@ -59,9 +59,6 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   # test diff between thetas
   test_theta <- control$tol + 1
 
-  # test at iteration k-1
-  tt_old <- test_theta
-
   # iterator
   k <- 0L
 
@@ -121,14 +118,17 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     if(extra_param) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
     t1 <- t0 + delta
 
-    # update increment
-    k <- k + 1L
-
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
 
+    # initialize test
+    if(!k) tt_old <- test_theta+1
+
     # Stop if no more progress
     if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+
+    # update increment
+    k <- k + 1L
 
     # Print info
     if(control$verbose){

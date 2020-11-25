@@ -71,9 +71,6 @@ ib.default <- function(object, thetastart = NULL, control=list(...), extra_param
   p <- length(t0)
   test_theta <- control$tol + 1
 
-  # test at iteration k-1
-  tt_old <- test_theta
-
   # iterator
   k <- 0L
 
@@ -108,16 +105,20 @@ ib.default <- function(object, thetastart = NULL, control=list(...), extra_param
     pi_star <- control$func(tmp_pi)
 
     # update value
-    t1 <- t0 + pi0 - pi_star
-
-    # update increment
-    k <- k + 1L
+    delta <- pi0 - pi_star
+    t1 <- t0 + delta
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
 
+    # initialize test
+    if(!k) tt_old <- test_theta+1
+
     # Stop if no more progress
     if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+
+    # update increment
+    k <- k + 1L
 
     # Print info
     if(control$verbose){

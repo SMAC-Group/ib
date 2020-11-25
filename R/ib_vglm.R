@@ -15,8 +15,9 @@
 #' so we may use this feature in a future version of the package.
 #' Note that we currently only support distributions
 #' with a \code{simslot} (see \code{\link[VGAM]{simulate.vlm}}).
+#' @example /inst/examples/eg_vglm.R
 #' @seealso \code{\link[VGAM]{vglm}}
-#' @importFrom VGAM has.intercept model.framevlm predictvglm vbacksub vchol vglm vforsub
+#' @importFrom VGAM Coef has.intercept model.framevlm predictvglm vbacksub vchol vglm vforsub
 #' @importFrom methods slot `slot<-` .hasSlot
 #' @importFrom stats model.weights
 #' @export
@@ -41,9 +42,6 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   # test diff between thetas
   p <- p0 <- length(t0)
   test_theta <- control$tol + 1
-
-  # test at iteration k-1
-  tt_old <- test_theta
 
   # iterator
   k <- 0L
@@ -106,14 +104,17 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
     delta <- pi0 - pi_star
     t1 <- t0 + delta
 
-    # update increment
-    k <- k + 1L
-
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
 
+    # initialize test
+    if(!k) tt_old <- test_theta+1
+
     # Stop if no more progress
     if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+
+    # update increment
+    k <- k + 1L
 
     # Print info
     if(control$verbose){
@@ -148,7 +149,7 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
     tmp_object@criterion$loglikelihood <- slot(fam,"loglikelihood")(mu,y,w,residuals=FALSE,eta,extra)
 
   slot(tmp_object, "predictors") <- eta
-  slot(tmp_object, "fitted.values") <- mu
+  slot(tmp_object, "fitted.values") <- as.matrix(mu)
   slot(tmp_object, "residuals") <- res
   slot(tmp_object, "call") <- slot(object,"call")
 
