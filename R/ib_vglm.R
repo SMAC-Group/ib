@@ -129,7 +129,7 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   extra <- slot(object, "extra")
   fam <- slot(object, "family")
   y <- slot(object, "y")
-  M <- NULL # to avoid undefined variable
+  M <- slot(object,"misc")$M
   # w <- c(slot(object, "prior.weights"))
   # w <- drop(weights(object, "prior"))
   # if(!length(w)==0) w <- rep_len(1,n)
