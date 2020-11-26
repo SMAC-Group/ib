@@ -148,9 +148,9 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   if(.hasSlot(fam, "loglikelihood") && !is.null(body(slot(fam,"loglikelihood"))))
     tmp_object@criterion$loglikelihood <- slot(fam,"loglikelihood")(mu,y,w,residuals=FALSE,eta,extra)
 
-  slot(tmp_object, "predictors") <- eta
+  slot(tmp_object, "predictors") <- as.matrix(eta)
   slot(tmp_object, "fitted.values") <- as.matrix(mu)
-  slot(tmp_object, "residuals") <- res
+  slot(tmp_object, "residuals") <- as.matrix(res)
   slot(tmp_object, "call") <- slot(object,"call")
 
   tmp_object
