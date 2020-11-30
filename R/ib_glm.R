@@ -67,6 +67,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
 
   # prepare data and formula for fit
   cl <- getCall(object)
+  if(!is.list(cl$formula)) cl$formula <- get(paste(cl$formula)) # get formula
   intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
   mf <- model.frame(object)
   if(!intercept_only){
