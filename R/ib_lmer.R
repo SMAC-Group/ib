@@ -77,7 +77,7 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param =
   assign("data",mf,env_ib)
   cl <- getCall(object)
   cl$data <- quote(data)
-  if(!is.list(cl$formula)) cl$formula <- get(paste(cl$formula)) # get formula
+  if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
   cl$formula[[2]] <- quote(y)
   # FIXME: add support for weights, subset, na.action, start, offset,
   #        contrasts

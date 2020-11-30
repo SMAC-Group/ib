@@ -51,7 +51,7 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
 
   # prepare data and formula for fit
   cl <- getCall(object)
-  if(!is.list(cl$formula)) cl$formula <- get(paste(cl$formula)) # get formula
+  if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
   intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
   # alternatively: intercept_only <- object@misc$intercept.only
   mf <- model.framevlm(object) # ? problem with mf <- model.frame(object)
