@@ -2,17 +2,6 @@
 # Copyright (C) 2020 S. Orso, University of Geneva
 # All rights reserved.
 
-#' @rdname ib
-#' @details
-#' For \link[stats]{lm}, if \code{extra_param=TRUE}: the variance of the residuals is
-#' also corrected. Note that using the \code{ib} is not useful as coefficients
-#' are already unbiased, unless one considers different
-#' data generating mechanism such as censoring, missing values
-#' and outliers (see \code{\link{ibControl}}).
-#' @example /inst/examples/eg_lm.R
-#' @seealso \code{\link[stats]{lm}}
-#' @importFrom stats lm predict.lm model.matrix
-#' @export
 ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # controls
   control <- do.call("ibControl",control)
@@ -117,16 +106,30 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   tmp_object$call <- object$call
 
   # additional metadata
-  class(tmp_object) <- c("ib", class(object))
-  ib_warn <- NULL
-  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
-  tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
+  # class(tmp_object) <- c("ib", class(object))
+  # ib_warn <- NULL
+  # if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  # if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  # tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
   tmp_object
 }
 
+#' @rdname ib
+#' @details
+#' For \link[stats]{lm}, if \code{extra_param=TRUE}: the variance of the residuals is
+#' also corrected. Note that using the \code{ib} is not useful as coefficients
+#' are already unbiased, unless one considers different
+#' data generating mechanism such as censoring, missing values
+#' and outliers (see \code{\link{ibControl}}).
+#' @example /inst/examples/eg_lm.R
+#' @seealso \code{\link[stats]{lm}}
+#' @importFrom stats lm predict.lm model.matrix
+#' @export
+setMethod("ib", signature = className("lm","stats"),
+          definition = ib.lm)
+
 # inspired from stats::simulate.lm
-#' @importFrom stats fitted sigma rnorm runif
+#' @importFrom stats fitted sigma rnorm runif simulate
 simulation.lm <- function(object, control=list(...), std=NULL, ...){
   control <- do.call("ibControl",control)
 
@@ -144,3 +147,5 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
   sim
 }
 
+setMethod("simulation", signature = className("lm","stats"),
+          definition = simulation.lm)

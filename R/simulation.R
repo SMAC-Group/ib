@@ -1,17 +1,3 @@
-simulation <- function(object, control=list(...), ...){
-  UseMethod("simulation",object)
-}
-
-#' @importFrom stats simulate
-simulation.default <- function(object, control=list(...), ...){
-  control <- do.call("ibControl",control)
-  sim <- simulate(object,nsim=control$H,seed=control$seed,...)
-  if(control$cens) sim <- censoring(sim,control$right,control$left)
-  if(control$mis) sim <- missing_at_random(sim, control$prop)
-  if(control$out) sim <- outliers(sim, control$eps, control$G)
-  data.matrix(sim)
-}
-
 # right and left are censoring values
 censoring <- function(y,right=NULL,left=NULL){
   if(all(!is.null(right),!is.null(left),right<left))
@@ -31,7 +17,7 @@ missing_at_random <- function(y, prop=NULL){
   y
 }
 
-# eps is the propotion of outliers in the data
+# eps is the proportion of outliers in the data
 # G is generating mechanism for outliers
 # G must take only one argument, sample size G(n)
 # extra parameters should be included within G

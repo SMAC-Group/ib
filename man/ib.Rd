@@ -3,21 +3,21 @@
 %   R/ib_vglm.R
 \name{ib}
 \alias{ib}
-\alias{ib.glm}
-\alias{ib.lm}
-\alias{ib.lmerMod}
-\alias{ib.vglm}
+\alias{ib,glm-method}
+\alias{ib,lm-method}
+\alias{ib,lmerMod-method}
+\alias{ib,vglm-method}
 \title{Bias correction via iterative bootstrap}
 \usage{
 ib(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
 
-\method{ib}{glm}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
+\S4method{ib}{glm}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
 
-\method{ib}{lm}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
+\S4method{ib}{lm}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
 
-\method{ib}{lmerMod}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
+\S4method{ib}{lmerMod}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
 
-\method{ib}{vglm}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
+\S4method{ib}{vglm}(object, thetastart = NULL, control = list(...), extra_param = FALSE, ...)
 }
 \arguments{
 \item{object}{an \code{object} representing a fitted model (see 'Details').}

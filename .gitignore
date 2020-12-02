@@ -41,3 +41,5 @@ vignettes/*.pdf
 # Temporary files
 .tmp/
 inst/doc
+.R_old_S3/
+

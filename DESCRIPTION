@@ -8,10 +8,7 @@ Description: An implementation of the iterative bootstrap procedure of
     bootstrap bias correction technique.
 Authors@R: c(
     person("Samuel", "Orso", email="Samuel.Orso@unige.ch", role=c("aut","cre","cph")),
-    person("Stéphane", "Guerrier", role="aut"),
-    person("Yuming", "Zhang", role="aut"),
-    person("Mucyo", "Karemera", role="aut"),
-    person("Elise", "Lozeron", role="aut")
+    person("Stéphane", "Guerrier", role="cph")
     )
 Maintainer: Samuel Orso <Samuel.Orso@unige.ch>
 Depends: R (>= 4.0.0)

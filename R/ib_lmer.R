@@ -2,22 +2,6 @@
 # Copyright (C) 2020 S. Orso, University of Geneva
 # All rights reserved.
 
-#' @rdname ib
-#' @details
-#' For \code{\link[lme4]{lmer}}, by default, only the fixed effects are corrected.
-#' If \code{extra_param=TRUE}: all the random effects
-#' (variances and correlations) and the variance
-#' of the residuals are also corrected.
-#' Note that using the \code{ib} is
-#' certainly not useful with the argument \code{REML=TRUE} in
-#' \code{\link[lme4]{lmer}} as the bias of variance components is
-#' already addressed, unless one considers different
-#' data generating mechanism such as censoring, missing values
-#' and outliers (see \code{\link{ibControl}}).
-#' @example /inst/examples/eg_lmer.R
-#' @seealso \code{\link[lme4]{lmer}}
-#' @importFrom lme4 getME mkVarCorr lmer
-#' @export
 ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # controls
   control <- do.call("ibControl",control)
@@ -136,6 +120,25 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param =
   updateLmer(tmp_object, extra_param)
 }
 
+#' @rdname ib
+#' @details
+#' For \code{\link[lme4]{lmer}}, by default, only the fixed effects are corrected.
+#' If \code{extra_param=TRUE}: all the random effects
+#' (variances and correlations) and the variance
+#' of the residuals are also corrected.
+#' Note that using the \code{ib} is
+#' certainly not useful with the argument \code{REML=TRUE} in
+#' \code{\link[lme4]{lmer}} as the bias of variance components is
+#' already addressed, unless one considers different
+#' data generating mechanism such as censoring, missing values
+#' and outliers (see \code{\link{ibControl}}).
+#' @example /inst/examples/eg_lmer.R
+#' @seealso \code{\link[lme4]{lmer}}
+#' @importFrom lme4 getME mkVarCorr lmer
+#' @export
+setMethod("ib", signature = className("lmerMod", "lme4"),
+          definition = ib.lmerMod)
+
 getParam <- function(object, Sigma=FALSE){
   list(beta = getME(object,"beta"),
        theta = if(Sigma) unname(getME(object,"theta")),
@@ -190,9 +193,9 @@ Param_to_Est <- function(params, Sigma, cnms, nc, nms, all=FALSE) {
   vars <- unname(sapply(vc,function(x)diag(x)))
   # extract correlations components
   cors <- unlist(lapply(vc,function(x){
-                  tmp <- attr(x,"correlation")
-                  if(ncol(tmp)>1) tmp[lower.tri(tmp)]
-                }))
+    tmp <- attr(x,"correlation")
+    if(ncol(tmp)>1) tmp[lower.tri(tmp)]
+  }))
   if(all){
     return(
       list(est=c(params$beta, vars, cors, params$sigma),
@@ -268,6 +271,11 @@ updateLmer <- function(object, Sigma){
 
   object
 }
+
+simulation.lmerMod <- simulation.default
+
+setMethod("simulation", signature = className("lmerMod","lme4"),
+          definition = simulation.lmerMod)
 
 # Useful resources for `lme4`:
 # * https://arxiv.org/pdf/1406.5823.pdf

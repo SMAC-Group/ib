@@ -2,25 +2,6 @@
 # Copyright (C) 2020 S. Orso, University of Geneva
 # All rights reserved.
 
-#' @rdname ib
-#' @details
-#' For \link[VGAM]{vglm}, \code{extra_param} is currently not used.
-#' Indeed, the philosophy of a vector generalized linear model is to
-#' potentially model all parameters of a distribution with a linear predictor.
-#' Hence, what would be considered as an extra parameter in \code{\link[stats]{glm}}
-#' for instance, may already be captured by the default \code{coefficients}.
-#' However, correcting the bias of a \code{coefficients} does not imply
-#' that the bias of the parameter of the distribution is corrected
-#' (by \href{https://en.wikipedia.org/wiki/Jensen's_inequality}{Jensen's inequality}),
-#' so we may use this feature in a future version of the package.
-#' Note that we currently only support distributions
-#' with a \code{simslot} (see \code{\link[VGAM]{simulate.vlm}}).
-#' @example /inst/examples/eg_vglm.R
-#' @seealso \code{\link[VGAM]{vglm}}
-#' @importFrom VGAM Coef has.intercept model.framevlm predictvglm vbacksub vchol vglm vforsub
-#' @importFrom methods slot `slot<-` .hasSlot
-#' @importFrom stats model.weights
-#' @export
 ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE,...){
   # controls
   control <- do.call("ibControl",control)
@@ -77,7 +58,7 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   w <- model.weights(mf)
   if(!length(w)){
     w <- rep_len(1, n)
-    } else {
+  } else {
     cl$weights <- quote(w)
     assign("w",w,env_ib)
   }
@@ -157,6 +138,28 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   tmp_object
 }
 
+#' @rdname ib
+#' @details
+#' For \link[VGAM]{vglm}, \code{extra_param} is currently not used.
+#' Indeed, the philosophy of a vector generalized linear model is to
+#' potentially model all parameters of a distribution with a linear predictor.
+#' Hence, what would be considered as an extra parameter in \code{\link[stats]{glm}}
+#' for instance, may already be captured by the default \code{coefficients}.
+#' However, correcting the bias of a \code{coefficients} does not imply
+#' that the bias of the parameter of the distribution is corrected
+#' (by \href{https://en.wikipedia.org/wiki/Jensen's_inequality}{Jensen's inequality}),
+#' so we may use this feature in a future version of the package.
+#' Note that we currently only support distributions
+#' with a \code{simslot} (see \code{\link[VGAM]{simulate.vlm}}).
+#' @example /inst/examples/eg_vglm.R
+#' @seealso \code{\link[VGAM]{vglm}}
+#' @importFrom VGAM Coef has.intercept model.framevlm predictvglm vbacksub vchol vglm vforsub
+#' @importFrom methods slot `slot<-` .hasSlot
+#' @importFrom stats model.weights
+#' @export
+setMethod("ib", className("vglm", "VGAM"),
+          definition = ib.vglm)
+
 # inspired from VGAM::simulate.vlm
 #' @importFrom VGAM familyname
 simulation.vglm <- function(object, control=list(...), extra_param = NULL, ...){
@@ -176,3 +179,6 @@ simulation.vglm <- function(object, control=list(...), extra_param = NULL, ...){
   if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
 }
+
+setMethod("simulation", signature = className("vglm","VGAM"),
+          definition = simulation.vglm)

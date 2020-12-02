@@ -42,99 +42,14 @@
 #' @references
 #' \insertAllCited{}
 #' @importFrom Rdpack reprompt
+#' @importFrom stats coef model.matrix getCall predict model.frame is.empty.model model.offset
 #' @author Samuel Orso
 #' @export
-ib <- function(object, thetastart = NULL, control=list(...), extra_param = FALSE, ...){
-  UseMethod("ib",object)
-}
+setGeneric("ib",
+           function(object, thetastart = NULL, control=list(...), extra_param = FALSE, ...) standardGeneric("ib"),
+           signature = "object",
+           package = "ib")
 
-#' @importFrom stats coef model.matrix getCall predict model.frame is.empty.model model.offset
-#' @export
-ib.default <- function(object, thetastart = NULL, control=list(...), extra_param = FALSE, ...){
-  # check control
-  control <- do.call("ibControl",control)
-
-  # initial estimator:
-  pi0 <- coef(object)
-  if(!is.null(thetastart)){
-    if(is.numeric(thetastart) && length(thetastart) == length(pi0)){
-      t0 <- thetastart
-    } else {
-        stop("`thetastart` must be a numeric vector of the same length as
-             parameter of interest.", call.=FALSE)
-      }
-  } else {
-    t0 <- pi0
-  }
-
-  # test diff between thetas
-  p <- length(t0)
-  test_theta <- control$tol + 1
-
-  # iterator
-  k <- 0L
-
-  # create an environment for iterative bootstrap
-  env_ib <- new.env(hash=F)
-
-  # prepare data and formula for fit
-  mf <- model.frame(object)
-  x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
-  assign("x",x,env_ib)
-  o <- as.vector(model.offset(mf))
-  if(!is.null(o)) assign("o",o,env_ib)
-  cl <- getCall(object)
-  cl$formula <- quote(y~0+x)
-  cl$data <- NULL
-  # add an offset
-  if(!is.null(o)) cl$offset <- quote(o)
-
-  # copy the object
-  tmp_object <- object
-
-  # Iterative bootstrap algorithm:
-  while(test_theta > control$tol && k < control$maxit){
-    # update initial estimator
-    tmp_object$coefficients <- t0
-    sim <- simulation(tmp_object,control)
-    tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
-    for(h in seq_len(control$H)){
-      assign("y",sim[,h],env_ib)
-      tmp_pi[,h] <- coef(eval(cl,env_ib))
-    }
-    pi_star <- control$func(tmp_pi)
-
-    # update value
-    delta <- pi0 - pi_star
-    t1 <- t0 + delta
-
-    # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
-
-    # initialize test
-    if(!k) tt_old <- test_theta+1
-
-    # Stop if no more progress
-    if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
-
-    # update increment
-    k <- k + 1L
-
-    # Print info
-    if(control$verbose){
-      cat("Iteration:",k,"Norm between theta_k and theta_(k-1):",test_theta,"\n")
-    }
-
-    # update theta
-    t0 <- t1
-  }
-
-  tmp_object$fitted.values <- predict(tmp_object)
-  tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
-  tmp_object$call <- object$call
-  class(tmp_object) <- c("ib",class(object))
-  tmp_object
-}
 
 #' @title Auxiliary for controlling IB
 #' @description
@@ -186,4 +101,19 @@ ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
   list(tol=tol,maxit=maxit,verbose=verbose,
        cens=cens,right=right,left=left,seed=seed,
        H=H,func=func,mis=mis,prop=prop,out=out,eps=eps,G=G)
+}
+
+setGeneric("simulation",
+           function(object, control=list(...), ...) standardGeneric("simulation"),
+           signature = "object",
+           package = "ib")
+
+#' @importFrom stats simulate
+simulation.default <- function(object, control=list(...), ...){
+  control <- do.call("ibControl",control)
+  sim <- simulate(object,nsim=control$H,seed=control$seed,...)
+  if(control$cens) sim <- censoring(sim,control$right,control$left)
+  if(control$mis) sim <- missing_at_random(sim, control$prop)
+  if(control$out) sim <- outliers(sim, control$eps, control$G)
+  data.matrix(sim)
 }

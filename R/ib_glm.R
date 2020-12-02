@@ -2,20 +2,6 @@
 # Copyright (C) 2020 S. Orso, University of Geneva
 # All rights reserved.
 
-#' @rdname ib
-#' @details
-#' For \link[stats]{glm}, if \code{extra_param=TRUE}: the shape parameter for the
-#' \code{\link[stats:family]{Gamma}}, the variance of the residuals in \code{\link[stats]{lm}} or
-#' the overdispersion parameter of the negative binomial regression in \code{\link[MASS]{glm.nb}},
-#' are also corrected. Note that the \code{\link[stats:family]{quasi}} families
-#' are not supported for the moment as they have no simulation method
-#' (see \code{\link[stats]{simulate}}). Bias correction for extra parameters
-#' of the \code{\link[stats:family]{inverse.gaussian}} is not yet implemented.
-#' @seealso \code{\link[stats]{glm}}, \code{\link[MASS]{glm.nb}}
-#' @example /inst/examples/eg_glm.R
-#' @importFrom stats glm predict.glm model.matrix model.frame model.offset is.empty.model
-#' @importFrom MASS gamma.shape
-#' @export
 ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # supports only glm.fit currently
   if(object$method != "glm.fit") stop("only implemented for `glm.fit`", call.=FALSE)
@@ -38,7 +24,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
                   gaussian = {c(pi0, sigma(object))},
                   Gamma = {c(pi0, gamma.shape(object)$alpha)},
                   negbin = {c(pi0, object$theta)}
-                  )
+    )
     if(is.null(pi0))
       stop(gettextf("extra_param for family '%s' is not implemented", fam), domain = NA)
   }
@@ -154,13 +140,30 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
                                       mu, object$prior.weights, dev) + 2 * object$rank
 
   # additional metadata
-  class(tmp_object) <- c("ib", class(object))
-  ib_warn <- NULL
-  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
-  tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
+  # class(tmp_object) <- c("ib", class(object))
+  # ib_warn <- NULL
+  # if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  # if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  # tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
   tmp_object
 }
+
+#' @rdname ib
+#' @details
+#' For \link[stats]{glm}, if \code{extra_param=TRUE}: the shape parameter for the
+#' \code{\link[stats:family]{Gamma}}, the variance of the residuals in \code{\link[stats]{lm}} or
+#' the overdispersion parameter of the negative binomial regression in \code{\link[MASS]{glm.nb}},
+#' are also corrected. Note that the \code{\link[stats:family]{quasi}} families
+#' are not supported for the moment as they have no simulation method
+#' (see \code{\link[stats]{simulate}}). Bias correction for extra parameters
+#' of the \code{\link[stats:family]{inverse.gaussian}} is not yet implemented.
+#' @seealso \code{\link[stats]{glm}}, \code{\link[MASS]{glm.nb}}
+#' @example /inst/examples/eg_glm.R
+#' @importFrom stats glm predict.glm model.matrix model.frame model.offset is.empty.model
+#' @importFrom MASS gamma.shape
+#' @export
+setMethod("ib", className("glm", "stats"),
+          definition = ib.glm)
 
 # inspired from stats::simulate.lm
 simulation.glm <- function(object, control=list(...), extra=NULL, ...){
@@ -182,9 +185,9 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
                     matrix(simulate_gamma(object,control$H,extra), ncol=control$H)}},
                 gaussian = if(is.null(extra)){
                   matrix(fitted(object) + rnorm(length(object$y) * control$H, sd=sigma(object)), ncol=control$H)
-                  } else {
-                    matrix(fitted(object) + rnorm(length(object$y) * control$H, sd=extra), ncol=control$H)
-                  },
+                } else {
+                  matrix(fitted(object) + rnorm(length(object$y) * control$H, sd=extra), ncol=control$H)
+                },
                 matrix(object$family$simulate(object,control$H), ncol=control$H)
   )
   if(control$cens) sim <- censoring(sim,control$right,control$left)
@@ -192,6 +195,9 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
   if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
 }
+
+setMethod("simulation", signature = className("glm","stats"),
+          definition = simulation.glm)
 
 # inspired from stats::family::Gamma::simulate
 # which does not support "shape" as an argument
@@ -203,3 +209,18 @@ simulate_gamma <- function (object, nsim, shape){
   rgamma(nsim * length(ftd), shape = shp, rate = shp/ftd)
 }
 
+# ib.negbin (MASS)
+ib.negbin <- ib.glm
+
+#' \code{\link{ib}} method for \code{negbin} object
+#' from \code{\link[MASS]{glm.nb}} function of \pkg{MASS}
+#' package.
+#' @inheritParams ib,glm-method
+#' @export
+setMethod("ib", signature = className("negbin","MASS"),
+          definition = ib.negbin)
+
+simulation.negbin <- simulation.glm
+
+setMethod("simulation", signature = className("negbin","MASS"),
+          definition = simulation.negbin)
