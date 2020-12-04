@@ -34,7 +34,7 @@ is performed (see 'Details').}
 \item{...}{additional optional arguments (see 'Details').}
 }
 \value{
-A fitted model \code{object} where estimates are bias corrected with the \code{ib}.
+A fitted model \code{object} of class \linkS4class{Ib}.
 }
 \description{
 \code{ib} is used to correct the bias of a fitted model \code{object}
@@ -107,7 +107,7 @@ outcome <- gl(3,1,9)
 treatment <- gl(3,3)
 pois_fit <- glm(counts ~ outcome + treatment, family = poisson())
 fit_ib <- ib(pois_fit)
-summary(fit_ib)
+## summary(fit_ib)
 ## Set H = 1000
 \dontrun{
 fit_ib <- ib(pois_fit, control=list(H=1000))
@@ -121,7 +121,7 @@ clotting <- data.frame(
   lot2 = c(69,35,26,21,18,16,13,12,12))
 fit_gamma <- glm(lot2 ~ log(u), data = clotting, family = Gamma(link = "inverse"))
 fit_ib <- ib(fit_gamma)
-summary(fit_ib)
+## summary(fit_ib)
 ## correct for shape parameter and show iterations
 \dontrun{
 fit_ib <- ib(fit_gamma, control=list(verbose=TRUE), extra_param = TRUE)
@@ -132,7 +132,7 @@ summary(fit_ib)
 library(MASS)
 fit_nb <- glm.nb(Days ~ Sex/(Age + Eth*Lrn), data = quine)
 fit_ib <- ib(fit_nb)
-summary(fit_ib)
+## summary(fit_ib)
 ## correct for overdispersion with H=100
 \dontrun{
 fit_ib <- ib(fit_nb, control=list(H=100), extra_param = TRUE)
@@ -142,16 +142,16 @@ summary(fit_ib)
 ## linear regression
 fit_lm <- lm(speed ~ dist, data = cars)
 fit_ib <- ib(fit_lm)
-summary(fit_ib)
+## summary(fit_ib)
 ## correct for variance of residuals
 fit_ib <- ib(fit_lm, extra_param = TRUE)
-summary(fit_ib)
+## summary(fit_ib)
 
 ## linear mixed-effects regression
 library(lme4)
 fit_lmm <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy, REML = FALSE)
 fit_ib <- ib(fit_lmm)
-summary(fit_ib)
+## summary(fit_ib)
 ## correct for variances and correlation
 \dontrun{
 fit_ib <- ib(fit_lmm, extra_param = TRUE)
@@ -165,7 +165,7 @@ tdata <- transform(tdata,
                    y = rt(nn, df = exp(exp(0.5 - x))))
 fit_vglm <- vglm(y ~ x, studentt3, data = tdata)
 fit_ib <- ib(fit_vglm)
-summary(fit_ib)
+## summary(fit_ib)
 }
 \references{
 \insertAllCited{}

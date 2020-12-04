@@ -1,3 +1,5 @@
+# Additional features for simulation
+
 # right and left are censoring values
 censoring <- function(y,right=NULL,left=NULL){
   if(all(!is.null(right),!is.null(left),right<left))

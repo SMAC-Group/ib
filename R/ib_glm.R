@@ -17,7 +17,12 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   # extra parameters
   fam <- object$family$family
   # adjust for negbin
-  if(grepl("Negative Binomial",fam)) fam <- "negbin"
+  isNegbin <- FALSE
+  if(grepl("Negative Binomial",fam)){
+    fam <- "negbin"
+    isNegbin <- TRUE
+  }
+
 
   if(extra_param){
     pi0 <- switch(fam,
@@ -140,12 +145,26 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
                                       mu, object$prior.weights, dev) + 2 * object$rank
 
   # additional metadata
-  # class(tmp_object) <- c("ib", class(object))
-  # ib_warn <- NULL
-  # if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  # if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
-  # tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
-  tmp_object
+  ib_warn <- NULL
+  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  ib_extra <- list(
+    iteration = k,
+    of = test_theta,
+    ib_warn = ib_warn,
+    boot = tmp_pi)
+
+  if(isNegbin){
+    return(
+      new("IbNegbin",
+          object = tmp_object,
+          ib_extra = ib_extra)
+    )
+  }
+
+  new("IbGlm",
+      object = tmp_object,
+      ib_extra = ib_extra)
 }
 
 #' @rdname ib
@@ -161,6 +180,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
 #' @example /inst/examples/eg_glm.R
 #' @importFrom stats glm predict.glm model.matrix model.frame model.offset is.empty.model
 #' @importFrom MASS gamma.shape
+#' @importFrom methods new
 #' @export
 setMethod("ib", className("glm", "stats"),
           definition = ib.glm)
@@ -217,10 +237,10 @@ ib.negbin <- ib.glm
 #' package.
 #' @inheritParams ib,glm-method
 #' @export
-setMethod("ib", signature = className("negbin","MASS"),
+setMethod("ib", signature = "negbin",
           definition = ib.negbin)
 
 simulation.negbin <- simulation.glm
 
-setMethod("simulation", signature = className("negbin","MASS"),
+setMethod("simulation", signature = "negbin",
           definition = simulation.negbin)

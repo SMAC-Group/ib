@@ -135,7 +135,19 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   slot(tmp_object, "residuals") <- as.matrix(res)
   slot(tmp_object, "call") <- slot(object,"call")
 
-  tmp_object
+  # additional metadata
+  ib_warn <- NULL
+  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  ib_extra <- list(
+    iteration = k,
+    of = test_theta,
+    ib_warn = ib_warn,
+    boot = tmp_pi)
+
+  new("IbVglm",
+      object = tmp_object,
+      ib_extra = ib_extra)
 }
 
 #' @rdname ib

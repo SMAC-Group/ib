@@ -106,12 +106,18 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   tmp_object$call <- object$call
 
   # additional metadata
-  # class(tmp_object) <- c("ib", class(object))
-  # ib_warn <- NULL
-  # if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  # if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
-  # tmp_object$ib <- list(iteration = k, of = test_theta, ib_warn = ib_warn, boot = tmp_pi)
-  tmp_object
+  ib_warn <- NULL
+  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  ib_extra <- list(
+    iteration = k,
+    of = test_theta,
+    ib_warn = ib_warn,
+    boot = tmp_pi)
+
+  new("IbLm",
+      object = tmp_object,
+      ib_extra = ib_extra)
 }
 
 #' @rdname ib
