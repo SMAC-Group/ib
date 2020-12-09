@@ -39,12 +39,19 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
   intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
   mf <- model.frame(object)
+  mt <- terms(object)
   if(!intercept_only){
-    x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
-    # remove intercept from design
-    x <- x[,!grepl("Intercept",colnames(x))]
+    x <- if(!is.empty.model(mt)) model.matrix(mt, mf, object$contrasts)
+    # check if model has an intercept
+    has_intercept <- attr(mt,"intercept")
+    if(has_intercept){
+      # remove intercept from design
+      x <- x[,!grepl("Intercept",colnames(x))]
+      cl$formula <- quote(y~x)
+    } else {
+      cl$formula <- quote(y~x-1)
+    }
     assign("x",x,env_ib)
-    cl$formula <- quote(y~x)
   } else{
     cl$formula <- quote(y~1)
   }

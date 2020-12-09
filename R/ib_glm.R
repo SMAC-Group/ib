@@ -2,6 +2,9 @@
 # Copyright (C) 2020 S. Orso, University of Geneva
 # All rights reserved.
 
+#' @importFrom stats glm predict.glm model.matrix model.frame model.offset is.empty.model terms
+#' @importFrom MASS gamma.shape
+#' @importFrom methods new
 ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # supports only glm.fit currently
   if(object$method != "glm.fit") stop("only implemented for `glm.fit`", call.=FALSE)
@@ -61,12 +64,19 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
   intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
   mf <- model.frame(object)
+  mt <- terms(object)
   if(!intercept_only){
-    x <- if(!is.empty.model(object$terms)) model.matrix(object$terms, mf, object$contrasts)
-    # remove intercept from design
-    x <- x[,!grepl("Intercept",colnames(x))]
+    x <- if(!is.empty.model(mt)) model.matrix(mt, mf, object$contrasts)
+    # check if model has an intercept
+    has_intercept <- attr(mt,"intercept")
+    if(has_intercept){
+      # remove intercept from design
+      x <- x[,!grepl("Intercept",colnames(x))]
+      cl$formula <- quote(y~x)
+    } else {
+      cl$formula <- quote(y~x-1)
+    }
     assign("x",x,env_ib)
-    cl$formula <- quote(y~x)
   } else{
     cl$formula <- quote(y~1)
   }
@@ -150,7 +160,8 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
   ib_extra <- list(
     iteration = k,
-    of = test_theta,
+    of = sqrt(drop(crossprod(delta))),
+    test_theta = test_theta,
     ib_warn = ib_warn,
     boot = tmp_pi)
 
@@ -178,9 +189,6 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
 #' of the \code{\link[stats:family]{inverse.gaussian}} is not yet implemented.
 #' @seealso \code{\link[stats]{glm}}, \code{\link[MASS]{glm.nb}}
 #' @example /inst/examples/eg_glm.R
-#' @importFrom stats glm predict.glm model.matrix model.frame model.offset is.empty.model
-#' @importFrom MASS gamma.shape
-#' @importFrom methods new
 #' @export
 setMethod("ib", className("glm", "stats"),
           definition = ib.glm)

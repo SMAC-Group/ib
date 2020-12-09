@@ -41,9 +41,15 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
     x <- if(!is.empty.model(mt)) model.matrix(mt, mf, attr(mf,"contrasts"))
     # x <- model.matrixvlm(object)
     # remove intercept from design
-    if(has.intercept(object)) x <- x[,!grepl("Intercept",colnames(x))]
-    assign("x",x,env_ib)
-    cl$formula <- quote(y~x)
+    # check if model has an intercept
+    has_intercept <- has.intercept(object)
+    if(has_intercept){
+      # remove intercept from design
+      x <- x[,!grepl("Intercept",colnames(x))]
+      cl$formula <- quote(y~x)
+    } else {
+      cl$formula <- quote(y~x-1)
+    }
   } else {
     cl$formula <- quote(y~1)
   }
