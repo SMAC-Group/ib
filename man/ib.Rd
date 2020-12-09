@@ -107,7 +107,7 @@ outcome <- gl(3,1,9)
 treatment <- gl(3,3)
 pois_fit <- glm(counts ~ outcome + treatment, family = poisson())
 fit_ib <- ib(pois_fit)
-## summary(fit_ib)
+summary(fit_ib)
 ## Set H = 1000
 \dontrun{
 fit_ib <- ib(pois_fit, control=list(H=1000))
@@ -142,16 +142,16 @@ summary(fit_ib)
 ## linear regression
 fit_lm <- lm(speed ~ dist, data = cars)
 fit_ib <- ib(fit_lm)
-## summary(fit_ib)
+summary(fit_ib)
 ## correct for variance of residuals
 fit_ib <- ib(fit_lm, extra_param = TRUE)
-## summary(fit_ib)
+summary(fit_ib)
 
 ## linear mixed-effects regression
 library(lme4)
 fit_lmm <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy, REML = FALSE)
 fit_ib <- ib(fit_lmm)
-## summary(fit_ib)
+summary(fit_ib)
 ## correct for variances and correlation
 \dontrun{
 fit_ib <- ib(fit_lmm, extra_param = TRUE)
@@ -165,7 +165,7 @@ tdata <- transform(tdata,
                    y = rt(nn, df = exp(exp(0.5 - x))))
 fit_vglm <- vglm(y ~ x, studentt3, data = tdata)
 fit_ib <- ib(fit_vglm)
-## summary(fit_ib)
+summary(fit_ib)
 }
 \references{
 \insertAllCited{}

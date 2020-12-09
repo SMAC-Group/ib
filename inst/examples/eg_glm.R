@@ -4,7 +4,7 @@ outcome <- gl(3,1,9)
 treatment <- gl(3,3)
 pois_fit <- glm(counts ~ outcome + treatment, family = poisson())
 fit_ib <- ib(pois_fit)
-## summary(fit_ib)
+summary(fit_ib)
 ## Set H = 1000
 \dontrun{
 fit_ib <- ib(pois_fit, control=list(H=1000))

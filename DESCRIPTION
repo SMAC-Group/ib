@@ -19,6 +19,7 @@ Imports:
   methods,
   Rdpack (>= 0.7),
   stats,
+  utils,
   VGAM
 Suggests:
   knitr,

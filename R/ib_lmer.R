@@ -118,6 +118,20 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param =
 
   # update lmerMod object
   updateLmer(tmp_object, extra_param)
+
+  # additional metadata
+  ib_warn <- NULL
+  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
+  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
+  ib_extra <- list(
+    iteration = k,
+    of = test_theta,
+    ib_warn = ib_warn,
+    boot = tmp_pi)
+
+  new("IbLmer",
+      object = tmp_object,
+      ib_extra = ib_extra)
 }
 
 #' @rdname ib
