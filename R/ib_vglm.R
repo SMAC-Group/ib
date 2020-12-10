@@ -147,7 +147,9 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
   ib_extra <- list(
     iteration = k,
-    of = test_theta,
+    of = sqrt(drop(crossprod(delta))),
+    estimate = t0,
+    test_theta = test_theta,
     ib_warn = ib_warn,
     boot = tmp_pi)
 

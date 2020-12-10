@@ -43,6 +43,24 @@ setMethod("getExtra",
           "Ib",
           definition = function(x) x@ib_extra)
 
+## Define method for accessing the estimate for class union "Ib"
+#' @title Accessor to the object in class union "Ib"
+#' @description
+#' Method for obtaining estimates from fitted model within
+#' any object of class union \linkS4class{Ib}.
+#' @param x an object of class union "Ib"
+#' @seealso \linkS4class{Ib}
+#' @export
+setGeneric("getEst",
+           function(x) standardGeneric("getEst"),
+           signature = "x",
+           package = "ib")
+
+#' @rdname getEst
+#' @export
+setMethod("getEst",
+          "Ib",
+          definition = function(x) x@ib_extra$estimate)
 
 ## Define show method for class "Ib"
 show.ib <- function(object){
@@ -159,3 +177,17 @@ effects.ib <- function(object, ...){
 setMethod("effects",
           "Ib",
           definition = effects.ib)
+
+## Define vcov method for class "Ib"
+vcov.ib <- function(object, ...){
+  vcov(getObject(object), ...)
+}
+
+#' @title Method for calculating covariance matrix from an object in class union "Ib"
+#' @param object an object of class union "Ib"
+#' @param ... further arguments to pass to \code{vcov}
+#' @seealso \linkS4class{Ib}, \link[stats]{vcov}
+#' @export
+setMethod("vcov",
+          "Ib",
+          definition = vcov.ib)

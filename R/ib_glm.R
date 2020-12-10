@@ -161,6 +161,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   ib_extra <- list(
     iteration = k,
     of = sqrt(drop(crossprod(delta))),
+    estimate = t0,
     test_theta = test_theta,
     ib_warn = ib_warn,
     boot = tmp_pi)

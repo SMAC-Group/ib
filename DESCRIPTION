@@ -23,6 +23,7 @@ Imports:
   VGAM
 Suggests:
   knitr,
+  nlraa,
   rmarkdown
 License: GPL (>= 2) 
 Encoding: UTF-8

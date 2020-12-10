@@ -6,12 +6,14 @@
 \alias{SummaryIbLm-class}
 \alias{SummaryIbLmer-class}
 \alias{SummaryIbNegbin-class}
+\alias{SummaryIbNls-class}
 \alias{SummaryIbVglm-class}
 \alias{SummaryIb-class}
 \title{An S4 class union for \code{summary}}
 \description{
 Members of the union are \linkS4class{SummaryIbGlm}, \linkS4class{SummaryIbLm},
-\linkS4class{SummaryIbLmer}, \linkS4class{SummaryIbNegbin}, \linkS4class{SummaryIbVglm}
+\linkS4class{SummaryIbLmer}, \linkS4class{SummaryIbNegbin}, \linkS4class{SummaryIbNls},
+\linkS4class{SummaryIbVglm}
 iterative bootstrap procedure
 }
 \details{
@@ -26,6 +28,8 @@ The `Functions` section describes members of the class union.
 \item \code{SummaryIbLmer-class}: summary of class \code{summary.merMod} from \pkg{lme4}
 
 \item \code{SummaryIbNegbin-class}: summary of class \code{summary.negbin} from \pkg{MASS}
+
+\item \code{SummaryIbNls-class}: summary of class \code{summary.nls} from \pkg{stats}
 
 \item \code{SummaryIbVglm-class}: summary of class \code{summary.vglm} from \pkg{VGAM}
 }}

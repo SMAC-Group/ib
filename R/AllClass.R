@@ -68,6 +68,22 @@ setClass("SummaryIbNegbin",
            summ = "summary.negbin",
            ib_extra = "list"))
 
+setOldClass("nls")
+#' @describeIn Ib fitted model by \code{nls} from \pkg{stats}
+#' @export
+setClass("IbNls",
+         slots = list(
+           object = "nls",
+           ib_extra = "list"))
+
+setOldClass("summary.nls")
+#' @describeIn SummaryIb summary of class \code{summary.nls} from \pkg{stats}
+#' @export
+setClass("SummaryIbNls",
+         slots = list(
+           summ = "summary.nls",
+           ib_extra = "list"))
+
 #' @describeIn Ib fitted model by \code{vglm} from \pkg{VGAM}
 #' @export
 setClass("IbVglm",
@@ -87,18 +103,21 @@ setClass("SummaryIbVglm",
 #' An S4 class union for \code{ib}
 #' @description
 #' Members of the union are \linkS4class{IbGlm}, \linkS4class{IbLm},
-#' \linkS4class{IbLmer}, \linkS4class{IbNegbin}, \linkS4class{IbVglm}
+#' \linkS4class{IbLmer}, \linkS4class{IbNegbin}, \linkS4class{IbNls},
+#' \linkS4class{IbVglm}
 #' @details
 #' The `Functions` section describes members of the class union.
 #' @author Samuel Orso
 #' @export
 setClassUnion(name = "Ib",
-              members = c("IbGlm","IbLm","IbLmer","IbNegbin","IbVglm"))
+              members = c("IbGlm","IbLm","IbLmer",
+                          "IbNegbin","IbNls","IbVglm"))
 
 #' @title An S4 class union for \code{summary}
 #' @description
 #' Members of the union are \linkS4class{SummaryIbGlm}, \linkS4class{SummaryIbLm},
-#' \linkS4class{SummaryIbLmer}, \linkS4class{SummaryIbNegbin}, \linkS4class{SummaryIbVglm}
+#' \linkS4class{SummaryIbLmer}, \linkS4class{SummaryIbNegbin}, \linkS4class{SummaryIbNls},
+#' \linkS4class{SummaryIbVglm}
 #' iterative bootstrap procedure
 #' @details
 #' The `Functions` section describes members of the class union.
@@ -106,4 +125,4 @@ setClassUnion(name = "Ib",
 #' @export
 setClassUnion(name = "SummaryIb",
               members = c("SummaryIbGlm","SummaryIbLm","SummaryIbLmer",
-                          "SummaryIbNegbin","SummaryIbVglm"))
+                          "SummaryIbNegbin","SummaryIbNls","SummaryIbVglm"))

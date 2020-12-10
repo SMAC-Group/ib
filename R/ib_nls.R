@@ -2,7 +2,7 @@
 # Copyright (C) 2020 S. Orso, University of Geneva
 # All rights reserved.
 
-ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
+ib.nls <- function(object, thetastart=NULL, control=list(...), extra_param = FALSE, ...){
   # controls
   control <- do.call("ibControl",control)
 
@@ -37,32 +37,30 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   # prepare data and formula for fit
   cl <- getCall(object)
   if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
-  intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
-  mf <- model.frame(object)
-  mt <- terms(object)
-  if(!intercept_only){
-    x <- if(!is.empty.model(mt)) model.matrix(mt, mf, object$contrasts)
-    # check if model has an intercept
-    has_intercept <- attr(mt,"intercept")
-    if(has_intercept){
-      # remove intercept from design
-      x <- x[,!grepl("Intercept",colnames(x))]
-      cl$formula <- quote(y~x)
-    } else {
-      cl$formula <- quote(y~x-1)
-    }
-    assign("x",x,env_ib)
-  } else{
-    cl$formula <- quote(y~1)
+
+  # retrieve data: 3 possibilities
+  # 1. within object$model
+  # 2. specified by an environment variable
+  # 3. specified by a data.frame variable
+  data <- object$model
+  x_name <- attr(object$dataClasses, "names")
+  y_name <- as.character(cl$formula[[2]])
+  if(is.null(data)){
+    data_name <- object$data
+    data <- eval(data_name)
+    if (!is.list(data) && !is.environment(data)) stop("'data' must be a list or an environment")
+    if(is.environment(data)) data <- get(c(y_name,x_name), envir = data)
   }
-  o <- as.vector(model.offset(mf))
-  if(!is.null(o)) assign("o",o,env_ib)
-  cl$data <- NULL
-  # add an offset
-  if(!is.null(o)) cl$offset <- quote(o)
+  for(i in x_name) assign(i, data[[i]], env_ib)
+  assign("y", data[[y_name]], env_ib)
+  cl$formula[[2]] <- quote(y)
+  cl$data <- quote(env_ib)
+  # FIXME: add support for weights, subset, na.action, start
 
   # copy the object
-  tmp_object <- object
+  # FIXME: need a deep copy
+  # current fix by new evaluation
+  tmp_object <- eval(cl)
 
   if(!extra_param) std <- NULL
 
@@ -70,13 +68,13 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
   while(test_theta > control$tol && k < control$maxit){
 
     # update initial estimator
-    tmp_object$coefficients <- t0[1:p0]
+    tmp_object$m$setPars(t0[1:p0])
     if(extra_param) std <- t0[p]
     sim <- simulation(tmp_object,control,std)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
-      fit_tmp <- eval(cl,env_ib)
+      fit_tmp <- eval(cl)
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(extra_param) tmp_pi[p,h] <- sigma(fit_tmp)
     }
@@ -108,8 +106,6 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
     t0 <- t1
   }
 
-  tmp_object$fitted.values <- predict.lm(tmp_object)
-  tmp_object$residuals <- unname(model.frame(object))[,1] - tmp_object$fitted.values
   tmp_object$call <- object$call
 
   # additional metadata
@@ -124,28 +120,24 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
     ib_warn = ib_warn,
     boot = tmp_pi)
 
-  new("IbLm",
+  new("IbNls",
       object = tmp_object,
       ib_extra = ib_extra)
 }
 
 #' @rdname ib
 #' @details
-#' For \link[stats]{lm}, if \code{extra_param=TRUE}: the variance of the residuals is
-#' also corrected. Note that using the \code{ib} is not useful as coefficients
-#' are already unbiased, unless one considers different
-#' data generating mechanism such as censoring, missing values
-#' and outliers (see \code{\link{ibControl}}).
-#' @example /inst/examples/eg_lm.R
-#' @seealso \code{\link[stats]{lm}}
-#' @importFrom stats lm predict.lm model.matrix
+#' For \link[stats]{nls}, if \code{extra_param=TRUE}: the variance of the residuals is
+#' also corrected.
+#' @example /inst/examples/eg_nls.R
+#' @seealso \code{\link[stats]{nls}}
 #' @export
-setMethod("ib", signature = className("lm","stats"),
-          definition = ib.lm)
+setMethod("ib", signature = className("nls","stats"),
+          definition = ib.nls)
 
-# inspired from stats::simulate.lm
-#' @importFrom stats fitted sigma rnorm runif simulate
-simulation.lm <- function(object, control=list(...), std=NULL, ...){
+# No native simulate method for class nls
+# TODO: maybe compare with implementation in \pkg{nlraa}
+simulation.nls <- function(object, control=list(...), std=NULL, ...){
   control <- do.call("ibControl",control)
 
   set.seed(control$seed)
@@ -162,5 +154,5 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
   sim
 }
 
-setMethod("simulation", signature = className("lm","stats"),
-          definition = simulation.lm)
+setMethod("simulation", signature = className("nls","stats"),
+          definition = simulation.nls)

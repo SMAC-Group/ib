@@ -112,6 +112,27 @@ setMethod("summary",
           "IbNegbin",
           definition = summaryIbNegbin)
 
+## IbNls
+summaryIbNls <- function(object, ...){
+  summary.nls <- getFromNamespace("summary.nls", ns = "stats")
+  x <- getObject(object)
+  y <- getExtra(object)
+  summ <- summary.nls(x, ...)
+  new("SummaryIbNls",
+      summ = summ,
+      ib_extra = y)
+}
+
+#' @title Summarizing a nonlinear regression fit corrected by
+#' the iterative bootstrap
+#' @description summary method for class \linkS4class{IbNls}
+#' @param object an object of class \linkS4class{IbNls}
+#' @param ... further arguments passed to \code{summary.nls} of \pkg{stats}
+#' @export
+setMethod("summary",
+          "IbNls",
+          definition = summaryIbNls)
+
 ## IbVglm
 #' @importFrom VGAM summaryvglm
 summaryIbVglm <- function(object, ...){
