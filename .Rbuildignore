@@ -8,3 +8,4 @@
 ^\.travis\.yml$
 ^cran-comments.md
 ^\.R_old_S3
+^CRAN-RELEASE$
