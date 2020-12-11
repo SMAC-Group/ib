@@ -1,7 +1,7 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.com/SMAC-Group/ib.svg?branch=master)](https://travis-ci.com/github/SMAC-Group/ib)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2020--11--23-green.svg)](https://github.com/SMAC-Group/ib)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2020--12--11-green.svg)](https://github.com/SMAC-Group/ib)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 # Bias correction via the iterative bootstrap
@@ -37,18 +37,13 @@ fit_ib2 <- ib(fit_nb, control=list(H=100), extra_param = TRUE)
 summary(fit_ib2)
 ```
 
-By default, we support `object` which has a model call
-(`getCall(object)`), a design matrix (`model.matrix(object)`) and a
-`simulate()` method (see `help(simulate)`).
-
-We provide more parameters for which to correct the bias for `lm`,
-`glm`, `glm.nb`, `lmer` and `vglm` classes, as shown in the example
-above with the overdispersion parameter of the negative binomial
-regression.
+Currently we support `lm`, `glm`, `glm.nb`, `lmer`, `nls` and `vglm`
+classes, as shown in the example above with the overdispersion parameter
+of the negative binomial regression. More details are in `help(ib)`.
 
 On top of `simulate`, we also consider cases where the response variable
-is generated using censoring, missing at random and outliers mechanisms.
-For example
+is generated using censoring, missing at random and outliers mechanisms
+(see `help(ibControl)` for more details). For example
 
 ``` r
 ## suppose values above 30 are censored
