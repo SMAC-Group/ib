@@ -16,11 +16,12 @@
 #' (see 'Details').
 #' @param ... additional optional arguments to pass to \code{ibControl}.
 #' @return
-#' A \code{matrix} B times p (size of parameter) of bootstrapped estimates.
+#' A \code{matrix} p (size of parameter) times B of bootstrapped estimates.
 #' @details
 #' This method is a simple wrapper around the \code{ib} method
 #' where number of iterations is set to 1.
 #' @seealso \code{\link{ib}}, \code{\link{ibControl}}
+#' @example /inst/examples/eg_bootstrap.R
 #' @author Samuel Orso
 #' @export
 bootstrap <- function(object, B = 1e3, extra_param = FALSE, ...){
