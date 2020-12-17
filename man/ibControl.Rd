@@ -24,7 +24,7 @@ ibControl(
 \arguments{
 \item{tol}{positive convergence tolerance \eqn{\epsilon}.
 The \code{\link{ib}} procedure converges when
-\eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
+\eqn{||\hat{\theta}^{k+1}-\hat{\theta}^k||_2/p<\epsilon}{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
 where \eqn{p} is the dimension of \eqn{\theta}.}
 
 \item{maxit}{\code{integer} representing the maximal number of iterations.}

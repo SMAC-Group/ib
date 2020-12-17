@@ -31,6 +31,19 @@ setMethod("getObject",
 #' the iterative bootstrap procedure within
 #' any object of class union \linkS4class{Ib}.
 #' @seealso \linkS4class{Ib}
+#' @return
+#' a \code{list} with the following components:
+#' \tabular{ll}{
+#' iteration \tab number of iterations (\eqn{k})\cr
+#' of \tab value of the objective function
+#' \eqn{||\hat{\pi}-\frac{1}{H}\sum_{h=1}^H\hat{\pi}_h(\hat{\theta}^{k})||}{%
+#' ||\pi-\frac{1}{H}\sum_{h=1}^H\pi_h(\theta^{k})||}\cr
+#' estimate\tab value of the estimates \eqn{\hat{\theta}^{k}}{\theta^{k}}\cr
+#' test_theta\tab value for difference of thetas:
+#' \eqn{||\hat{\theta}^k-\hat{\theta}^{k-1}||}{||\theta^k-\theta^{k-1}||}\cr
+#' ib_warn\tab optional warning message\cr
+#' boot\tab \code{matrix} of \eqn{H} bootstrap estimates:
+#' \eqn{\hat{\pi}(\hat{\theta}^k)}{\pi(\theta^k)}}
 #' @export
 setGeneric("getExtra",
            function(x) standardGeneric("getExtra"),
@@ -50,6 +63,10 @@ setMethod("getExtra",
 #' any object of class union \linkS4class{Ib}.
 #' @param x an object of class union "Ib"
 #' @seealso \linkS4class{Ib}
+#' @details This methods allow to access extra parameter
+#' estimates. If \code{extra_param=TRUE}, it becomes equivalent
+#' to \code{\link{coef}}.
+#' @return an estimate (as in \code{\link{getExtra}}).
 #' @export
 setGeneric("getEst",
            function(x) standardGeneric("getEst"),

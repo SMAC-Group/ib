@@ -10,6 +10,11 @@
 \alias{IbVglm-class}
 \alias{Ib-class}
 \title{An S4 class union for \code{ib}}
+\value{
+Each member of the union has a \code{slot} with the initial object
+corrected by the \code{ib} (see \code{\link{getObject}}) and a second \code{slot} with
+extra meta data from \code{ib} (see \code{\link{getExtra}}).
+}
 \description{
 Members of the union are \linkS4class{IbGlm}, \linkS4class{IbLm},
 \linkS4class{IbLmer}, \linkS4class{IbNegbin}, \linkS4class{IbNls},
@@ -33,6 +38,9 @@ The `Functions` section describes members of the class union.
 \item \code{IbVglm-class}: fitted model by \code{vglm} from \pkg{VGAM}
 }}
 
+\seealso{
+\code{\link{getExtra}}, \code{\link{getObject}}
+}
 \author{
 Samuel Orso
 }

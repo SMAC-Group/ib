@@ -28,13 +28,13 @@
 #' \theta^(k)=\theta^(k-1) + \pi - \sum \pi_h(\theta^(k-1)) / H
 #' }
 #' for \eqn{k=1,2,\ldots} and where the sum is over \eqn{h=1,\ldots,H}.
-#' The estimate \eqn{\pi} is provided by the \code{object}.
-#' The value \eqn{\pi_h(\theta)} is a parametric bootstrap
-#' estimate where the bootstrap sample is generated from \eqn{\theta}
+#' The estimate \eqn{\hat{\pi}}{\pi} is provided by the \code{object}.
+#' The value \eqn{\hat{\pi}_h(\hat{\theta})}{\pi_h(\theta)} is a parametric bootstrap
+#' estimate where the bootstrap sample is generated from \eqn{\hat{\theta}}{\theta}
 #' and a fixed \code{seed} (see \code{\link{ibControl}}).
 #' The greater the parameter value \eqn{H} generally the better bias correction
 #' but the more computation it requires (see \code{\link{ibControl}}).
-#' If \code{thetastart=NULL}, the initial value of the procedure is \eqn{\theta^(0)=\pi}.
+#' If \code{thetastart=NULL}, the initial value of the procedure is \eqn{\hat{\theta}^{0}=\hat{\pi}}{\theta^{0}=\pi}.
 #' The number of iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
 #'
 #' By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
@@ -56,7 +56,7 @@ setGeneric("ib",
 #' Auxiliary function for \code{\link{ib}} bias correction.
 #' @param tol positive convergence tolerance \eqn{\epsilon}.
 #' The \code{\link{ib}} procedure converges when
-#' \eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
+#' \eqn{||\hat{\theta}^{k+1}-\hat{\theta}^k||_2/p<\epsilon}{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
 #' where \eqn{p} is the dimension of \eqn{\theta}.
 #' @param maxit \code{integer} representing the maximal number of iterations.
 #' @param verbose if \code{TRUE}, it prints some output in the console
