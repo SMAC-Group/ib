@@ -92,7 +92,7 @@ setMethod("summary",
 
 ## IbNegbin
 summaryIbNegbin <- function(object, ...){
-  summary.negbin <- getFromNamespace("summary.nebgin", ns = "MASS")
+  summary.negbin <- getFromNamespace("summary.negbin", ns = "MASS")
   x <- getObject(object)
   y <- getExtra(object)
   summ <- summary.negbin(x, ...)
