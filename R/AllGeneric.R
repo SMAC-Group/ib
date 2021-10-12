@@ -94,11 +94,24 @@ setMethod("show",
           "Ib",
           definition = show.ib)
 
-## Generic for simulating from the object (internal use)
+## Generic for simulating from the object
+#' @title Generic for simulating from the object
+#' @description
+#' Method for simulating responses from an object.
+#' @param object an object of class union "Ib"
+#' @param control a control list
+#' @return simulated responses.
+#' @export
 setGeneric("simulation",
            function(object, control=list(...), ...) standardGeneric("simulation"),
            signature = "object",
            package = "ib")
+
+#' @rdname simulation
+#' @export
+setMethod("simulation",
+          "Ib",
+          definition = function(object, control=list(...), ...) simulation(object, control, ...))
 
 #' @importFrom stats simulate
 simulation.default <- function(object, control=list(...), ...){
