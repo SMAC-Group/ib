@@ -80,7 +80,12 @@ setGeneric("ib",
 #' @param func a \code{function} to reduce the \code{H} bootstrap estimates (rowwise).
 #' By default, the average is computed. The user can supply a function.
 #' One could imagine using other function such as the median or a trimmed mean.
+#' @param sim a user-defined function for simulating responses (see 'Details')
 #' @return a list with components named as the arguments.
+#' @details
+#' \code{sim} allows the user to provide its own function for generating
+#' responses. Currently it is only supported for generalized linear models with
+#' the prototype `fun(object, control, extra_param, ...)` (see \code{\link{ib}}).
 #' @seealso \code{\link{ib}}, the iterative procedure for bias correction.
 #' @export
 ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
@@ -88,7 +93,8 @@ ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
                       cens=FALSE,right=NULL,left=NULL,
                       mis=FALSE,prop=NULL,
                       out=FALSE,eps=NULL,G=NULL,
-                      func=function(x)rowMeans(x,na.rm=T)){
+                      func=function(x)rowMeans(x,na.rm=T),
+                      sim=NULL){
   if(!is.numeric(tol)) stop("`tol` must be numeric")
   if(!is.numeric(maxit)) stop("`maxit` must be numeric")
   if(!is.logical(verbose)) stop("`verbose` must be a boolean")
@@ -100,6 +106,6 @@ ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
   if(!is.function(func)) stop("`func` must be a function")
   list(tol=tol,maxit=maxit,verbose=verbose,
        cens=cens,right=right,left=left,seed=seed,
-       H=H,func=func,mis=mis,prop=prop,out=out,eps=eps,G=G)
+       H=H,func=func,mis=mis,prop=prop,out=out,eps=eps,G=G,sim=sim)
 }
 

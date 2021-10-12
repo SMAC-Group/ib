@@ -206,6 +206,11 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
 
+  if(!is.null(control$sim)){
+    sim <- control$sim(object, control, extra, ...)
+    return(sim)
+  }
+
   sim <- switch(fam,
                 Gamma = {
                   if(is.null(extra)){
