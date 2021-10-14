@@ -79,6 +79,28 @@ setMethod("getEst",
           "Ib",
           definition = function(x) x@ib_extra$estimate)
 
+## Define method for accessing the iteration for class union "Ib"
+#' @title Accessor to the object in class union "Ib"
+#' @description
+#' Method for obtaining the number of iteration from fitted model within
+#' any object of class union \linkS4class{Ib}.
+#' @param x an object of class union "Ib"
+#' @seealso \linkS4class{Ib}
+#' @details This methods allow to access extra information about
+#' the number of iterations.
+#' @return a number of iterations (as in \code{\link{getExtra}}).
+#' @export
+setGeneric("getIteration",
+           function(x) standardGeneric("getIteration"),
+           signature = "x",
+           package = "ib")
+
+#' @rdname getIteration
+#' @export
+setMethod("getIteration",
+          "Ib",
+          definition = function(x) x@ib_extra$iteration)
+
 ## Define show method for class "Ib"
 show.ib <- function(object){
   x <- getObject(object)
