@@ -290,6 +290,13 @@ updateLmer <- function(object, Sigma){
 
 simulation.lmerMod <- simulation.default
 
+#' @title Simulation for linear mixed model regression
+#' @description simulation method for class \linkS4class{IbLmer}
+#' @param object an object of class \linkS4class{IbLmer}
+#' @param control a \code{list} of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param ... further arguments.
+#' @export
 setMethod("simulation", signature = className("lmerMod","lme4"),
           definition = simulation.lmerMod)
 

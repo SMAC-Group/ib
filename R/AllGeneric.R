@@ -122,6 +122,7 @@ setMethod("show",
 #' Method for simulating responses from an object.
 #' @param object an object of class union "Ib"
 #' @param control a control list
+#' @param ... further argument to pass
 #' @return simulated responses.
 #' @export
 setGeneric("simulation",

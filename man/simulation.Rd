@@ -13,6 +13,8 @@ simulation(object, control = list(...), ...)
 \item{object}{an object of class union "Ib"}
 
 \item{control}{a control list}
+
+\item{...}{further argument to pass}
 }
 \value{
 simulated responses.
