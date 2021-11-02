@@ -91,8 +91,8 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param =
 
     # update value
     delta <- pi0 - pi_star
-    if(extra_param) delta[id_var] <- exp(log(pi0[id_var])-log(pi_star[id_var]))
     t1 <- t0 + delta
+    if(extra_param) t1[id_var] <- exp(log(t0[id_var]) + log(pi0[id_var])-log(pi_star[id_var]))
     if(ncor>0) t1[id_cor] <- tanh(atanh(t0[id_cor]) + atanh(pi0[id_cor] - atanh(pi_star[id_cor])))
 
     # test diff between thetas
