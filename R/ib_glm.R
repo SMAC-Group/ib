@@ -26,7 +26,6 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     isNegbin <- TRUE
   }
 
-
   if(extra_param){
     pi0 <- switch(fam,
                   gaussian = {c(pi0, sigma(object))},
@@ -119,7 +118,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     delta <- pi0 - pi_star
     # if(extra_param) delta[p] <- exp(log(pi0[p]) - log(pi_star[p]))
     t1 <- t0 + delta
-    if(extra_param) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
+    # if(extra_param) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
@@ -204,6 +203,8 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
     stop(gettextf("simulation not implemented for family '%s'",fam),
          call.=FALSE, domain=NA)
 
+  if(grepl("Negative Binomial",fam)) fam <- "negbin"
+
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
 
@@ -250,7 +251,7 @@ simulate_gamma <- function (object, nsim, shape){
   wp <- object$prior.weights
   ftd <- fitted(object)
   shp <- shape * wp
-  rgamma(nsim * length(ftd), shape = shp, rate = shp/ftd)
+  rgamma(n = nsim * length(ftd), shape = shp, rate = shp/ftd)
 }
 
 # ib.negbin (MASS)
@@ -270,7 +271,7 @@ simulation.negbin <- simulation.glm
 #' @importFrom MASS rnegbin
 simulate_negbin <- function (object, nsim) {
   ftd <- fitted(object)
-  rnegbin(nsim * length(ftd), ftd, theta = object$theta)
+  rnegbin(n = nsim * length(ftd), mu = ftd, theta = object$theta)
 }
 
 #' @title Simulation for a negative binomial regression
