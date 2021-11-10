@@ -84,8 +84,8 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
 
     # update value
     delta <- pi0 - pi_star
-    if(extra_param) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
     t1 <- t0 + delta
+    if(extra_param && control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
@@ -162,5 +162,13 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
   sim
 }
 
+#' @title Simulation for linear regression
+#' @description simulation method for class \linkS4class{IbLm}
+#' @param object an object of class \linkS4class{IbLm}
+#' @param control a \code{list} of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param std \code{NULL} by default; standard deviation to pass to simulation.
+#' @param ... further arguments
+#' @export
 setMethod("simulation", signature = className("lm","stats"),
           definition = simulation.lm)

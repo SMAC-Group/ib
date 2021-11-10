@@ -200,5 +200,13 @@ simulation.vglm <- function(object, control=list(...), extra_param = NULL, ...){
   sim
 }
 
+#' @title Simulation for vector generalized linear model regression
+#' @description simulation method for class \linkS4class{IbVglm}
+#' @param object an object of class \linkS4class{IbVglm}
+#' @param control a \code{list} of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param extra_param \code{NULL} by default; extra parameters to pass to simulation.
+#' @param ... further arguments
+#' @export
 setMethod("simulation", signature = className("vglm","VGAM"),
           definition = simulation.vglm)

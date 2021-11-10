@@ -12,9 +12,17 @@ getEst(x)
 \arguments{
 \item{x}{an object of class union "Ib"}
 }
+\value{
+an estimate (as in \code{\link{getExtra}}).
+}
 \description{
 Method for obtaining estimates from fitted model within
 any object of class union \linkS4class{Ib}.
+}
+\details{
+This methods allow to access extra parameter
+estimates. If \code{extra_param=TRUE}, it becomes equivalent
+to \code{\link{coef}}.
 }
 \seealso{
 \linkS4class{Ib}

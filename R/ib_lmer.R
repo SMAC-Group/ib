@@ -91,9 +91,9 @@ ib.lmerMod <- function(object, thetastart=NULL, control=list(...), extra_param =
 
     # update value
     delta <- pi0 - pi_star
-    if(extra_param) delta[id_var] <- exp(log(pi0[id_var])-log(pi_star[id_var]))
     t1 <- t0 + delta
-    if(ncor>0) t1[id_cor] <- tanh(atanh(t0[id_cor]) + atanh(pi0[id_cor] - atanh(pi_star[id_cor])))
+    if(extra_param && control$constraint) t1[id_var] <- exp(log(t0[id_var]) + log(pi0[id_var])-log(pi_star[id_var]))
+    if(ncor>0 && control$constraint) t1[id_cor] <- tanh(atanh(t0[id_cor]) + atanh(pi0[id_cor] - atanh(pi_star[id_cor])))
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
@@ -290,6 +290,13 @@ updateLmer <- function(object, Sigma){
 
 simulation.lmerMod <- simulation.default
 
+#' @title Simulation for linear mixed model regression
+#' @description simulation method for class \linkS4class{IbLmer}
+#' @param object an object of class \linkS4class{IbLmer}
+#' @param control a \code{list} of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param ... further arguments.
+#' @export
 setMethod("simulation", signature = className("lmerMod","lme4"),
           definition = simulation.lmerMod)
 

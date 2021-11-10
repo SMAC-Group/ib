@@ -12,7 +12,7 @@ censoring <- function(y,right=NULL,left=NULL){
 # prop is the proportion of missing data
 missing_at_random <- function(y, prop=NULL){
   if(!is.null(prop)){
-    if(any(!is.numeric(prop),prop<=0,prop>=1))
+    if(any(!is.double(prop),prop<=0,prop>=1))
       stop("`prop` must be a number between 0 and 1!")
     y[sample.int(length(y),floor(prop*length(y)))] <- NA_real_
   }
@@ -25,7 +25,7 @@ missing_at_random <- function(y, prop=NULL){
 # extra parameters should be included within G
 outliers <- function(y, eps=NULL, G=NULL){
   if(all(!is.null(eps),!is.null(G))){
-    if(any(!is.numeric(eps),eps<=0,eps>=1))
+    if(any(!is.double(eps),eps<=0,eps>=1))
       stop("`eps` must be a number between 0 and 1!")
     if(!is.function(G)) stop("`G` must be a function!")
     if(length(formals(G))!=1) stop("`G` must have only one argument!")

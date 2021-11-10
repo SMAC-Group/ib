@@ -107,7 +107,12 @@ setClass("SummaryIbVglm",
 #' \linkS4class{IbVglm}
 #' @details
 #' The `Functions` section describes members of the class union.
+#' @return
+#' Each member of the union has a \code{slot} with the initial object
+#' corrected by the \code{ib} (see \code{\link{getObject}}) and a second \code{slot} with
+#' extra meta data from \code{ib} (see \code{\link{getExtra}}).
 #' @author Samuel Orso
+#' @seealso \code{\link{getExtra}}, \code{\link{getObject}}
 #' @export
 setClassUnion(name = "Ib",
               members = c("IbGlm","IbLm","IbLmer",

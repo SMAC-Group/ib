@@ -38,8 +38,4 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# Temporary files
-.tmp/
-inst/doc
-.R_old_S3/
 

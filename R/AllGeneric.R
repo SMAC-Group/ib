@@ -31,6 +31,19 @@ setMethod("getObject",
 #' the iterative bootstrap procedure within
 #' any object of class union \linkS4class{Ib}.
 #' @seealso \linkS4class{Ib}
+#' @return
+#' a \code{list} with the following components:
+#' \tabular{ll}{
+#' iteration \tab number of iterations (\eqn{k})\cr
+#' of \tab value of the objective function
+#' \eqn{||\hat{\pi}-\frac{1}{H}\sum_{h=1}^H\hat{\pi}_h(\hat{\theta}^{k})||}{%
+#' ||\pi-\frac{1}{H}\sum_{h=1}^H\pi_h(\theta^{k})||}\cr
+#' estimate\tab value of the estimates \eqn{\hat{\theta}^{k}}{\theta^{k}}\cr
+#' test_theta\tab value for difference of thetas:
+#' \eqn{||\hat{\theta}^k-\hat{\theta}^{k-1}||}{||\theta^k-\theta^{k-1}||}\cr
+#' ib_warn\tab optional warning message\cr
+#' boot\tab \code{matrix} of \eqn{H} bootstrap estimates:
+#' \eqn{\hat{\pi}(\hat{\theta}^k)}{\pi(\theta^k)}}
 #' @export
 setGeneric("getExtra",
            function(x) standardGeneric("getExtra"),
@@ -50,6 +63,10 @@ setMethod("getExtra",
 #' any object of class union \linkS4class{Ib}.
 #' @param x an object of class union "Ib"
 #' @seealso \linkS4class{Ib}
+#' @details This methods allow to access extra parameter
+#' estimates. If \code{extra_param=TRUE}, it becomes equivalent
+#' to \code{\link{coef}}.
+#' @return an estimate (as in \code{\link{getExtra}}).
 #' @export
 setGeneric("getEst",
            function(x) standardGeneric("getEst"),
@@ -61,6 +78,28 @@ setGeneric("getEst",
 setMethod("getEst",
           "Ib",
           definition = function(x) x@ib_extra$estimate)
+
+## Define method for accessing the iteration for class union "Ib"
+#' @title Accessor to the object in class union "Ib"
+#' @description
+#' Method for obtaining the number of iteration from fitted model within
+#' any object of class union \linkS4class{Ib}.
+#' @param x an object of class union "Ib"
+#' @seealso \linkS4class{Ib}
+#' @details This methods allow to access extra information about
+#' the number of iterations.
+#' @return a number of iterations (as in \code{\link{getExtra}}).
+#' @export
+setGeneric("getIteration",
+           function(x) standardGeneric("getIteration"),
+           signature = "x",
+           package = "ib")
+
+#' @rdname getIteration
+#' @export
+setMethod("getIteration",
+          "Ib",
+          definition = function(x) x@ib_extra$iteration)
 
 ## Define show method for class "Ib"
 show.ib <- function(object){
@@ -77,11 +116,25 @@ setMethod("show",
           "Ib",
           definition = show.ib)
 
-## Generic for simulating from the object (internal use)
+## Generic for simulating from the object
+#' @title Generic for simulating from the object
+#' @description
+#' Method for simulating responses from an object.
+#' @param object an object of class union "Ib"
+#' @param control a control list
+#' @param ... further argument to pass
+#' @return simulated responses.
+#' @export
 setGeneric("simulation",
            function(object, control=list(...), ...) standardGeneric("simulation"),
            signature = "object",
            package = "ib")
+
+#' @rdname simulation
+#' @export
+setMethod("simulation",
+          "Ib",
+          definition = function(object, control=list(...), ...) simulation(object, control, ...))
 
 #' @importFrom stats simulate
 simulation.default <- function(object, control=list(...), ...){

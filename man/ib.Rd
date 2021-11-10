@@ -54,17 +54,20 @@ algorithm is
 \theta^(k)=\theta^(k-1) + \pi - \sum \pi_h(\theta^(k-1)) / H
 }
 for \eqn{k=1,2,\ldots} and where the sum is over \eqn{h=1,\ldots,H}.
-The estimate \eqn{\pi} is provided by the \code{object}.
-The value \eqn{\pi_h(\theta)} is a parametric bootstrap
-estimate where the bootstrap sample is generated from \eqn{\theta}
+The estimate \eqn{\hat{\pi}}{\pi} is provided by the \code{object}.
+The value \eqn{\hat{\pi}_h(\hat{\theta})}{\pi_h(\theta)} is a parametric bootstrap
+estimate where the bootstrap sample is generated from \eqn{\hat{\theta}}{\theta}
 and a fixed \code{seed} (see \code{\link{ibControl}}).
 The greater the parameter value \eqn{H} generally the better bias correction
 but the more computation it requires (see \code{\link{ibControl}}).
-If \code{thetastart=NULL}, the initial value of the procedure is \eqn{\theta^(0)=\pi}.
+If \code{thetastart=NULL}, the initial value of the procedure is \eqn{\hat{\theta}^{0}=\hat{\pi}}{\theta^{0}=\pi}.
 The number of iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
 
 By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
-extra parameters, it depends on the model.
+extra parameters, it depends on the model. These extra parameters may have
+some constraints (e.g. positivity). If \code{constraint=TRUE} (see
+\code{\link{ibControl}}), then a transformation from the constraint space to the
+real is used for the update.
 
 For \link[stats]{glm}, if \code{extra_param=TRUE}: the shape parameter for the
 \code{\link[stats:family]{Gamma}}, the variance of the residuals in \code{\link[stats]{lm}} or

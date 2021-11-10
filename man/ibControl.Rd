@@ -10,6 +10,7 @@ ibControl(
   verbose = FALSE,
   seed = 123L,
   H = 1L,
+  constraint = TRUE,
   cens = FALSE,
   right = NULL,
   left = NULL,
@@ -18,13 +19,14 @@ ibControl(
   out = FALSE,
   eps = NULL,
   G = NULL,
-  func = function(x) rowMeans(x, na.rm = T)
+  func = function(x) rowMeans(x, na.rm = T),
+  sim = NULL
 )
 }
 \arguments{
 \item{tol}{positive convergence tolerance \eqn{\epsilon}.
 The \code{\link{ib}} procedure converges when
-\eqn{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
+\eqn{||\hat{\theta}^{k+1}-\hat{\theta}^k||_2/p<\epsilon}{||\theta^{k+1}-\theta^k||_2/p<\epsilon},
 where \eqn{p} is the dimension of \eqn{\theta}.}
 
 \item{maxit}{\code{integer} representing the maximal number of iterations.}
@@ -36,6 +38,9 @@ at each iteration.}
 
 \item{H}{\code{integer} representing the number of bootstrap estimates
 (see \code{\link{ib}}).}
+
+\item{constraint}{if \code{TRUE} (default), constraint for \code{extra_param}
+is used in the iterative procedure (see 'Details' of \code{\link{ib}}).}
 
 \item{cens}{if \code{TRUE} the simulated responses are censored according to
 \code{left} and \code{right} values.}
@@ -61,12 +66,19 @@ a sample size as argument.}
 \item{func}{a \code{function} to reduce the \code{H} bootstrap estimates (rowwise).
 By default, the average is computed. The user can supply a function.
 One could imagine using other function such as the median or a trimmed mean.}
+
+\item{sim}{a user-defined function for simulating responses (see 'Details')}
 }
 \value{
 a list with components named as the arguments.
 }
 \description{
 Auxiliary function for \code{\link{ib}} bias correction.
+}
+\details{
+\code{sim} allows the user to provide its own function for generating
+responses. Currently it is only supported for generalized linear models with
+the prototype `fun(object, control, extra_param, ...)` (see \code{\link{ib}}).
 }
 \seealso{
 \code{\link{ib}}, the iterative procedure for bias correction.

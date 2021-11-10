@@ -1,7 +1,7 @@
 Package: ib
 Type: Package
 Title: Bias Correction via Iterative Bootstrap
-Version: 0.1.0
+Version: 0.2.0
 Description: An implementation of the iterative bootstrap procedure of 
     Kuk (1995) <doi:10.1111/j.2517-6161.1995.tb02035.x> to correct the estimation bias of a fitted model object. This
     procedure has better bias correction properties than the 
@@ -29,6 +29,6 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 RdMacros: Rdpack
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 URL: https://github.com/SMAC-Group/ib/
 BugReports: https://github.com/SMAC-Group/ib/issues/

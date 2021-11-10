@@ -26,7 +26,6 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     isNegbin <- TRUE
   }
 
-
   if(extra_param){
     pi0 <- switch(fam,
                   gaussian = {c(pi0, sigma(object))},
@@ -117,8 +116,8 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
 
     # update value
     delta <- pi0 - pi_star
-    if(extra_param) delta[p] <- exp(log(pi0[p])-log(pi_star[p]))
     t1 <- t0 + delta
+    if(extra_param && control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
@@ -203,8 +202,15 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
     stop(gettextf("simulation not implemented for family '%s'",fam),
          call.=FALSE, domain=NA)
 
+  if(grepl("Negative Binomial",fam)) fam <- "negbin"
+
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
+
+  if(!is.null(control$sim)){
+    sim <- control$sim(object, control, extra, ...)
+    return(sim)
+  }
 
   sim <- switch(fam,
                 Gamma = {
@@ -217,6 +223,7 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
                 } else {
                   matrix(fitted(object) + rnorm(length(object$y) * control$H, sd=extra), ncol=control$H)
                 },
+                negbin = {matrix(simulate_negbin(object,control$H), ncol=control$H)},
                 matrix(object$family$simulate(object,control$H), ncol=control$H)
   )
   if(control$cens) sim <- censoring(sim,control$right,control$left)
@@ -225,6 +232,14 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
   sim
 }
 
+#' @title Simulation for a Generalized Linear Model regression
+#' @description simulation method for class \linkS4class{IbGlm}
+#' @param object an object of class \linkS4class{IbGlm}
+#' @param control a \code{list} of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param extra \code{NULL} by default; extra parameters to pass to simulation.
+#' @param ... further arguments
+#' @export
 setMethod("simulation", signature = className("glm","stats"),
           definition = simulation.glm)
 
@@ -235,7 +250,7 @@ simulate_gamma <- function (object, nsim, shape){
   wp <- object$prior.weights
   ftd <- fitted(object)
   shp <- shape * wp
-  rgamma(nsim * length(ftd), shape = shp, rate = shp/ftd)
+  rgamma(n = nsim * length(ftd), shape = shp, rate = shp/ftd)
 }
 
 # ib.negbin (MASS)
@@ -251,5 +266,20 @@ setMethod("ib", signature = "negbin",
 
 simulation.negbin <- simulation.glm
 
+# inspired from MASS::simulate.negbin
+#' @importFrom MASS rnegbin
+simulate_negbin <- function (object, nsim) {
+  ftd <- fitted(object)
+  rnegbin(n = nsim * length(ftd), mu = ftd, theta = object$theta)
+}
+
+#' @title Simulation for a negative binomial regression
+#' @description simulation method for class \linkS4class{IbNegbin}
+#' @param object an object of class \linkS4class{IbNegbin}
+#' @param control a \code{list} of parameters for controlling the iterative procedure
+#' (see \code{\link{ibControl}}).
+#' @param extra \code{NULL} by default; extra parameters to pass to simulation.
+#' @param ... further arguments
+#' @export
 setMethod("simulation", signature = "negbin",
           definition = simulation.negbin)
