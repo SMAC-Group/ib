@@ -9,3 +9,7 @@
 ^cran-comments.md
 ^\.R_old_S3
 ^CRAN-RELEASE$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$

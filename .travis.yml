@@ -1,4 +1,0 @@
-language: r
-cache: packages
-notifications:
-  slack: smac-group:5r36ApSWw13nXEBS61bRcvdD
