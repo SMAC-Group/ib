@@ -38,7 +38,10 @@
 #' The number of iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
 #'
 #' By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
-#' extra parameters, it depends on the model.
+#' extra parameters, it depends on the model. These extra parameters may have
+#' some constraints (e.g. positivity). If \code{constraint=TRUE} (see
+#' \code{\link{ibControl}}), then a transformation from the constraint space to the
+#' real is used for the update.
 #' @references
 #' \insertAllCited{}
 #' @importFrom Rdpack reprompt
@@ -64,6 +67,8 @@ setGeneric("ib",
 #' @param seed \code{integer} to set the seed (see \code{\link[base]{Random}}).
 #' @param H \code{integer} representing the number of bootstrap estimates
 #' (see \code{\link{ib}}).
+#' @param constraint if \code{TRUE} (default), constraint for \code{extra_param}
+#' is used in the iterative procedure (see 'Details' of \code{\link{ib}}).
 #' @param cens if \code{TRUE} the simulated responses are censored according to
 #' \code{left} and \code{right} values.
 #' @param right \code{double} for right-censoring (only used if \code{cens=TRUE}).
@@ -89,7 +94,7 @@ setGeneric("ib",
 #' @seealso \code{\link{ib}}, the iterative procedure for bias correction.
 #' @export
 ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
-                      seed=123L,H=1L,
+                      seed=123L,H=1L,constraint=TRUE,
                       cens=FALSE,right=NULL,left=NULL,
                       mis=FALSE,prop=NULL,
                       out=FALSE,eps=NULL,G=NULL,
