@@ -64,7 +64,10 @@ If \code{thetastart=NULL}, the initial value of the procedure is \eqn{\hat{\thet
 The number of iterations are controlled by \code{maxit} parameter of \code{\link{ibControl}}.
 
 By default, the method correct \code{\link[stats:coef]{coefficients}} only. For
-extra parameters, it depends on the model.
+extra parameters, it depends on the model. These extra parameters may have
+some constraints (e.g. positivity). If \code{constraint=TRUE} (see
+\code{\link{ibControl}}), then a transformation from the constraint space to the
+real is used for the update.
 
 For \link[stats]{glm}, if \code{extra_param=TRUE}: the shape parameter for the
 \code{\link[stats:family]{Gamma}}, the variance of the residuals in \code{\link[stats]{lm}} or

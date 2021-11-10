@@ -10,6 +10,7 @@ ibControl(
   verbose = FALSE,
   seed = 123L,
   H = 1L,
+  constraint = TRUE,
   cens = FALSE,
   right = NULL,
   left = NULL,
@@ -37,6 +38,9 @@ at each iteration.}
 
 \item{H}{\code{integer} representing the number of bootstrap estimates
 (see \code{\link{ib}}).}
+
+\item{constraint}{if \code{TRUE} (default), constraint for \code{extra_param}
+is used in the iterative procedure (see 'Details' of \code{\link{ib}}).}
 
 \item{cens}{if \code{TRUE} the simulated responses are censored according to
 \code{left} and \code{right} values.}

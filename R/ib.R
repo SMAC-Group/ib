@@ -103,13 +103,14 @@ ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
   if(!is.numeric(tol)) stop("`tol` must be numeric")
   if(!is.numeric(maxit)) stop("`maxit` must be numeric")
   if(!is.logical(verbose)) stop("`verbose` must be a boolean")
+  if(!is.logical(constraint)) stop("`constraint` must be a boolean")
   if(!is.numeric(seed)) stop("`seed` must be numeric")
   if(!is.numeric(H)) stop("`H` must be numeric")
   if(!is.logical(cens)) stop("`cens` must be a boolean")
   if(!is.logical(mis)) stop("`mis` must be a boolean")
   if(!is.logical(out)) stop("`out` must be a boolean")
   if(!is.function(func)) stop("`func` must be a function")
-  list(tol=tol,maxit=maxit,verbose=verbose,
+  list(tol=tol,maxit=maxit,verbose=verbose,constraint=constraint,
        cens=cens,right=right,left=left,seed=seed,
        H=H,func=func,mis=mis,prop=prop,out=out,eps=eps,G=G,sim=sim)
 }
