@@ -104,7 +104,8 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
-      fit_tmp <- eval(cl,env_ib)
+      fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
+      if(is.null(fit_tmp)) next
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(extra_param)
         tmp_pi[p,h] <- switch(fam,
@@ -207,6 +208,7 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
 
+  # user-defined simulation method
   if(!is.null(control$sim)){
     sim <- control$sim(object, control, extra, ...)
     return(sim)
@@ -247,6 +249,7 @@ setMethod("simulation", signature = className("glm","stats"),
 # which does not support "shape" as an argument
 #' @importFrom stats rgamma
 simulate_gamma <- function (object, nsim, shape){
+  if(shape<0) stop("'shape' must be positive")
   wp <- object$prior.weights
   ftd <- fitted(object)
   shp <- shape * wp
@@ -269,6 +272,7 @@ simulation.negbin <- simulation.glm
 # inspired from MASS::simulate.negbin
 #' @importFrom MASS rnegbin
 simulate_negbin <- function (object, nsim) {
+  if(object$theta<0) stop("'theta' must be positive")
   ftd <- fitted(object)
   rnegbin(n = nsim * length(ftd), mu = ftd, theta = object$theta)
 }

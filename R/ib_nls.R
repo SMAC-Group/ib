@@ -143,6 +143,12 @@ simulation.nls <- function(object, control=list(...), std=NULL, ...){
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
 
+  # user-defined simulation method
+  if(!is.null(control$sim)){
+    sim <- control$sim(object, control, std, ...)
+    return(sim)
+  }
+
   ftd <- fitted(object)
   n <- length(ftd)
   ntot <- n * control$H

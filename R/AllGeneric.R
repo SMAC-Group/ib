@@ -139,6 +139,11 @@ setMethod("simulation",
 #' @importFrom stats simulate
 simulation.default <- function(object, control=list(...), ...){
   control <- do.call("ibControl",control)
+  # user-defined simulation method
+  if(!is.null(control$sim)){
+    sim <- control$sim(object, control, ...)
+    return(sim)
+  }
   sim <- simulate(object,nsim=control$H,seed=control$seed,...)
   if(control$cens) sim <- censoring(sim,control$right,control$left)
   if(control$mis) sim <- missing_at_random(sim, control$prop)

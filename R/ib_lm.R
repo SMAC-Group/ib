@@ -76,7 +76,8 @@ ib.lm <- function(object, thetastart=NULL, control=list(...), extra_param = FALS
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
       assign("y",sim[,h],env_ib)
-      fit_tmp <- eval(cl,env_ib)
+      fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
+      if(is.null(fit_tmp)) next
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(extra_param) tmp_pi[p,h] <- sigma(fit_tmp)
     }
@@ -150,6 +151,12 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
 
   set.seed(control$seed)
   if(!exists(".Random.seed", envir = .GlobalEnv)) runif(1)
+
+  # user-defined simulation method
+  if(!is.null(control$sim)){
+    sim <- control$sim(object, control, std, ...)
+    return(sim)
+  }
 
   ftd <- fitted(object)
   n <- length(ftd)
