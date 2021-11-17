@@ -30,7 +30,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     pi0 <- switch(fam,
                   gaussian = {c(pi0, sigma(object))},
                   Gamma = {c(pi0, gamma.shape(object)$alpha)},
-                  negbin = {c(pi0, object$theta)}
+                  negbin = {c(pi0, 1/object$theta)}
     )
     if(is.null(pi0))
       stop(gettextf("extra_param for family '%s' is not implemented", fam), domain = NA)
@@ -99,7 +99,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     if(extra_param) switch (fam,
                             Gamma = {extra <- t0[p]},
                             gaussian = {extra <- t0[p]},
-                            negbin = {tmp_object$theta <- t0[p]})
+                            negbin = {tmp_object$theta <- 1/t0[p]})
     sim <- simulation(tmp_object,control,extra)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
@@ -111,7 +111,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
         tmp_pi[p,h] <- switch(fam,
                               Gamma = {gamma.shape(fit_tmp)$alpha},
                               gaussian = {sigma(fit_tmp)},
-                              negbin = {fit_tmp$theta})
+                              negbin = {1/fit_tmp$theta})
     }
     pi_star <- control$func(tmp_pi)
 
