@@ -13,6 +13,7 @@ Authors@R: c(
 Maintainer: Samuel Orso <Samuel.Orso@unige.ch>
 Depends: R (>= 4.0.0)
 Imports:
+  betareg,
   lme4,
   MASS,
   Matrix,

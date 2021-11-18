@@ -24,6 +24,28 @@ setMethod("show",
           "SummaryIb",
           definition = show.summary.ib)
 
+## IbBetareg
+summaryIbBetareg <- function(object, ...){
+  summary.betareg <- getFromNamespace("summary.betareg", ns = "betareg")
+  x <- getObject(object)
+  y <- getExtra(object)
+  summ <- summary.betareg(x, ...)
+  new("SummaryIbBetareg",
+      summ = summ,
+      ib_extra = y)
+}
+
+#' @title Summarizing a beta regression fit corrected by
+#' the iterative bootstrap
+#' @description summary method for class \linkS4class{IbBetareg}
+#' @param object an object of class \linkS4class{IbBetareg}
+#' @param ... further arguments passed to \code{summary.betareg}
+#' @seealso \link[betareg]{summary.betareg}
+#' @export
+setMethod("summary",
+          "IbBetareg",
+          definition = summaryIbBetareg)
+
 ## IbGlm
 #' @importFrom stats summary.glm
 summaryIbGlm <- function(object, ...){
