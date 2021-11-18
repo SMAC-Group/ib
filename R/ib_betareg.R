@@ -4,13 +4,17 @@
 
 #' @importFrom betareg betareg
 ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
+  # Currently support is limited to model with precision parameters ...
+  if(!object$phi) stop("Only implemented with precision parameters")
+
+  # ... and without 'link.phi="identity"' (to avoid positivity constraint)
+  if(object$link$precision$name == "identity") stop("'link.phi'='identity' not supported")
+
   # controls
   control <- do.call("ibControl",control)
 
-  if(!object$phi) stop("Only implemented with precision parameters")
-
   # initial estimator:
-  # regression coefficients + phi (if phi is set to TRUE (default))
+  # regression coefficients for mean and precision parameters
   pi0 <- coef(object)
   p <- length(pi0)
 
@@ -36,33 +40,15 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   env_ib <- new.env(hash=F)
 
   # prepare data and formula for fit
-  cl <- getCall(object)
-  if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
-  intercept_only <- cl$formula[[3]] == 1 # check for intercept only models
   mf <- model.frame(object)
-  mt <- terms(object)
-  if(!intercept_only){
-    x <- if(!is.empty.model(mt)) model.matrix(mt, mf, object$contrasts)
-    # check if model has an intercept
-    has_intercept <- attr(mt,"intercept")
-    if(has_intercept){
-      # remove intercept from design
-      x <- x[,!grepl("Intercept",colnames(x))]
-      cl$formula <- quote(y~x)
-    } else {
-      cl$formula <- quote(y~x-1)
-    }
-    assign("x",x,env_ib)
-  } else{
-    cl$formula <- quote(y~1)
-  }
-  o <- as.vector(model.offset(mf))
-  if(!is.null(o)) assign("o",o,env_ib)
-  cl$data <- NULL
-  # add an offset
-  if(!is.null(o)) cl$offset <- quote(o)
-  # FIXME: add support for weights, subset, na.action, start,
-  #        etastart, mustart, contrasts
+  names(mf)[1] <- "y"
+  assign("data",mf,env_ib)
+  cl <- getCall(object)
+  cl$data <- quote(data)
+  if(length(cl$formula)==1) cl$formula <- get(paste(cl$formula)) # get formula
+  cl$formula[[2]] <- quote(y)
+  # FIXME: add support for weights, subset, na.action, offset,
+  #        contrasts
 
   # copy the object
   tmp_object <- object
@@ -74,17 +60,16 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
     sim <- simulation(tmp_object,control)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
-      assign("y",sim[,h],env_ib)
+      env_ib$data$y <- sim[,h]
       fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
       if(is.null(fit_tmp)) next
-      tmp_pi[1:p0,h] <- coef(fit_tmp)
+      tmp_pi[,h] <- coef(fit_tmp)
     }
     pi_star <- control$func(tmp_pi)
 
     # update value
     delta <- pi0 - pi_star
     t1 <- t0 + delta
-    if(control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
