@@ -7,6 +7,7 @@
 ## NOTE: due to compatibility issues between S3/S4 classes,
 ##       we consider supplying the fitted model in a new slot.
 
+setOldClass("betareg")
 #' @describeIn Ib fitted model by \code{betareg} from \pkg{betareg}
 #' @export
 setClass("IbBetareg",

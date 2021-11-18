@@ -7,7 +7,7 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   # Currently support is limited to model with precision parameters ...
   if(!object$phi) stop("Only implemented with precision parameters")
 
-  # ... and without 'link.phi="identity"' (to avoid positivity constraint)
+  # ... and without 'link.phi="identity"' (to avoid imposing positivity constraint)
   if(object$link$precision$name == "identity") stop("'link.phi'='identity' not supported")
 
   # controls
@@ -17,6 +17,12 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   # regression coefficients for mean and precision parameters
   pi0 <- coef(object)
   p <- length(pi0)
+  p_mean <- length(object$coefficients$mean)
+  p_prec <- length(object$coefficients$precision)
+  if(p_mean + p_prec != p) stop("unexpected number of parameters")
+  id_mean <- vector("logical",p)
+  id_mean[seq_len(p_mean)] <- TRUE
+  id_prec <- !id_mean
 
   # starting value
   if(!is.null(thetastart)){
@@ -56,7 +62,8 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # update initial estimator
-    tmp_object$coefficients <- t0
+    tmp_object$coefficients$mean <- t0[id_mean]
+    tmp_object$coefficients$precision <- t0[id_prec]
     sim <- simulation(tmp_object,control)
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
@@ -93,17 +100,20 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   }
 
   # update betareg object
-  eta <- predict.glm(tmp_object)
-  mu <- object$family$linkinv(eta)
-  dev <- sum(object$family$dev.resids(object$y,mu,object$prior.weights))
+  # FIXME: update object$loglik, object$scoring, object$residuals,
+  # object$fitted.values, object$pseudo.r.squared
 
-  tmp_object$linear.predictors <- eta
-  tmp_object$fitted.values <- mu
-  tmp_object$residuals <- (object$y - mu)/object$family$mu.eta(eta)
-  tmp_object$call <- object$call
-  tmp_object$deviance <- dev
-  tmp_object$aic <- object$family$aic(object$y, length(object$prior.weights)-sum(object$prior.weights == 0),
-                                      mu, object$prior.weights, dev) + 2 * object$rank
+  # eta <- predict(tmp_object)
+  # mu <- object$link$mean$linkinv(eta)
+  # dev <- sum(object$family$dev.resids(object$y,mu,object$prior.weights))
+  #
+  # tmp_object$linear.predictors <- eta
+  # tmp_object$fitted.values <- mu
+  # tmp_object$residuals <- (object$y - mu)/object$family$mu.eta(eta)
+  # tmp_object$call <- object$call
+  # tmp_object$deviance <- dev
+  # tmp_object$aic <- object$family$aic(object$y, length(object$prior.weights)-sum(object$prior.weights == 0),
+  #                                     mu, object$prior.weights, dev) + 2 * object$rank
 
   # additional metadata
   ib_warn <- NULL
@@ -124,8 +134,10 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
 
 #' @rdname ib
 #' @details
-#' For \link[betareg]{betareg}, \code{extra_param} is currently not available
-#' as by default the precision parameter 'phi' is corrected.
+#' For \link[betareg]{betareg}, \code{extra_param} is not available
+#' as by default mean and precision parameters are corrected.
+#' Currently the 'identity' link function is not supported for precision
+#' parameters.
 #' @seealso \code{\link[betareg]{betareg}}
 #' @example /inst/examples/eg_betareg.R
 #' @export
@@ -144,12 +156,20 @@ simulation.betareg <- function(object, control=list(...), extra=NULL, ...){
     return(sim)
   }
 
-
+  sim <- matrix(simulate_betareg(object,control$H), ncol=control$H)
 
   if(control$cens) sim <- censoring(sim,control$right,control$left)
   if(control$mis) sim <- missing_at_random(sim, control$prop)
   if(control$out) sim <- outliers(sim, control$eps, control$G)
   sim
+}
+
+#' @importFrom stats rbeta
+simulate_betareg <- function (object, nsim) {
+  ftd <- fitted(object)
+  phi <- predict(object,type="precision")
+  if(length(ftd) != length(phi)) stop("dimension of precision and mean parameters mismatch")
+  rbeta(n = nsim * length(ftd), shape1 = ftd * phi, shape2 = phi - ftd*phi)
 }
 
 #' @title Simulation for a beta regression
