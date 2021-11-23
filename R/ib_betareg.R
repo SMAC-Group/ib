@@ -8,7 +8,7 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   if(!object$phi) stop("Only implemented with precision parameters")
 
   # ... and without 'link.phi="identity"' (to avoid imposing positivity constraint)
-  if(object$link$precision$name == "identity") stop("'link.phi'='identity' not supported")
+  # if(object$link$precision$name == "identity") stop("'link.phi'='identity' not supported")
 
   # controls
   control <- do.call("ibControl",control)
@@ -23,6 +23,9 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   id_mean <- vector("logical",p)
   id_mean[seq_len(p_mean)] <- TRUE
   id_prec <- !id_mean
+  phiIdentity <- p_prec == 1 && object$link$precision$name == "identity"
+  if(object$link$precision$name == "identity" && p_prec > 1)
+    stop("limited support of 'link.phi'='identity'")
 
   # starting value
   if(!is.null(thetastart)){
@@ -77,6 +80,7 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
     # update value
     delta <- pi0 - pi_star
     t1 <- t0 + delta
+    if(phiIdentity) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
     test_theta <- sqrt(drop(crossprod(t0-t1))/p)
