@@ -3,6 +3,8 @@
 # All rights reserved.
 
 #' @importFrom betareg betareg
+#' @importFrom Formula Formula as.Formula
+#' @importFrom stats delete.response
 ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   # Currently support is limited to model with precision parameters ...
   if(!object$phi) stop("Only implemented with precision parameters")
@@ -58,20 +60,52 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   cl$formula[[2]] <- quote(y)
   # FIXME: add support for weights, subset, na.action, offset,
   #        contrasts
+  # Extract x and z
+  formula <- as.Formula(cl$formula)
+  if(length(formula)[2L] < 2L) {
+    formula <- as.Formula(formula(formula), ~ 1)
+  } else {
+    if(length(formula)[2L] > 2L) {
+      formula <- Formula(formula(formula, rhs = 1:2))
+    }
+  }
+  mtX <- terms(formula, rhs = 1L)
+  mtZ <- delete.response(terms(formula, rhs = 2L))
+  x <- model.matrix(mtX, mf)
+  z <- model.matrix(mtZ, mf)
 
   # copy the object
   tmp_object <- object
 
+  # copy the control
+  control1 <- control
+  control1$H <- 1L
+  linkinv <- object$link$mean$linkinv
+
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
-    # update initial estimator
+    # update object for simulation
+    eta <- as.vector(x %*% t0[id_mean])
+    mu <- linkinv(eta)
+    tmp_object$fitted.values <- mu
     tmp_object$coefficients$mean <- t0[id_mean]
     tmp_object$coefficients$precision <- t0[id_prec]
-    sim <- simulation(tmp_object,control)
+
+    # approximate
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
-      env_ib$data$y <- sim[,h]
+      control1$seed <- control$seed + h
+      sim <- simulation(tmp_object,control1)
+      env_ib$data$y <- sim
       fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
+      iter <- 1L
+      while(is.null(fit_tmp) && iter < 10L){
+        control1$seed <- control$seed + control$H * h + iter
+        sim <- simulation(tmp_object,control1)
+        env_ib$data$y <- sim
+        fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
+        iter <- iter + 1L
+      }
       if(is.null(fit_tmp)) next
       tmp_pi[,h] <- coef(fit_tmp)
     }
@@ -83,7 +117,7 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
     if(phiIdentity) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
+    test_theta <- sum(delta^2)
 
     # initialize test
     if(!k) tt_old <- test_theta+1

@@ -65,12 +65,12 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   mf <- model.frame(object)
   mt <- terms(object)
   if(!intercept_only){
-    x <- if(!is.empty.model(mt)) model.matrix(mt, mf, object$contrasts)
+    x0 <- if(!is.empty.model(mt)) model.matrix(mt, mf, object$contrasts)
     # check if model has an intercept
     has_intercept <- attr(mt,"intercept")
     if(has_intercept){
       # remove intercept from design
-      x <- x[,!grepl("Intercept",colnames(x))]
+      x <- x0[,!grepl("Intercept",colnames(x0))]
       cl$formula <- quote(y~x)
     } else {
       cl$formula <- quote(y~x-1)
@@ -90,21 +90,41 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   # copy the object
   tmp_object <- object
 
+  # copy the control
+  control1 <- control
+  control1$H <- 1L
+  linkinv <- object$family$linkinv
+
   extra <- NULL
 
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
-    # update initial estimator
+    # update object for simulation
+    eta <- as.vector(x0 %*% t0[1:p0])
+    mu <- linkinv(eta)
+    tmp_object$fitted.values <- mu
     tmp_object$coefficients <- t0[1:p0]
+
     if(extra_param) switch (fam,
                             Gamma = {extra <- t0[p]},
                             gaussian = {extra <- t0[p]},
                             negbin = {tmp_object$theta <- 1/t0[p]})
     sim <- simulation(tmp_object,control,extra)
+    # approximate
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
-      assign("y",sim[,h],env_ib)
+      control1$seed <- control$seed + h
+      sim <- simulation(tmp_object,control1,extra)
+      assign("y",sim,env_ib)
       fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
+      iter <- 1L
+      while(is.null(fit_tmp) && iter < 10L){
+        control1$seed <- control$seed + control$H * h + iter
+        sim <- simulation(tmp_object,control1,extra)
+        assign("y",sim,env_ib)
+        fit_tmp <- tryCatch(error = function(cnd) NULL, {eval(cl,env_ib)})
+        iter <- iter + 1L
+      }
       if(is.null(fit_tmp)) next
       tmp_pi[1:p0,h] <- coef(fit_tmp)
       if(extra_param)
@@ -121,7 +141,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     if(extra_param && control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
+    test_theta <- sum(delta^2)
 
     # initialize test
     if(!k) tt_old <- test_theta+1
@@ -142,7 +162,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   }
 
   # update glm object
-  eta <- predict.glm(tmp_object)
+  eta <- predict.glm(tmp_object) # FIXME: this does not return the "correct 'eta'"
   mu <- object$family$linkinv(eta)
   dev <- sum(object$family$dev.resids(object$y,mu,object$prior.weights))
 
