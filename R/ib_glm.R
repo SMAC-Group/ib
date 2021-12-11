@@ -96,14 +96,17 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   linkinv <- object$family$linkinv
 
   extra <- NULL
+  if(isNegbin) out_of_space_counter <- 0
 
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # update object for simulation
-    eta <- as.vector(x0 %*% t0[1:p0])
-    mu <- linkinv(eta)
-    tmp_object$fitted.values <- mu
-    tmp_object$coefficients <- t0[1:p0]
+    if(!k){
+      eta <- as.vector(x0 %*% t0[1:p0])
+      mu <- linkinv(eta)
+      tmp_object$fitted.values <- mu
+      tmp_object$coefficients <- t0[1:p0]
+    }
 
     if(extra_param) switch (fam,
                             Gamma = {extra <- t0[p]},
@@ -138,7 +141,16 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     # update value
     delta <- pi0 - pi_star
     t1 <- t0 + delta
-    if(extra_param && control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
+    if(extra_param && control$constraint){
+      if(isNegbin){ # specific to negative binomial
+        if(t1[p] <= 0){
+          out_of_space_counter <- out_of_space_counter + 1.0
+          t1[p] <- 1.0 / out_of_space_counter
+        }
+      } else {
+        t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
+      }
+    }
 
     # test diff between thetas
     test_theta <- sum(delta^2)

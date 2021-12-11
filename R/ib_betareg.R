@@ -85,11 +85,13 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # update object for simulation
-    eta <- as.vector(x %*% t0[id_mean])
-    mu <- linkinv(eta)
-    tmp_object$fitted.values <- mu
-    tmp_object$coefficients$mean <- t0[id_mean]
-    tmp_object$coefficients$precision <- t0[id_prec]
+    if(!k){
+      eta <- as.vector(x %*% t0[id_mean])
+      mu <- linkinv(eta)
+      tmp_object$fitted.values <- mu
+      tmp_object$coefficients$mean <- t0[id_mean]
+      tmp_object$coefficients$precision <- t0[id_prec]
+    }
 
     # approximate
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
@@ -114,7 +116,7 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
     # update value
     delta <- pi0 - pi_star
     t1 <- t0 + delta
-    if(phiIdentity) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
+    if(phiIdentity && control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
     test_theta <- sum(delta^2)
