@@ -85,7 +85,7 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # update object for simulation
-    if(!k){
+    if(k!=0){
       eta <- as.vector(x %*% t0[id_mean])
       mu <- linkinv(eta)
       tmp_object$fitted.values <- mu
