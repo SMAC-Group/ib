@@ -301,11 +301,13 @@ setMethod("ib", signature = "negbin",
 simulation.negbin <- simulation.glm
 
 # inspired from MASS::simulate.negbin
-#' @importFrom MASS rnegbin
+# @importFrom MASS rnegbin
+#' @importFrom stats rnbinom
 simulate_negbin <- function (object, nsim) {
   if(object$theta<0) stop("'theta' must be positive")
   ftd <- fitted(object)
-  rnegbin(n = nsim * length(ftd), mu = ftd, theta = object$theta)
+  # rnegbin(n = nsim * length(ftd), mu = ftd, theta = object$theta)
+  rnbinom(n = nsim * length(ftd), mu = ftd, size = object$theta)
 }
 
 #' @title Simulation for a negative binomial regression
