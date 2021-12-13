@@ -101,7 +101,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # update object for simulation
-    if(!k){
+    if(k!=0){
       eta <- as.vector(x0 %*% t0[1:p0])
       mu <- linkinv(eta)
       tmp_object$fitted.values <- mu
@@ -112,7 +112,6 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
                             Gamma = {extra <- t0[p]},
                             gaussian = {extra <- t0[p]},
                             negbin = {tmp_object$theta <- 1/t0[p]})
-    sim <- simulation(tmp_object,control,extra)
     # approximate
     tmp_pi <- matrix(NA_real_,nrow=p,ncol=control$H)
     for(h in seq_len(control$H)){
