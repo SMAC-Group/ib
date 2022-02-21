@@ -82,6 +82,8 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
   control1$H <- 1L
   linkinv <- object$link$mean$linkinv
 
+  diff <- rep(NA_real_, control$maxit)
+
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # update object for simulation
@@ -120,12 +122,22 @@ ib.betareg <- function(object, thetastart=NULL, control=list(...), ...){
 
     # test diff between thetas
     test_theta <- sum(delta^2)
+    if(k>0) diff[k] <- test_theta
 
     # initialize test
     if(!k) tt_old <- test_theta+1
 
-    # Stop if no more progress
-    if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+    # Stopping criteria
+    # "no more progress" :
+    # if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+
+    # "statistically flat progress curve" :
+    if(k > 10L){
+      try1 <- diff[k:(k-10)]
+      try2 <- k:(k-10)
+      mod <- lm(try1 ~ try2)
+      if(summary(mod)$coefficients[2,4] > 0.2) break
+    }
 
     # update increment
     k <- k + 1L
