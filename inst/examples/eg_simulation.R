@@ -6,4 +6,4 @@ treatment <- gl(3,3)
 pois_fit <- glm(counts ~ outcome + treatment, family = poisson())
 
 ## make 100 paramtric bootstrap replicates
-boot_dist <- bootstrap(pois_fit, B = 100)
+boot_dist <- simulate(pois_fit, nsim = 100)

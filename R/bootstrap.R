@@ -21,7 +21,6 @@
 #' This method is a simple wrapper around the \code{ib} method
 #' where number of iterations is set to 1.
 #' @seealso \code{\link{ib}}, \code{\link{ibControl}}
-#' @example /inst/examples/eg_bootstrap.R
 #' @author Samuel Orso
 #' @export
 bootstrap <- function(object, B = 1e3, extra_param = FALSE, ...){

@@ -124,6 +124,7 @@ setMethod("show",
 #' @param control a control list
 #' @param ... further argument to pass
 #' @return simulated responses.
+#' @example /inst/examples/eg_simulation.R
 #' @export
 setGeneric("simulation",
            function(object, control=list(...), ...) standardGeneric("simulation"),

@@ -169,7 +169,7 @@ summary(fit_ib)
 }
 
 ## linear regression
-fit_lm <- lm(speed ~ dist, data = cars)
+fit_lm <- lm(disp ~ cyl + hp + wt, data = mtcars)
 fit_ib <- ib(fit_lm)
 summary(fit_ib)
 ## correct for variance of residuals

@@ -172,6 +172,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     if(k > 10L){
       try1 <- diff[k:(k-10)]
       try2 <- k:(k-10)
+      if(var(try1)<=1e-3) break
       mod <- lm(try1 ~ try2)
       if(summary(mod)$coefficients[2,4] > 0.2) break
     }
