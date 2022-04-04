@@ -45,7 +45,7 @@
 #' @references
 #' \insertAllCited{}
 #' @importFrom Rdpack reprompt
-#' @importFrom stats coef model.matrix getCall predict model.frame is.empty.model model.offset
+#' @importFrom stats coef model.matrix getCall predict model.frame is.empty.model model.offset var
 #' @author Samuel Orso
 #' @export
 setGeneric("ib",
