@@ -277,108 +277,64 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## linear regression</span></span>
-<span class="r-in"><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">speed</span> <span class="op">~</span> <span class="va">dist</span>, data <span class="op">=</span> <span class="va">cars</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">wt</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (summary(mod)$coefficients[2, 4] &gt; 0.2) break:</span> missing value where TRUE/FALSE needed</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glm.nb(formula = Days ~ Sex/(Age + Eth * Lrn), data = quine, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     init.theta = 1.597990733, link = log)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = disp ~ cyl + hp + wt, data = mtcars)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -2.8950  -0.8827  -0.2299   0.5669   2.1071  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Min      1Q  Median      3Q     Max </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -167.37  -79.72  -43.24   30.99  237.48 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Estimate Std. Error z value Pr(&gt;|z|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       3.2571     0.2971  10.964  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM             -0.2837     0.3955  -0.717 0.473240    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:AgeF1       -1.1255     0.3232  -3.482 0.000497 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:AgeF1       -1.0268     0.3305  -3.107 0.001889 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:AgeF2       -1.1206     0.3714  -3.017 0.002552 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:AgeF2        0.2995     0.2737   1.094 0.273743    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:AgeF3       -0.7848     0.3272  -2.399 0.016448 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:AgeF3        0.6754     0.3139   2.152 0.031398 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:EthN         0.2381     0.2654   0.897 0.369592    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:EthN        -0.8492     0.2563  -3.313 0.000922 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:LrnSL        1.1489     0.3225   3.563 0.000367 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:LrnSL        0.1191     0.3355   0.355 0.722530    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:EthN:LrnSL  -1.6067     0.3772  -4.260 2.05e-05 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:EthN:LrnSL   0.7689     0.4413   1.742 0.081474 .  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value Pr(&gt;|t|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  79.1572    81.5863   0.970   0.3402  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl          69.0318    25.1543   2.744   0.0105 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp           -0.7931     0.5423  -1.463   0.1547  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt          -43.9467    33.8139  -1.300   0.2043  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for Negative Binomial(1.598) family taken to be 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual standard error: 114.7 on 28 degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Multiple R-squared:  0.234,	Adjusted R-squared:  0.1519 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F-statistic: 2.851 on 3 and 28 DF,  p-value: 0.05525</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 234.56  on 145  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 167.56  on 132  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 1091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Theta:  1.598 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Std. Err.:  0.213 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2 x log-likelihood:  -1063.025 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterative bootstrap procedure:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 0.4704</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 25.52</span>
 <span class="r-in"><span class="co">## correct for variance of residuals</span></span>
 <span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lm</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (summary(mod)$coefficients[2, 4] &gt; 0.2) break:</span> missing value where TRUE/FALSE needed</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glm.nb(formula = Days ~ Sex/(Age + Eth * Lrn), data = quine, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     init.theta = 1.597990733, link = log)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = disp ~ cyl + hp + wt, data = mtcars)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -2.8950  -0.8827  -0.2299   0.5669   2.1071  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Min      1Q  Median      3Q     Max </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -171.88  -80.08  -43.82   30.51  242.33 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Estimate Std. Error z value Pr(&gt;|z|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       3.2571     0.2971  10.964  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM             -0.2837     0.3955  -0.717 0.473240    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:AgeF1       -1.1255     0.3232  -3.482 0.000497 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:AgeF1       -1.0268     0.3305  -3.107 0.001889 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:AgeF2       -1.1206     0.3714  -3.017 0.002552 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:AgeF2        0.2995     0.2737   1.094 0.273743    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:AgeF3       -0.7848     0.3272  -2.399 0.016448 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:AgeF3        0.6754     0.3139   2.152 0.031398 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:EthN         0.2381     0.2654   0.897 0.369592    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:EthN        -0.8492     0.2563  -3.313 0.000922 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:LrnSL        1.1489     0.3225   3.563 0.000367 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:LrnSL        0.1191     0.3355   0.355 0.722530    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexF:EthN:LrnSL  -1.6067     0.3772  -4.260 2.05e-05 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SexM:EthN:LrnSL   0.7689     0.4413   1.742 0.081474 .  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value Pr(&gt;|t|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  85.1600    83.2490   1.023    0.315  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl          69.9318    25.6669   2.725    0.011 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp           -0.8166     0.5533  -1.476    0.151  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt          -46.3453    34.5030  -1.343    0.190  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for Negative Binomial(1.598) family taken to be 1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual standard error: 117 on 28 degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Multiple R-squared:  0.2269,	Adjusted R-squared:  0.144 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F-statistic: 2.739 on 3 and 28 DF,  p-value: 0.06212</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 234.56  on 145  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 167.56  on 132  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 1091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Theta:  1.598 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Std. Err.:  0.213 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2 x log-likelihood:  -1063.025 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterative bootstrap procedure:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 0.4704</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 26.17</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## linear mixed-effects regression</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span>
@@ -470,21 +426,6 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-in">                   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">rt</a></span><span class="op">(</span><span class="va">nn</span>, df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fl">0.5</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">fit_vglm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/VGAM/man/vglm.html" class="external-link">vglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">studentt3</span>, data <span class="op">=</span> <span class="va">tdata</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_vglm</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>maximum number of iteration reached</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -492,10 +433,10 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               Estimate Std. Error z value Pr(&gt;|z|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):1 -0.34853    0.07573  -4.602 4.18e-06 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):2 -0.91579    0.03725 -24.582  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):3  0.48607    0.09935   4.893 9.96e-07 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x              1.75916    0.13322  13.205  &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):1 -0.18918    0.07573  -2.498   0.0125 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):2 -0.38671    0.03725 -10.380  &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):3  0.20762    0.09935   2.090   0.0366 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x              0.88864    0.13322   6.671 2.55e-11 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -510,7 +451,7 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterative bootstrap procedure:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 0.08216</span>
 </code></pre></div>
     </div>

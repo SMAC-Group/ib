@@ -89,20 +89,6 @@ where number of iterations is set to 1.</p>
     <p>Samuel Orso</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## bootstrap poisson regression</span></span>
-<span class="r-in"><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>,<span class="fl">17</span>,<span class="fl">15</span>,<span class="fl">20</span>,<span class="fl">10</span>,<span class="fl">20</span>,<span class="fl">25</span>,<span class="fl">13</span>,<span class="fl">12</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/gl.html" class="external-link">gl</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">9</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/gl.html" class="external-link">gl</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pois_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">counts</span> <span class="op">~</span> <span class="va">outcome</span> <span class="op">+</span> <span class="va">treatment</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## make 100 paramtric bootstrap replicates</span></span>
-<span class="r-in"><span class="va">boot_dist</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">pois_fit</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>maximum number of iteration reached</span>
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
