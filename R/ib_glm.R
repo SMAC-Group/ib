@@ -95,6 +95,7 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   control1$H <- 1L
   linkinv <- object$family$linkinv
 
+  # initial values
   extra <- NULL
   if(isNegbin) out_of_space_counter <- 0
   diff <- rep(NA_real_, control$maxit)
@@ -159,11 +160,15 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     # initialize test
     if(!k) tt_old <- test_theta+1
 
-    # Stopping criteria
-    # "no more progress" :
-    # if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+    # Alternative stopping criteria, early stop :
+    if(control$early_stop){
+      if(tt_old <= test_theta){
+        warning("Algorithm stopped because the objective function does not reduce")
+        break
+        }
+    }
 
-    # "statistically flat progress curve" :
+    # Alternative stopping criteria, "statistically flat progress curve" :
     if(k > 10L){
       try1 <- diff[k:(k-10)]
       try2 <- k:(k-10)
@@ -181,7 +186,12 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
 
     # update theta
     t0 <- t1
+
+    # update test
+    tt_old <- test_theta
   }
+  # warning for reaching max number of iterations
+  if(k>=control$maxit) warning("maximum number of iteration reached")
 
   # update glm object
   eta <- predict.glm(tmp_object) # FIXME: this does not return the "correct 'eta'"
@@ -197,15 +207,11 @@ ib.glm <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
                                       mu, object$prior.weights, dev) + 2 * object$rank
 
   # additional metadata
-  ib_warn <- NULL
-  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
   ib_extra <- list(
     iteration = k,
     of = sqrt(drop(crossprod(delta))),
     estimate = t0,
     test_theta = test_theta,
-    ib_warn = ib_warn,
     boot = tmp_pi)
 
   if(isNegbin){

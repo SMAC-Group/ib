@@ -62,6 +62,8 @@ ib.nls <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
   # current fix by new evaluation
   tmp_object <- eval(cl)
 
+  # initial value
+  diff <- rep(NA_real_, control$maxit)
   if(!extra_param) std <- NULL
 
   # Iterative bootstrap algorithm:
@@ -86,13 +88,27 @@ ib.nls <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     if(extra_param && control$constraint) t1[p] <- exp(log(t0[p]) + log(pi0[p]) - log(pi_star[p]))
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
+    test_theta <- sum(delta^2)
+    if(k>0) diff[k] <- test_theta
 
     # initialize test
     if(!k) tt_old <- test_theta+1
 
-    # Stop if no more progress
-    if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+    # Alternative stopping criteria, early stop :
+    if(control$early_stop){
+      if(tt_old <= test_theta){
+        warning("Algorithm stopped because the objective function does not reduce")
+        break
+      }
+    }
+
+    # Alternative stopping criteria, "statistically flat progress curve" :
+    if(k > 10L){
+      try1 <- diff[k:(k-10)]
+      try2 <- k:(k-10)
+      mod <- lm(try1 ~ try2)
+      if(summary(mod)$coefficients[2,4] > 0.2) break
+    }
 
     # update increment
     k <- k + 1L
@@ -105,19 +121,17 @@ ib.nls <- function(object, thetastart=NULL, control=list(...), extra_param = FAL
     # update theta
     t0 <- t1
   }
+  # warning for reaching max number of iterations
+  if(k>=control$maxit) warning("maximum number of iteration reached")
 
   tmp_object$call <- object$call
 
   # additional metadata
-  ib_warn <- NULL
-  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
   ib_extra <- list(
     iteration = k,
     of = sqrt(drop(crossprod(delta))),
     estimate = t0,
     test_theta = test_theta,
-    ib_warn = ib_warn,
     boot = tmp_pi)
 
   new("IbNls",
