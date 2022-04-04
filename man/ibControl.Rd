@@ -11,6 +11,7 @@ ibControl(
   seed = 123L,
   H = 1L,
   constraint = TRUE,
+  early_stop = FALSE,
   cens = FALSE,
   right = NULL,
   left = NULL,
@@ -41,6 +42,10 @@ at each iteration.}
 
 \item{constraint}{if \code{TRUE} (default), constraint for \code{extra_param}
 is used in the iterative procedure (see 'Details' of \code{\link{ib}}).}
+
+\item{early_stop}{if \code{TRUE} (default is \code{FALSE}), the iterative
+procedure stops as soon as there is no improvment in the minimization of
+the objective function (see 'Details' of \code{\link{ib}}).}
 
 \item{cens}{if \code{TRUE} the simulated responses are censored according to
 \code{left} and \code{right} values.}

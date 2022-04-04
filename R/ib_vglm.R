@@ -73,6 +73,9 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   # copy the object
   tmp_object <- object
 
+  # initial value
+  diff <- rep(NA_real_, control$maxit)
+
   # Iterative bootstrap algorithm:
   while(test_theta > control$tol && k < control$maxit){
     # browser()
@@ -95,13 +98,27 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
     t1 <- t0 + delta
 
     # test diff between thetas
-    test_theta <- sqrt(drop(crossprod(t0-t1))/p)
+    test_theta <- sum(delta^2)
+    if(k>0) diff[k] <- test_theta
 
     # initialize test
     if(!k) tt_old <- test_theta+1
 
-    # Stop if no more progress
-    if(tt_old <= test_theta) {break} else {tt_old <- test_theta}
+    # Alternative stopping criteria, early stop :
+    if(control$early_stop){
+      if(tt_old <= test_theta){
+        warning("Algorithm stopped because the objective function does not reduce")
+        break
+      }
+    }
+
+    # Alternative stopping criteria, "statistically flat progress curve" :
+    if(k > 10L){
+      try1 <- diff[k:(k-10)]
+      try2 <- k:(k-10)
+      mod <- lm(try1 ~ try2)
+      if(summary(mod)$coefficients[2,4] > 0.2) break
+    }
 
     # update increment
     k <- k + 1L
@@ -114,6 +131,8 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
     # update theta
     t0 <- t1
   }
+  # warning for reaching max number of iterations
+  if(k>=control$maxit) warning("maximum number of iteration reached")
 
   # update vglm object
   extra <- slot(object, "extra")
@@ -144,15 +163,11 @@ ib.vglm <- function(object, thetastart=NULL, control=list(...), extra_param = FA
   slot(tmp_object, "call") <- slot(object,"call")
 
   # additional metadata
-  ib_warn <- NULL
-  if(k>=control$maxit) ib_warn <- gettext("maximum number of iteration reached")
-  if(tt_old<=test_theta) ib_warn <- gettext("objective function does not reduce")
   ib_extra <- list(
     iteration = k,
     of = sqrt(drop(crossprod(delta))),
     estimate = t0,
     test_theta = test_theta,
-    ib_warn = ib_warn,
     boot = tmp_pi)
 
   new("IbVglm",

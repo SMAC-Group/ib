@@ -69,6 +69,9 @@ setGeneric("ib",
 #' (see \code{\link{ib}}).
 #' @param constraint if \code{TRUE} (default), constraint for \code{extra_param}
 #' is used in the iterative procedure (see 'Details' of \code{\link{ib}}).
+#' @param early_stop if \code{TRUE} (default is \code{FALSE}), the iterative
+#' procedure stops as soon as there is no improvment in the minimization of
+#' the objective function (see 'Details' of \code{\link{ib}}).
 #' @param cens if \code{TRUE} the simulated responses are censored according to
 #' \code{left} and \code{right} values.
 #' @param right \code{double} for right-censoring (only used if \code{cens=TRUE}).
@@ -94,7 +97,7 @@ setGeneric("ib",
 #' @seealso \code{\link{ib}}, the iterative procedure for bias correction.
 #' @export
 ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
-                      seed=123L,H=1L,constraint=TRUE,
+                      seed=123L,H=1L,constraint=TRUE,early_stop=FALSE,
                       cens=FALSE,right=NULL,left=NULL,
                       mis=FALSE,prop=NULL,
                       out=FALSE,eps=NULL,G=NULL,
@@ -104,13 +107,14 @@ ibControl <- function(tol = 1e-5, maxit = 25, verbose = FALSE,
   if(!is.numeric(maxit)) stop("`maxit` must be numeric")
   if(!is.logical(verbose)) stop("`verbose` must be a boolean")
   if(!is.logical(constraint)) stop("`constraint` must be a boolean")
+  if(!is.logical(early_stop)) stop("`early_stop` must be a boolean")
   if(!is.numeric(seed)) stop("`seed` must be numeric")
   if(!is.numeric(H)) stop("`H` must be numeric")
   if(!is.logical(cens)) stop("`cens` must be a boolean")
   if(!is.logical(mis)) stop("`mis` must be a boolean")
   if(!is.logical(out)) stop("`out` must be a boolean")
   if(!is.function(func)) stop("`func` must be a function")
-  list(tol=tol,maxit=maxit,verbose=verbose,constraint=constraint,
+  list(tol=tol,maxit=maxit,verbose=verbose,constraint=constraint,early_stop=early_stop,
        cens=cens,right=right,left=left,seed=seed,
        H=H,func=func,mis=mis,prop=prop,out=out,eps=eps,G=G,sim=sim)
 }
