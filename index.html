@@ -22,6 +22,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,18 +36,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -55,7 +51,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/SMAC-Group/ib/">
+  <a href="https://github.com/SMAC-Group/ib/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -74,10 +70,10 @@
   <div class="contents col-md-9">
 
 
-<div id="bias-correction-via-the-iterative-bootstrap" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#bias-correction-via-the-iterative-bootstrap" class="anchor"></a>Bias correction via the iterative bootstrap</h1></div>
-<p>This is an under-development package that proposes the iterative bootstrap algorithm of <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x">Kuk (1995)</a> and further studied by <a href="https://doi.org/10.1080/01621459.2017.1380031">Guerrier et al (2019)</a> and <a href="https://arxiv.org/pdf/2002.08757.pdf">Guerrier et al (2020)</a>.</p>
+<div class="section level1">
+<div class="page-header"><h1 id="bias-correction-via-the-iterative-bootstrap">Bias correction via the iterative bootstrap<a class="anchor" aria-label="anchor" href="#bias-correction-via-the-iterative-bootstrap"></a>
+</h1></div>
+<p>This is an under-development package that proposes the iterative bootstrap algorithm of <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="external-link">Kuk (1995)</a> and further studied by <a href="https://doi.org/10.1080/01621459.2017.1380031" class="external-link">Guerrier et al (2019)</a> and <a href="https://arxiv.org/pdf/2002.08757.pdf" class="external-link">Guerrier et al (2020)</a>.</p>
 <p>In order to install the package</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## if not installed</span>
@@ -85,75 +81,85 @@
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SMAC-Group/ib"</span><span class="op">)</span></code></pre></div>
 <p>The <code>ib</code> package is conceived as a wrapper: an <code>object</code> that needs a bias correction is supplied to the <code><a href="reference/ib.html">ib()</a></code> function. For example, for a negative binomial regression:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SMAC-Group/ib/">ib</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">Days</span> <span class="op">~</span> <span class="va">Sex</span><span class="op">/</span><span class="op">(</span><span class="va">Age</span> <span class="op">+</span> <span class="va">Eth</span><span class="op">*</span><span class="va">Lrn</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">quine</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SMAC-Group/ib/" class="external-link">ib</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span>
+<span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html" class="external-link">glm.nb</a></span><span class="op">(</span><span class="va">Days</span> <span class="op">~</span> <span class="va">Sex</span><span class="op">/</span><span class="op">(</span><span class="va">Age</span> <span class="op">+</span> <span class="va">Eth</span><span class="op">*</span><span class="va">Lrn</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">quine</span><span class="op">)</span>
 <span class="va">fit_ib1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_ib1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib1</span><span class="op">)</span>
 
 <span class="co">## correct for overdispersion with H=100</span>
-<span class="va">fit_ib2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">100</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_ib2</span><span class="op">)</span></code></pre></div>
+<span class="va">fit_ib2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">100</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib2</span><span class="op">)</span></code></pre></div>
 <p>Currently we support <code>lm</code>, <code>glm</code>, <code>glm.nb</code>, <code>lmer</code>, <code>nls</code> and <code>vglm</code> classes, as shown in the example above with the overdispersion parameter of the negative binomial regression. More details are in <code><a href="reference/ib.html">help(ib)</a></code>.</p>
 <p>On top of <code>simulate</code>, we also consider cases where the response variable is generated using censoring, missing at random and outliers mechanisms (see <code><a href="reference/ibControl.html">help(ibControl)</a></code> for more details). For example</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## suppose values above 30 are censored</span>
-<span class="va">quine2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span><span class="op">(</span><span class="va">quine</span>, Days<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmin</a></span><span class="op">(</span><span class="va">Days</span>,<span class="fl">30</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">Days</span> <span class="op">~</span> <span class="va">Sex</span><span class="op">/</span><span class="op">(</span><span class="va">Age</span> <span class="op">+</span> <span class="va">Eth</span><span class="op">*</span><span class="va">Lrn</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">quine2</span><span class="op">)</span>
-<span class="va">fit_ib1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>cens<span class="op">=</span><span class="cn">TRUE</span>, right<span class="op">=</span><span class="fl">30</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_ib1</span><span class="op">)</span>
+<span class="va">quine2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span><span class="va">quine</span>, Days<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">Days</span>,<span class="fl">30</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html" class="external-link">glm.nb</a></span><span class="op">(</span><span class="va">Days</span> <span class="op">~</span> <span class="va">Sex</span><span class="op">/</span><span class="op">(</span><span class="va">Age</span> <span class="op">+</span> <span class="va">Eth</span><span class="op">*</span><span class="va">Lrn</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">quine2</span><span class="op">)</span>
+<span class="va">fit_ib1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>cens<span class="op">=</span><span class="cn">TRUE</span>, right<span class="op">=</span><span class="fl">30</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib1</span><span class="op">)</span>
 
 <span class="co">## correct for overdispersion with H=100</span>
-<span class="va">fit_ib2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">100</span>, cens<span class="op">=</span><span class="cn">TRUE</span>, right<span class="op">=</span><span class="fl">30</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_ib2</span><span class="op">)</span></code></pre></div>
+<span class="va">fit_ib2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ib.html">ib</a></span><span class="op">(</span><span class="va">fit_nb</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">100</span>, cens<span class="op">=</span><span class="cn">TRUE</span>, right<span class="op">=</span><span class="fl">30</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib2</span><span class="op">)</span></code></pre></div>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=ib">https://​cloud.r-project.org/​package=ib</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/SMAC-Group/ib/">https://​github.com/​SMAC-Group/​ib/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/SMAC-Group/ib/issues/">https://​github.com/​SMAC-Group/​ib/​issues/​</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=ib" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/SMAC-Group/ib/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/SMAC-Group/ib/issues/" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 2) </li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Samuel Orso <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html#citation">Citing ib</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/SMAC-Group/ib/actions"><img src="https://github.com/SMAC-Group/ib/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://github.com/SMAC-Group/ib"><img src="https://img.shields.io/badge/last%20change-2020--12--11-green.svg" alt="Last-changedate"></a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="license"></a></li>
+<li>Samuel Orso <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/SMAC-Group/ib/actions" class="external-link"><img src="https://github.com/SMAC-Group/ib/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/SMAC-Group/ib" class="external-link"><img src="https://img.shields.io/badge/last%20change-2020--12--11-green.svg" alt="Last-changedate"></a></li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="license"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Samuel Orso.</p>
+  <p></p>
+<p>Developed by Samuel Orso.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -161,6 +167,8 @@
 
   
 
+
+  
 
   </body>
 </html>
