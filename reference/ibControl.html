@@ -53,25 +53,25 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ibControl</span><span class="op">(</span>
-  tol <span class="op">=</span> <span class="fl">1e-05</span>,
-  maxit <span class="op">=</span> <span class="fl">25</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  seed <span class="op">=</span> <span class="fl">123L</span>,
-  H <span class="op">=</span> <span class="fl">1L</span>,
-  constraint <span class="op">=</span> <span class="cn">TRUE</span>,
-  early_stop <span class="op">=</span> <span class="cn">FALSE</span>,
-  cens <span class="op">=</span> <span class="cn">FALSE</span>,
-  right <span class="op">=</span> <span class="cn">NULL</span>,
-  left <span class="op">=</span> <span class="cn">NULL</span>,
-  mis <span class="op">=</span> <span class="cn">FALSE</span>,
-  prop <span class="op">=</span> <span class="cn">NULL</span>,
-  out <span class="op">=</span> <span class="cn">FALSE</span>,
-  eps <span class="op">=</span> <span class="cn">NULL</span>,
-  G <span class="op">=</span> <span class="cn">NULL</span>,
-  func <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-  sim <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ibControl</span><span class="op">(</span></span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  maxit <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123L</span>,</span>
+<span>  H <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  constraint <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  early_stop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  right <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  left <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mis <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  prop <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  out <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  eps <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  G <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  func <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>  sim <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,54 +81,89 @@
 The <code><a href="ib.html">ib</a></code> procedure converges when
 \(||\hat{\theta}^{k+1}-\hat{\theta}^k||_2/p&lt;\epsilon\),
 where \(p\) is the dimension of \(\theta\).</p></dd>
+
+
 <dt>maxit</dt>
 <dd><p><code>integer</code> representing the maximal number of iterations.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>if <code>TRUE</code>, it prints some output in the console
 at each iteration.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p><code>integer</code> to set the seed (see <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">Random</a></code>).</p></dd>
+
+
 <dt>H</dt>
 <dd><p><code>integer</code> representing the number of bootstrap estimates
 (see <code><a href="ib.html">ib</a></code>).</p></dd>
+
+
 <dt>constraint</dt>
 <dd><p>if <code>TRUE</code> (default), constraint for <code>extra_param</code>
 is used in the iterative procedure (see 'Details' of <code><a href="ib.html">ib</a></code>).</p></dd>
+
+
 <dt>early_stop</dt>
 <dd><p>if <code>TRUE</code> (default is <code>FALSE</code>), the iterative
 procedure stops as soon as there is no improvment in the minimization of
 the objective function (see 'Details' of <code><a href="ib.html">ib</a></code>).</p></dd>
+
+
 <dt>cens</dt>
 <dd><p>if <code>TRUE</code> the simulated responses are censored according to
 <code>left</code> and <code>right</code> values.</p></dd>
+
+
 <dt>right</dt>
 <dd><p><code>double</code> for right-censoring (only used if <code>cens=TRUE</code>).</p></dd>
+
+
 <dt>left</dt>
 <dd><p><code>double</code> for left-censoring (only used if <code>cens=TRUE</code>).</p></dd>
+
+
 <dt>mis</dt>
 <dd><p>if <code>TRUE</code> the simulated responses have missing data at random.</p></dd>
+
+
 <dt>prop</dt>
 <dd><p><code>double</code> between 0 and 1 representing the proportion of
 missing data (only used if <code>mis=TRUE</code>).</p></dd>
+
+
 <dt>out</dt>
 <dd><p>if <code>TRUE</code> the simulated responses are also generated with a
 contamination mechanism.</p></dd>
+
+
 <dt>eps</dt>
 <dd><p><code>double</code> between 0 and 1 representing the proportion of
 outliers in the data (only used if <code>out=TRUE</code>).</p></dd>
+
+
 <dt>G</dt>
 <dd><p>a <code>function</code> to generate outliers. It takes only
 a sample size as argument.</p></dd>
+
+
 <dt>func</dt>
 <dd><p>a <code>function</code> to reduce the <code>H</code> bootstrap estimates (rowwise).
 By default, the average is computed. The user can supply a function.
 One could imagine using other function such as the median or a trimmed mean.</p></dd>
+
+
 <dt>sim</dt>
 <dd><p>a user-defined function for simulating responses (see 'Details')</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list with components named as the arguments.</p>
+    
+
+<p>a list with components named as the arguments.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -153,7 +188,7 @@ the prototype `fun(object, control, extra_param, ...)` (see <code><a href="ib.ht
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

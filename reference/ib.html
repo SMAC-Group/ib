@@ -55,46 +55,57 @@ with the iterative bootstrap procedure.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for betareg</span>
-<span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for glm</span>
-<span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for lm</span>
-<span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for lmerMod</span>
-<span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for nls</span>
-<span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for vglm</span>
-<span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for betareg</span></span>
+<span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for glm</span></span>
+<span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for lm</span></span>
+<span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for lmerMod</span></span>
+<span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for nls</span></span>
+<span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for vglm</span></span>
+<span><span class="fu">ib</span><span class="op">(</span><span class="va">object</span>, thetastart <span class="op">=</span> <span class="cn">NULL</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>an <code>object</code> representing a fitted model (see 'Details').</p></dd>
+
+
 <dt>thetastart</dt>
 <dd><p>an optional starting value for the iterative procedure.
 If <code>NULL</code> (default), the procedure starts at the estimates in <code>object</code>.</p></dd>
+
+
 <dt>control</dt>
 <dd><p>a <code>list</code> of parameters for controlling the iterative procedure
 (see <code><a href="ibControl.html">ibControl</a></code>).</p></dd>
+
+
 <dt>extra_param</dt>
 <dd><p>if <code>TRUE</code>, the bias of estimation of extra parameters
 is performed (see 'Details').</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional optional arguments (see 'Details').</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A fitted model <code>object</code> of class <a href="Ib-class.html">Ib</a>.</p>
+    
+
+<p>A fitted model <code>object</code> of class <a href="Ib-class.html">Ib</a>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -167,14 +178,14 @@ with a <code>simslot</code> (see <code><a href="https://rdrr.io/pkg/VGAM/man/sim
     <p>Guerrier S, Dupuis-Lozeron E, Ma Y, Victoria-Feser M (2019).
 “Simulation-Based Bias Correction Methods for Complex Models.”
 <em>Journal of the American Statistical Association</em>, <b>114</b>(525), 146-157.
-doi: <a href="https://doi.org/10.1080/01621459.2017.1380031" class="external-link">10.1080/01621459.2017.1380031</a>
+<a href="https://doi.org/10.1080/01621459.2017.1380031" class="external-link">doi:10.1080/01621459.2017.1380031</a>
 , https://doi.org/10.1080/01621459.2017.1380031.<br><br> Guerrier S, Karemera M, Orso S, Victoria-Feser M, Zhang Y (2020).
 “A General Approach for Simulation-based Bias Correction in High Dimensional Settings.”
 <a href="https://arxiv.org/pdf/2010.13687.pdf" class="external-link">https://arxiv.org/pdf/2010.13687.pdf</a>.
 Version 2: 13 Nov 2020, 2010.13687, <a href="https://arxiv.org/pdf/2010.13687.pdf" class="external-link">https://arxiv.org/pdf/2010.13687.pdf</a>.<br><br> Kuk AYC (1995).
 “Asymptotically Unbiased Estimation in Generalized Linear Models with Random Effects.”
 <em>Journal of the Royal Statistical Society: Series B (Methodological)</em>, <b>57</b>(2), 395-407.
-doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="external-link">10.1111/j.2517-6161.1995.tb02035.x</a>
+<a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="external-link">doi:10.1111/j.2517-6161.1995.tb02035.x</a>
 , https://rss.onlinelibrary.wiley.com/doi/pdf/10.1111/j.2517-6161.1995.tb02035.x, <a href="https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1995.tb02035.x" class="external-link">https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1995.tb02035.x</a>.</p>
     </div>
     <div id="see-also">
@@ -193,34 +204,28 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## beta regression</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">betareg</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"GasolineYield"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## currently link.phi = "identity" is not supported</span></span>
-<span class="r-in"><span class="co">## fit_beta &lt;- betareg(yield ~ batch + temp, data = GasolineYield)</span></span>
-<span class="r-in"><span class="va">fit_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html" class="external-link">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span>, link.phi <span class="op">=</span> <span class="st">"log"</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_beta</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># precision parameter can also depend on covariates</span></span>
-<span class="r-in"><span class="va">fit_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html" class="external-link">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span> <span class="op">|</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_beta</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## poisson regression</span></span>
-<span class="r-in"><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>,<span class="fl">17</span>,<span class="fl">15</span>,<span class="fl">20</span>,<span class="fl">10</span>,<span class="fl">20</span>,<span class="fl">25</span>,<span class="fl">13</span>,<span class="fl">12</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/gl.html" class="external-link">gl</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">9</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/gl.html" class="external-link">gl</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pois_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">counts</span> <span class="op">~</span> <span class="va">outcome</span> <span class="op">+</span> <span class="va">treatment</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">pois_fit</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## beta regression</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">betareg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"GasolineYield"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## currently link.phi = "identity" is not supported</span></span></span>
+<span class="r-in"><span><span class="co">## fit_beta &lt;- betareg(yield ~ batch + temp, data = GasolineYield)</span></span></span>
+<span class="r-in"><span><span class="va">fit_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html" class="external-link">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span>, link.phi <span class="op">=</span> <span class="st">"log"</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_beta</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># precision parameter can also depend on covariates</span></span></span>
+<span class="r-in"><span><span class="va">fit_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html" class="external-link">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span> <span class="op">|</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_beta</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## poisson regression</span></span></span>
+<span class="r-in"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>,<span class="fl">17</span>,<span class="fl">15</span>,<span class="fl">20</span>,<span class="fl">10</span>,<span class="fl">20</span>,<span class="fl">25</span>,<span class="fl">13</span>,<span class="fl">12</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/gl.html" class="external-link">gl</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">9</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/gl.html" class="external-link">gl</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pois_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">counts</span> <span class="op">~</span> <span class="va">outcome</span> <span class="op">+</span> <span class="va">treatment</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">pois_fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = counts ~ outcome + treatment, family = poisson())</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        1         2         3         4         5         6         7         8  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -0.67125   0.96272  -0.16965  -0.21999  -0.95552   1.04939   0.84715  -0.09167  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        9  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -0.96656  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error z value Pr(&gt;|z|)    </span>
@@ -245,41 +250,41 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 0.07459</span>
-<span class="r-in"><span class="co">## Set H = 1000</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">pois_fit</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## gamma regression</span></span>
-<span class="r-in"><span class="va">clotting</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  u <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">10</span>,<span class="fl">15</span>,<span class="fl">20</span>,<span class="fl">30</span>,<span class="fl">40</span>,<span class="fl">60</span>,<span class="fl">80</span>,<span class="fl">100</span><span class="op">)</span>,</span>
-<span class="r-in">  lot1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">118</span>,<span class="fl">58</span>,<span class="fl">42</span>,<span class="fl">35</span>,<span class="fl">27</span>,<span class="fl">25</span>,<span class="fl">21</span>,<span class="fl">19</span>,<span class="fl">18</span><span class="op">)</span>,</span>
-<span class="r-in">  lot2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">69</span>,<span class="fl">35</span>,<span class="fl">26</span>,<span class="fl">21</span>,<span class="fl">18</span>,<span class="fl">16</span>,<span class="fl">13</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">lot2</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">Gamma</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"inverse"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_gamma</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## summary(fit_ib)</span></span>
-<span class="r-in"><span class="co">## correct for shape parameter and show iterations</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_gamma</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## negative binomial regression</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html" class="external-link">glm.nb</a></span><span class="op">(</span><span class="va">Days</span> <span class="op">~</span> <span class="va">Sex</span><span class="op">/</span><span class="op">(</span><span class="va">Age</span> <span class="op">+</span> <span class="va">Eth</span><span class="op">*</span><span class="va">Lrn</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">quine</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_nb</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## summary(fit_ib)</span></span>
-<span class="r-in"><span class="co">## correct for overdispersion with H=100</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_nb</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">100</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## linear regression</span></span>
-<span class="r-in"><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">wt</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Set H = 1000</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">pois_fit</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## gamma regression</span></span></span>
+<span class="r-in"><span><span class="va">clotting</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  u <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">10</span>,<span class="fl">15</span>,<span class="fl">20</span>,<span class="fl">30</span>,<span class="fl">40</span>,<span class="fl">60</span>,<span class="fl">80</span>,<span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lot1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">118</span>,<span class="fl">58</span>,<span class="fl">42</span>,<span class="fl">35</span>,<span class="fl">27</span>,<span class="fl">25</span>,<span class="fl">21</span>,<span class="fl">19</span>,<span class="fl">18</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lot2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">69</span>,<span class="fl">35</span>,<span class="fl">26</span>,<span class="fl">21</span>,<span class="fl">18</span>,<span class="fl">16</span>,<span class="fl">13</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">lot2</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">clotting</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">Gamma</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"inverse"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_gamma</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## summary(fit_ib)</span></span></span>
+<span class="r-in"><span><span class="co">## correct for shape parameter and show iterations</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_gamma</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## negative binomial regression</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html" class="external-link">glm.nb</a></span><span class="op">(</span><span class="va">Days</span> <span class="op">~</span> <span class="va">Sex</span><span class="op">/</span><span class="op">(</span><span class="va">Age</span> <span class="op">+</span> <span class="va">Eth</span><span class="op">*</span><span class="va">Lrn</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">quine</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_nb</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## summary(fit_ib)</span></span></span>
+<span class="r-in"><span><span class="co">## correct for overdispersion with H=100</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_nb</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>H<span class="op">=</span><span class="fl">100</span><span class="op">)</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## linear regression</span></span></span>
+<span class="r-in"><span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">wt</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = disp ~ cyl + hp + wt, data = mtcars)</span>
@@ -306,9 +311,9 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 25.52</span>
-<span class="r-in"><span class="co">## correct for variance of residuals</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lm</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## correct for variance of residuals</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lm</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = disp ~ cyl + hp + wt, data = mtcars)</span>
@@ -335,114 +340,106 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 26.17</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## linear mixed-effects regression</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## linear mixed-effects regression</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Matrix</span>
-<span class="r-in"><span class="va">fit_lmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lmm</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Linear mixed model fit by maximum likelihood  ['lmerMod']</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Formula: y ~ Days + (Days | Subject)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Data: data</span>
+<span class="r-in"><span><span class="va">fit_lmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in initializePtr():</span> function 'cholmod_factor_ldetA' not provided by package 'Matrix'</span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lmm</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'object' in selecting a method for function 'ib': object 'fit_lmm' not found</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      AIC      BIC   logLik deviance df.resid </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1763.9   1783.1   -876.0   1751.9      174 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = disp ~ cyl + hp + wt, data = mtcars)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Scaled residuals: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Min      1Q  Median      3Q     Max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -3.9416 -0.4656  0.0289  0.4636  5.1793 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -171.88  -80.08  -43.82   30.51  242.33 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Random effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Groups   Name        Variance Std.Dev. Corr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Subject  (Intercept) 565.48   23.780       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Days         32.68    5.717   0.08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Residual             654.95   25.592       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of obs: 180, groups:  Subject, 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value Pr(&gt;|t|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  85.1600    83.2490   1.023    0.315  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl          69.9318    25.6669   2.725    0.011 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp           -0.8166     0.5533  -1.476    0.151  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt          -46.3453    34.5030  -1.343    0.190  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fixed effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  246.834      6.632  37.218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Days          10.806      1.502   7.193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual standard error: 117 on 28 degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Multiple R-squared:  0.2269,	Adjusted R-squared:  0.144 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F-statistic: 2.739 on 3 and 28 DF,  p-value: 0.06212</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Correlation of Fixed Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      (Intr)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Days -0.138</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterative bootstrap procedure:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 2.061e-12</span>
-<span class="r-in"><span class="co">## correct for variances and correlation</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lmm</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## nonlinear regression</span></span>
-<span class="r-in"><span class="va">DNase1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">DNase</span>, <span class="va">Run</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_nls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls</a></span><span class="op">(</span><span class="va">density</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/SSlogis.html" class="external-link">SSlogis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span>, <span class="va">Asym</span>, <span class="va">xmid</span>, <span class="va">scal</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">DNase1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_nls</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 26.17</span>
+<span class="r-in"><span><span class="co">## correct for variances and correlation</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_lmm</span>, extra_param <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## nonlinear regression</span></span></span>
+<span class="r-in"><span><span class="va">DNase1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">DNase</span>, <span class="va">Run</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_nls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls</a></span><span class="op">(</span><span class="va">density</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/SSlogis.html" class="external-link">SSlogis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span>, <span class="va">Asym</span>, <span class="va">xmid</span>, <span class="va">scal</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">DNase1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_nls</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(data_name):</span> object 'DNase1' not found</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Linear mixed model fit by maximum likelihood  ['lmerMod']</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Formula: y ~ Days + (Days | Subject)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Data: data</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      AIC      BIC   logLik deviance df.resid </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1763.9   1783.1   -876.0   1751.9      174 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = disp ~ cyl + hp + wt, data = mtcars)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Scaled residuals: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Min      1Q  Median      3Q     Max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -3.9416 -0.4656  0.0289  0.4636  5.1793 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -171.88  -80.08  -43.82   30.51  242.33 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Random effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Groups   Name        Variance Std.Dev. Corr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Subject  (Intercept) 565.48   23.780       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Days         32.68    5.717   0.08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Residual             654.95   25.592       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of obs: 180, groups:  Subject, 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value Pr(&gt;|t|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  85.1600    83.2490   1.023    0.315  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl          69.9318    25.6669   2.725    0.011 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp           -0.8166     0.5533  -1.476    0.151  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt          -46.3453    34.5030  -1.343    0.190  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fixed effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  246.834      6.632  37.218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Days          10.806      1.502   7.193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual standard error: 117 on 28 degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Multiple R-squared:  0.2269,	Adjusted R-squared:  0.144 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F-statistic: 2.739 on 3 and 28 DF,  p-value: 0.06212</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Correlation of Fixed Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      (Intr)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Days -0.138</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterative bootstrap procedure:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 2.061e-12</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## student regression</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.auckland.ac.nz/~yee/VGAM/" class="external-link">VGAM</a></span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 26.17</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## student regression</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.auckland.ac.nz/~yee/VGAM/" class="external-link">VGAM</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: stats4</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: splines</span>
-<span class="r-in"><span class="va">tdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nn</span> <span class="op">&lt;-</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span><span class="va">tdata</span>,</span>
-<span class="r-in">                   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">rt</a></span><span class="op">(</span><span class="va">nn</span>, df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fl">0.5</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_vglm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/VGAM/man/vglm.html" class="external-link">vglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">studentt3</span>, data <span class="op">=</span> <span class="va">tdata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_vglm</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">tdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nn</span> <span class="op">&lt;-</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span><span class="va">tdata</span>,</span></span>
+<span class="r-in"><span>                   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">rt</a></span><span class="op">(</span><span class="va">nn</span>, df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fl">0.5</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_vglm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/VGAM/man/vglm.html" class="external-link">vglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, <span class="va">studentt3</span>, data <span class="op">=</span> <span class="va">tdata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_ib</span> <span class="op">&lt;-</span> <span class="fu">ib</span><span class="op">(</span><span class="va">fit_vglm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_ib</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> vglm(formula = y ~ x, family = studentt3, data = tdata)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               Estimate Std. Error z value Pr(&gt;|z|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):1 -0.18918    0.07573  -2.498   0.0125 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):2 -0.38671    0.03725 -10.380  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):3  0.20762    0.09935   2.090   0.0366 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x              0.88864    0.13322   6.671 2.55e-11 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):1  0.66957    0.07538   8.883  &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):2 -0.21843    0.03672  -5.949 2.70e-09 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept):3  0.74417    0.09715   7.660 1.86e-14 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x             -0.49461    0.13180  -3.753 0.000175 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Names of linear predictors: location, loglink(scale), logloglink(df)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Log-likelihood: -1884.355 on 2996 degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Log-likelihood: -1838.841 on 2996 degrees of freedom</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher scoring iterations: 8 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -452,7 +449,7 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterative bootstrap procedure:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      * number of iterations: 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 0.08216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      * objective function: 0.1173</span>
 </code></pre></div>
     </div>
   </div>
@@ -467,7 +464,7 @@ doi: <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02035.x" class="externa
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
