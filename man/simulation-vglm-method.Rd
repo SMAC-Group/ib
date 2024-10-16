@@ -7,7 +7,7 @@
 \S4method{simulation}{vglm}(object, control = list(...), extra_param = NULL, ...)
 }
 \arguments{
-\item{object}{an object of class \linkS4class{IbVglm}}
+\item{object}{an object of class \code{IbVglm}, see \linkS4class{Ib}}
 
 \item{control}{a \code{list} of parameters for controlling the iterative procedure
 (see \code{\link{ibControl}}).}
@@ -17,5 +17,5 @@
 \item{...}{further arguments}
 }
 \description{
-simulation method for class \linkS4class{IbVglm}
+simulation method for class \code{IbVglm}, see \linkS4class{Ib}
 }

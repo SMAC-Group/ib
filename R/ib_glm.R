@@ -284,8 +284,8 @@ simulation.glm <- function(object, control=list(...), extra=NULL, ...){
 }
 
 #' @title Simulation for a Generalized Linear Model regression
-#' @description simulation method for class \linkS4class{IbGlm}
-#' @param object an object of class \linkS4class{IbGlm}
+#' @description simulation method for class \code{IbGlm}, see \linkS4class{Ib}
+#' @param object an object of class \code{IbGlm}, see \linkS4class{Ib}
 #' @param control a \code{list} of parameters for controlling the iterative procedure
 #' (see \code{\link{ibControl}}).
 #' @param extra \code{NULL} by default; extra parameters to pass to simulation.
@@ -329,8 +329,8 @@ simulate_negbin <- function (object, nsim) {
 }
 
 #' @title Simulation for a negative binomial regression
-#' @description simulation method for class \linkS4class{IbNegbin}
-#' @param object an object of class \linkS4class{IbNegbin}
+#' @description simulation method for class \code{IbNegbin}, see \linkS4class{Ib}
+#' @param object an object of class \code{IbNegbin}, see \linkS4class{Ib}
 #' @param control a \code{list} of parameters for controlling the iterative procedure
 #' (see \code{\link{ibControl}}).
 #' @param extra \code{NULL} by default; extra parameters to pass to simulation.
