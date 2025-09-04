@@ -3,23 +3,45 @@
 \docType{class}
 \name{Ib-class}
 \alias{Ib-class}
-\title{An S4 class union for \code{ib}}
+\alias{IbBetareg-class}
+\alias{IbGlm-class}
+\alias{IbLm-class}
+\alias{IbLmer-class}
+\alias{IbGlmer-class}
+\alias{IbNegbin-class}
+\alias{IbNls-class}
+\alias{IbVglm-class}
+\alias{Ib}
+\title{Fitted-model wrappers for the iterative bootstrap (\code{ib})}
 \value{
-Each member of the union has a \code{slot} with the initial object
-corrected by the \code{ib} (see \code{\link{getObject}}) and a second \code{slot} with
-extra meta data from \code{ib} (see \code{\link{getExtra}}).
+Objects of the respective S4 classes.
 }
 \description{
-Members of the union are \code{IbBetareg}, \code{IbGlm},
-\code{IbLm}, \code{IbLmer}, \code{IbNegbin},
-\code{IbNls}, \code{IbVglm}
+S4 classes that wrap fitted model objects and attach extra metadata from the
+iterative bootstrap procedure.
+
+Members: \linkS4class{IbBetareg}, \linkS4class{IbGlm},
+\linkS4class{IbLm}, \linkS4class{IbLmer}, \linkS4class{IbGlmer},
+\linkS4class{IbNegbin}, \linkS4class{IbNls}, \linkS4class{IbVglm}.
 }
 \details{
-The `Functions` section describes members of the class union.
+Members include wrappers around models from \pkg{betareg}, \pkg{stats},
+\pkg{lme4}, \pkg{MASS}, and \pkg{VGAM}.
+
+
+These classes are light wrappers: they store the corrected fitted object in
+\code{@object} (see \code{\link{getObject}}) and additional information in
+\code{@ib_extra} (see \code{\link{getExtra}}).
 }
+\section{Slots}{
+
+\describe{
+\item{\code{object}}{The original fitted model object, corrected by \code{ib}.}
+
+\item{\code{ib_extra}}{A \code{list} of extra metadata from \code{ib}.}
+}}
+
 \seealso{
-\code{\link{getExtra}}, \code{\link{getObject}}
-}
-\author{
-Samuel Orso
+\code{\link{getObject}}, \code{\link{getExtra}},
+\linkS4class{Ib}, \linkS4class{SummaryIb}
 }

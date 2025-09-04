@@ -3,15 +3,32 @@
 \docType{class}
 \name{SummaryIb-class}
 \alias{SummaryIb-class}
-\title{An S4 class union for \code{summary}}
+\alias{SummaryIbBetareg-class}
+\alias{SummaryIbGlm-class}
+\alias{SummaryIbLm-class}
+\alias{SummaryIbLmer-class}
+\alias{SummaryIbGlmer-class}
+\alias{SummaryIbNegbin-class}
+\alias{SummaryIbNls-class}
+\alias{SummaryIbVglm-class}
+\alias{SummaryIb}
+\title{Summaries for \code{ib} wrappers}
 \description{
-Members of the union are \code{SummaryIbBetareg}, \code{SummaryIbGlm}, \code{SummaryIbLm},
-\code{SummaryIbLmer}, \code{SummaryIbNegbin}, \code{SummaryIbNls},
-\code{SummaryIbVglm}
+S4 classes that wrap summary objects corresponding to the \code{Ib*} classes.
+
+Members: \linkS4class{SummaryIbBetareg}, \linkS4class{SummaryIbGlm},
+\linkS4class{SummaryIbLm}, \linkS4class{SummaryIbLmer},
+\linkS4class{SummaryIbGlmer}, \linkS4class{SummaryIbNegbin},
+\linkS4class{SummaryIbNls}, \linkS4class{SummaryIbVglm}.
 }
-\details{
-The `Functions` section describes members of the class union.
-}
-\author{
-Samuel Orso
+\section{Slots}{
+
+\describe{
+\item{\code{summ}}{The \code{summary.*} object.}
+
+\item{\code{ib_extra}}{A \code{list} of extra metadata from \code{ib}.}
+}}
+
+\seealso{
+\linkS4class{SummaryIb}, \linkS4class{Ib}
 }
