@@ -1,3 +1,8 @@
+## ib 0.2.1
+- New feature by allowing `glmer` from `lme4` package.
+- Fix minor bugs in `ibControl` and `ib` functions.
+- Enhance class definition.
+
 ## ib 0.2.0
 - Enhance documentation with better explanations and fix minor typos. 
 - Fix typo in `summary` for negative binomial family.
