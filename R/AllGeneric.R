@@ -149,6 +149,7 @@ simulation.default <- function(object, control=list(...), ...){
   if(control$cens) sim <- censoring(sim,control$right,control$left)
   if(control$mis) sim <- missing_at_random(sim, control$prop)
   if(control$out) sim <- outliers(sim, control$eps, control$G)
+  # TODO: offer possibility not to return data.matrix (for glmer with binomial)
   data.matrix(sim)
 }
 

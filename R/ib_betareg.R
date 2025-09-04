@@ -229,8 +229,8 @@ simulate_betareg <- function (object, nsim) {
 }
 
 #' @title Simulation for a beta regression
-#' @description simulation method for class \linkS4class{IbBetareg}
-#' @param object an object of class \linkS4class{IbBetareg}
+#' @description simulation method for class \code{IbBetareg}, see \linkS4class{Ib}
+#' @param object an object of class \code{IbBetareg}, see \linkS4class{Ib}
 #' @param control a \code{list} of parameters for controlling the iterative procedure
 #' (see \code{\link{ibControl}}).
 #' @param extra \code{NULL} by default; extra parameters to pass to simulation.

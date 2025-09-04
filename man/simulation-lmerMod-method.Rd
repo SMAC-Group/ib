@@ -7,7 +7,7 @@
 \S4method{simulation}{lmerMod}(object, control = list(...), ...)
 }
 \arguments{
-\item{object}{an object of class \linkS4class{IbLmer}}
+\item{object}{an object of class \code{Ib}, see \linkS4class{Ib}}
 
 \item{control}{a \code{list} of parameters for controlling the iterative procedure
 (see \code{\link{ibControl}}).}
@@ -15,5 +15,5 @@
 \item{...}{further arguments.}
 }
 \description{
-simulation method for class \linkS4class{IbLmer}
+simulation method for class  \code{Ib}, see \linkS4class{Ib}
 }

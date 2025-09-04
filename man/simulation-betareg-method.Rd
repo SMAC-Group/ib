@@ -7,7 +7,7 @@
 \S4method{simulation}{betareg}(object, control = list(...), extra = NULL, ...)
 }
 \arguments{
-\item{object}{an object of class \linkS4class{IbBetareg}}
+\item{object}{an object of class \code{IbBetareg}, see \linkS4class{Ib}}
 
 \item{control}{a \code{list} of parameters for controlling the iterative procedure
 (see \code{\link{ibControl}}).}
@@ -17,5 +17,5 @@
 \item{...}{further arguments}
 }
 \description{
-simulation method for class \linkS4class{IbBetareg}
+simulation method for class \code{IbBetareg}, see \linkS4class{Ib}
 }

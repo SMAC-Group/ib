@@ -7,7 +7,7 @@
 \S4method{simulation}{negbin}(object, control = list(...), extra = NULL, ...)
 }
 \arguments{
-\item{object}{an object of class \linkS4class{IbNegbin}}
+\item{object}{an object of class \code{IbNegbin}, see \linkS4class{Ib}}
 
 \item{control}{a \code{list} of parameters for controlling the iterative procedure
 (see \code{\link{ibControl}}).}
@@ -17,5 +17,5 @@
 \item{...}{further arguments}
 }
 \description{
-simulation method for class \linkS4class{IbNegbin}
+simulation method for class \code{IbNegbin}, see \linkS4class{Ib}
 }

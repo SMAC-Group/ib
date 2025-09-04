@@ -68,6 +68,29 @@ setMethod("summary",
           "IbGlm",
           definition = summaryIbGlm)
 
+## IbGlmer
+#' @importFrom utils getFromNamespace
+summaryIbGlmer <- function(object, ...){
+  summary.glmer <- getFromNamespace("summary.merMod", ns = "lme4")
+  x <- getObject(object)
+  y <- getExtra(object)
+  summ <- summary.glmer(x, ...)
+  new("SummaryIbGlmer",
+      summ = summ,
+      ib_extra = y)
+}
+
+#' @title Summarizing a generalized linear mixed model regression fit corrected by
+#' the iterative bootstrap
+#' @description summary method for class \linkS4class{IbGlmer}
+#' @param object an object of class \linkS4class{IbGlmer}
+#' @param ... further arguments passed to \code{summary.merMod} of \pkg{lme4}
+#' @export
+setMethod("summary",
+          "IbGlmer",
+          definition = summaryIbGlmer)
+
+
 ## IbLm
 #' @importFrom stats summary.lm
 summaryIbLm <- function(object, ...){

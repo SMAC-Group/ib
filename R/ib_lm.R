@@ -185,8 +185,8 @@ simulation.lm <- function(object, control=list(...), std=NULL, ...){
 }
 
 #' @title Simulation for linear regression
-#' @description simulation method for class \linkS4class{IbLm}
-#' @param object an object of class \linkS4class{IbLm}
+#' @description simulation method for class \code{IbLm}, see \linkS4class{Ib}
+#' @param object an object of class \code{IbLm}, see \linkS4class{Ib}
 #' @param control a \code{list} of parameters for controlling the iterative procedure
 #' (see \code{\link{ibControl}}).
 #' @param std \code{NULL} by default; standard deviation to pass to simulation.
