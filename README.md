@@ -1,6 +1,6 @@
 
 [![R-CMD-check](https://github.com/SMAC-Group/ib/workflows/R-CMD-check/badge.svg)](https://github.com/SMAC-Group/ib/actions)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2020--12--11-green.svg)](https://github.com/SMAC-Group/ib)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2025--09--04-green.svg)](https://github.com/SMAC-Group/ib)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 # Bias correction via the iterative bootstrap
